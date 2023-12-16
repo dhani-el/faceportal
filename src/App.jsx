@@ -1,4 +1,5 @@
-import Home from "./Home/JSX"
+import  "./index.css";
+import Home from "./Home/JSX";
 
 function App() {
   

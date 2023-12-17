@@ -1,4 +1,6 @@
 import "../../index.css"
+import { Button, TextField } from "@mui/material";
+
 
  function Logo(){
     return <div id="logoContainer">
@@ -63,13 +65,14 @@ export function CatchyImage(){
 }
 
 export function Join(){
-    return <div>
-        <p>join</p>
+    return <div className="pt-4 flex w-full justify-center landscape:justify-start landscape:ps-16 ">
+                <TextField  />
+                <Button variant="contained" className="relative -left-3" >JOIN</Button>
     </div>
 }
 
 export function FirstSocialProof({evidences}){
-    return  <div>
+    return  <div className="flex flex-wrap w-3/4 gap-4 mt-12 items-center justify-center " >
         {evidences.map(function(evidence){
             return <AsocialProof image={evidence.image} alt={evidence.alt} />
         })}
@@ -77,7 +80,7 @@ export function FirstSocialProof({evidences}){
 }
 
 function AsocialProof({image , alt}){
-    return <div>
+    return <div className="w-20" >
         <img src={image} alt={alt} />
     </div>
 }
@@ -103,43 +106,42 @@ export function Testimonial({testimony}){
 }
 
 export function Pitch({cases}){
-    return <div>
+    return <div className="flex flex-col gap-10 px-12 mt-12"   >
         {
             cases.map(function(singleCase,index){
-                if((index % 2) === 0 ){
-                    return <Case2 caseData={singleCase}/>
-                } else {
-                    return <Case1 caseData={singleCase}/>
-                }
+                console.log(index % 2 > 0 ? "brazzy" : "zagey");
+                return index % 2 == 0  ? <Case1 caseData={singleCase}/> : <Case2 caseData={singleCase}/>
             })
         }
     </div>
 }
 
 function Case1({caseData}){
-    return <div>
+    return <div className="flex flex-col lg:flex-row w-full ">
         <ImageSection image={caseData.image} alt={caseData.alt}/>
         <TextSection header={caseData.header} body={caseData.body} />
     </div>
 }
 
-function Case2(){
-    return <div>
-        <TextSection  image={caseData.image} alt={caseData.alt} />
-        <ImageSection  header={caseData.header} body={caseData.body} />
+function Case2({caseData}){
+    return <div className="flex w-full flex-col lg:flex-row ">
+        <TextSection header={caseData.header} body={caseData.body} />
+        <ImageSection image={caseData.image} alt={caseData.alt}/>
     </div>
 }
 
+
+
 function TextSection({header,body}){
-    return <div>
+    return <div className="w-7/12" >
         <h3>{header}</h3>
         <p>{body}</p>
     </div>
 }
 
 function ImageSection({image,alt}){
-    return <div>
-        <img src={image} alt={alt}/>
+    return <div  className="w-2/5" >
+        <img src={image} alt={alt} className="w-full h-full object-contain object-center " />
     </div>
 }
 

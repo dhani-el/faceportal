@@ -1,5 +1,5 @@
 
-import { Header,Entrance, Join, FirstSocialProof, Pitch } from "./component";
+import { Header,Entrance, Join, FirstSocialProof, Pitch, SecondSocialProof } from "./component";
 
 import mlb from "../../assets/mlb.png";
 import parks from "../../assets/parks.png";
@@ -26,6 +26,7 @@ export default function Home(){
                         <FirstSocialProof evidences={[{image:mlb,alt:""},{image:wff,alt:""},{image:nasadaq,alt:""},{image:times,alt:""},{image:rakuten,alt:""},{image:texas,alt:""},{image:service,alt:""},{image:walmart,alt:""},{image:parks,alt:""},{image:capital,alt:""},{image:mofitt,alt:""}]} />
                     </div>
                     <Pitch cases={pitchDataSet} />
+                    <SecondSocialProof testimonials = {testimonials} />
             </div>
 }
 
@@ -84,4 +85,32 @@ const pitchDataSet = [
         perferendis, debitis modi nisi molestias suscipit.`,
     },
 
+]
+
+const testimonials = [
+    {
+        image :"",
+        name:"Levi Ackerman",
+        words:`One of the best apps i have used totally recommend 5 stars all the way`
+    },
+    {
+        image :"",
+        name:"Mikasa Jules",
+        words:`One of the best apps i have used totally recommend 5 stars all the way`
+    },
+    {
+        image :"",
+        name:"Eren Yeager",
+        words:`One of the best apps i have used totally recommend 5 stars all the way`
+    },
+    {
+        image :"",
+        name:"Erwin Smith",
+        words:`One of the best apps i have used totally recommend 5 stars all the way`
+    },
+    {
+        image :"",
+        name:"Hinata Shoyou",
+        words:`One of the best apps i have used totally recommend 5 stars all the way`
+    },
 ]

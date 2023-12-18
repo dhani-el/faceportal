@@ -86,7 +86,7 @@ function AsocialProof({image , alt}){
 }
 
 export function SecondSocialProof({testimonials}){
-    return <div>
+    return <div className="flex flex-wrap justify-center gap-6 w-full " >
         {
             testimonials.map(function(testimony){
                 return <Testimonial testimony={testimony} />
@@ -95,18 +95,18 @@ export function SecondSocialProof({testimonials}){
     </div>
 }
 
-export function Testimonial({testimony}){
-    return <div>
-        <div>
-            <span> <img src={testimony.image}/> </span>
-            <p>{testimony.name}</p>
+function Testimonial({testimony}){
+    return <div className=" px-4 flex flex-col items-center gap-3 w-full md:w-2/5 ">
+        <div className="flex gap-2 items-center w-11/12 justify-around " >
+            <span className="w-20 h-20"> <img src={testimony.image} alt="user" className="w-full h-auto" /> </span>
+            <p className="text-center overflow-hidden text-ellipsis">{testimony.name}</p>
         </div>
-        <p>{testimony.words}</p>
+        <p className="w-full text-center">{testimony.words}</p>
     </div>
 }
 
 export function Pitch({cases}){
-    return <div className="flex flex-col gap-10 px-12 mt-12"   >
+    return <div className="flex flex-col gap-12 px-6 mt-12 mb-12 mx-auto lg:w-10/12 lg:gap-28 "   >
         {
             cases.map(function(singleCase,index){
                 console.log(index % 2 > 0 ? "brazzy" : "zagey");
@@ -117,30 +117,28 @@ export function Pitch({cases}){
 }
 
 function Case1({caseData}){
-    return <div className="flex flex-col lg:flex-row w-full ">
+    return <div className="flex flex-col lg:flex-row w-full lg:w-10/12 lg:self-end ">
         <ImageSection image={caseData.image} alt={caseData.alt}/>
         <TextSection header={caseData.header} body={caseData.body} />
     </div>
 }
 
 function Case2({caseData}){
-    return <div className="flex w-full flex-col lg:flex-row ">
+    return <div className="flex w-full flex-col-reverse lg:flex-row lg:w-11/12 ">
         <TextSection header={caseData.header} body={caseData.body} />
         <ImageSection image={caseData.image} alt={caseData.alt}/>
     </div>
 }
 
-
-
 function TextSection({header,body}){
-    return <div className="w-7/12" >
-        <h3>{header}</h3>
+    return <div className="text-justify lg:w-3/5" >
+        <h3 className="font-extrabold pb-4 text-center lg:pb-8 "  >{header}</h3>
         <p>{body}</p>
     </div>
 }
 
 function ImageSection({image,alt}){
-    return <div  className="w-2/5" >
+    return <div  className="w-full h-48 mb-4 lg:h-full lg:w-2/5" >
         <img src={image} alt={alt} className="w-full h-full object-contain object-center " />
     </div>
 }

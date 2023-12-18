@@ -1,6 +1,6 @@
 import "../../index.css"
 import { Button, TextField } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 
  function Logo(){
     return <div id="logoContainer">
@@ -65,9 +65,10 @@ export function CatchyImage(){
 }
 
 export function Join(){
+    const navigate = useNavigate();
     return <div className="pt-4 flex w-full justify-center landscape:justify-start landscape:ps-16 ">
                 <TextField  />
-                <Button variant="contained" className="relative -left-3" >JOIN</Button>
+                <Button variant="contained" className="relative -left-3" onClick={()=>navigate("/call")} >JOIN</Button>
     </div>
 }
 

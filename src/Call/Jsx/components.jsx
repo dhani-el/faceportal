@@ -1,15 +1,16 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { AgoraRTCProvider, useJoin, useLocalCameraTrack, useLocalMicrophoneTrack,usePublish, useRTCClient, useRemoteAudioTracks, useRemoteUsers, RemoteUser, LocalVideoTrack } from "agora-rtc-react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import { Button } from "@mui/material";
 
 
 const credentials = {
     app_id :"945e0c1e774946de9c2e9a599f8c9c84",
-    token : "007eJxTYDgs9+3kjYNqa1eECETvsvTP+Px9aZ0eG4PhmnN1rn57P9xQYLA0MU01SDZMNTc3sTQxS0m1TDZKtUw0tbRMs0i2TLYw6X7QktoQyMhg8t+FkZEBAkF8FobcxMw8BgYAqqgguA==",
+    token : "007eJxTYChOFj2UvUAh0TOXheetzGH+qQ8Ut298pDxD6gLTMm/9+UsUGCxNTFMNkg1Tzc1NLE3MUlItk41SLRNNLS3TLJItky1MWoM6UhsCGRlSWWKYGRkgEMRnYchNzMxjYAAAj5EcnQ==",
     channelName:"main"
 }
 
-const client = AgoraRTC.createClient({mode:"rtc", codec:"vp8"})
+
 
 
 function Stream (){
@@ -19,35 +20,14 @@ function Stream (){
 }
 
 export default function LocalStream(){
-    const [localTrack, setLocalTrack] = useState([]);
-    const [reload,setReload] = useState(false);
-    const videoDivRef = useRef(null);
-    async function JoinAndDisplayLocalStream(){
-        let UID = await client.join(credentials.app_id, credentials.channelName, credentials.token, null)
-        .then(function(uid){
-            setLocalTrack(async(init)=>{
-                 await AgoraRTC.createMicrophoneAndCameraTracks();
-            })
-        }).then(function(uid){
-            localTrack[1].play("video-player");
-        }).then(function(uid){
-            setReload(true);
-        })
-        .then(function(uid){
-            client.publish(localTrack[0],localTrack[1])
-
-        })
-
-    }
-    return <div id={`user-container`}  > 
-                <div id={`video-player`} ref={videoDivRef} className="w-40 h-40" >
-                <video controls>
-                    <source src={localTrack[1]}  />
-                    </video>
-                </div>
-                <Button onClick={function(){JoinAndDisplayLocalStream()}} >Join Stream</Button>
-    </div>
+    const client = useRTCClient(AgoraRTC.createClient({mode:"rtc",codec:"vp8"}));
+    return  <AgoraRTCProvider client={client} >
+                <div>inside provider</div>
+                 <VideoStreams/>
+          </AgoraRTCProvider>
+    
 }
+
 
 function RemoteStreams(){
     const [remoteTrack, setRemoteTrack] = useState({});
@@ -57,9 +37,32 @@ function RemoteStreams(){
 }
 
 function VideoStreams(){
+    useJoin({appid:"945e0c1e774946de9c2e9a599f8c9c84",channel:"main",token:"007eJxTYJicL2ViINRissLL7aXiu/PHvgiuknrDdHXhxTU9k1Y+Yq1TYLA0MU01SDZMNTc3sTQxS0m1TDZKtUw0tbRMs0i2TLYw+crTldoQyMhwc78+KyMDBIL4LAy5iZl5DAwATeMf7g=="})
+    const AudioTrack = useLocalMicrophoneTrack();
+    const VideoTrack = useLocalCameraTrack();
+    const deviceLoading = VideoTrack.isLoading  ||  AudioTrack.isLoading;
+    console.log("trackstart",AudioTrack.localMicrophoneTrack, VideoTrack.localCameraTrack, "trackend");
+    usePublish([AudioTrack.localMicrophoneTrack, VideoTrack.localCameraTrack],!deviceLoading);
+    const remoteUsers = useRemoteUsers();
+    const {audioTracks} = useRemoteAudioTracks(remoteUsers);
+    audioTracks.map(function(track){ return track.play()});
+        
+   return <div className="w-screen h-screen" >
+                {deviceLoading && <div>loading ...</div>}
+                <div>on top video</div>
+                {remoteUsers.map((remoteUser) => {
+                    console.log(remoteUser.audioTrack);
+                    console.log(remoteUser.hasAudio);
+                    console.log(remoteUser.hasVideo);
+                    console.log(remoteUser.videoTrack);
+                    return (
+                    <div className="vid" style={{ height: 300, width: 600 }} key={remoteUser.uid}>
+                    
+                        <RemoteUser user={remoteUser} playVideo={true} playAudio={true} />
+                    </div>
+                )})}
+                {!deviceLoading && <LocalVideoTrack track={VideoTrack.localCameraTrack} play ={true} muted = {false}   className="w-1/2" style={{width:"50%",height:"50%"}} />}
 
-
-   return <div>
 
     </div>
 }

@@ -116,7 +116,6 @@ export function Pitch({cases}){
     return <div className="flex flex-col gap-12 px-6 mt-12 mb-12 mx-auto lg:w-10/12 lg:gap-28 "   >
         {
             cases.map(function(singleCase,index){
-                console.log(index % 2 > 0 ? "brazzy" : "zagey");
                 return index % 2 == 0  ? <Case1 caseData={singleCase}/> : <Case2 caseData={singleCase}/>
             })
         }

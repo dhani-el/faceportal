@@ -1,95 +1,67 @@
 import { useState } from "react";
-import { AgoraRTCProvider, useJoin, useLocalCameraTrack, useLocalMicrophoneTrack,usePublish, useRTCClient, useRemoteAudioTracks, useRemoteUsers, RemoteUser, LocalVideoTrack } from "agora-rtc-react";
+import { AgoraRTCProvider
+        , useJoin
+        , useLocalCameraTrack
+        , useLocalMicrophoneTrack
+        ,usePublish
+        , useRTCClient
+        , useRemoteAudioTracks
+        , useRemoteUsers
+        , RemoteUser
+        , LocalVideoTrack } from "agora-rtc-react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import { Button } from "@mui/material";
 
 
-const credentials = {
-    app_id :"945e0c1e774946de9c2e9a599f8c9c84",
-    token : "007eJxTYChOFj2UvUAh0TOXheetzGH+qQ8Ut298pDxD6gLTMm/9+UsUGCxNTFMNkg1Tzc1NLE3MUlItk41SLRNNLS3TLJItky1MWoM6UhsCGRlSWWKYGRkgEMRnYchNzMxjYAAAj5EcnQ==",
-    channelName:"main"
-}
 
-
-
-
-function Stream (){
-    return <div>
-
-    </div>
-}
-
-export default function LocalStream(){
+export default function StreamMain ({channel}){
+    const [appId,setAppId] = useState("945e0c1e774946de9c2e9a599f8c9c84");
+    const [token,setToken] = useState("007eJxTYLh7Xz9syrnKtosTLHyu/qh5pjCX98Zeya2X1kkcmfQ1wYpbgcHSxDTVINkw1dzcxNLELCXVMtko1TLR1NIyzSLZMtnC5Elxd2pDICPDlV4fRkYGCATxWRhyEzPzGBgA+xohrQ==");
     const client = useRTCClient(AgoraRTC.createClient({mode:"rtc",codec:"vp8"}));
-    return  <AgoraRTCProvider client={client} >
-                <div>inside provider</div>
-                 <VideoStreams/>
-          </AgoraRTCProvider>
-    
+        return <AgoraRTCProvider client={client} >
+                    <Streams channel={channel} appId={appId} token={token} />
+                </AgoraRTCProvider>
 }
 
-
-function RemoteStreams(){
-    const [remoteTrack, setRemoteTrack] = useState({});
-    return <div>
-
-    </div>
-}
-
-function VideoStreams(){
-    useJoin({appid:"945e0c1e774946de9c2e9a599f8c9c84",channel:"main",token:"007eJxTYJicL2ViINRissLL7aXiu/PHvgiuknrDdHXhxTU9k1Y+Yq1TYLA0MU01SDZMNTc3sTQxS0m1TDZKtUw0tbRMs0i2TLYw+crTldoQyMhwc78+KyMDBIL4LAy5iZl5DAwATeMf7g=="})
+function Streams({appId, channel, token}){
+    useJoin({appid:appId,  channel:channel,  token:token})
     const AudioTrack = useLocalMicrophoneTrack();
     const VideoTrack = useLocalCameraTrack();
     const deviceLoading = VideoTrack.isLoading  ||  AudioTrack.isLoading;
-    console.log("trackstart",AudioTrack.localMicrophoneTrack, VideoTrack.localCameraTrack, "trackend");
-    usePublish([AudioTrack.localMicrophoneTrack, VideoTrack.localCameraTrack],!deviceLoading);
+    usePublish([AudioTrack.localMicrophoneTrack, VideoTrack.localCameraTrack]);
     const remoteUsers = useRemoteUsers();
     const {audioTracks} = useRemoteAudioTracks(remoteUsers);
     audioTracks.map(function(track){ return track.play()});
         
    return <div className="w-screen h-screen" >
-                {deviceLoading && <div>loading ...</div>}
-                <div>on top video</div>
-                {remoteUsers.map((remoteUser) => {
-                    console.log(remoteUser.audioTrack);
-                    console.log(remoteUser.hasAudio);
-                    console.log(remoteUser.hasVideo);
-                    console.log(remoteUser.videoTrack);
-                    return (
-                    <div className="vid" style={{ height: 300, width: 600 }} key={remoteUser.uid}>
-                    
-                        <RemoteUser user={remoteUser} playVideo={true} playAudio={true} />
-                    </div>
-                )})}
-                {!deviceLoading && <LocalVideoTrack track={VideoTrack.localCameraTrack} play ={true} muted = {false}   className="w-1/2" style={{width:"50%",height:"50%"}} />}
-
-
+                {deviceLoading && <Loading/> }
+                {remoteUsers.map((remoteUser) =>  <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />)}
+                {!deviceLoading && <LocalStream track={VideoTrack.localCameraTrack} play ={true} muted = {true}/>}
+                <StreamControls/>
     </div>
 }
 
+function RemoteStream({id, user, playVideo, playAudio}){
+    return <div style={{ height: 300, width: 600 }} key={id}>
+                <RemoteUser user={user} playVideo={playVideo} playAudio={true} />
+        </div>
+}
+
+function LocalStream({track, play, muted}){
+    return <div className="w-full h-3/4 flex items-center justify-center ">
+        <div className="w-3/4 h-full">
+            <LocalVideoTrack track={track} play = {play} muted = {muted} />
+        </div>
+    </div>
+}
+
+function Loading(){
+    return <div>loading component</div>
+}
 function StreamControls(){
     return <div>
 
     </div>
 }
 
-function JoinStream(){
-    return <Button>Join</Button>
-}
-
-function LeaveStream(){
-    return <Button>Leave</Button>
-}
-
-function Microphone(){
-    return <div>
-        mic
-    </div>
-}
-
-function Camera(){
-    return <div>
-        camera
-    </div>
-}
 

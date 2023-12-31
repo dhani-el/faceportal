@@ -1,5 +1,6 @@
 import "../../index.css"
 import { Button, TextField } from "@mui/material";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
  function Logo(){
@@ -66,9 +67,14 @@ export function CatchyImage(){
 
 export function Join(){
     const navigate = useNavigate();
+    const [channel, setChannel] = useState("");
+
+    function handleTextChange(text,setter){
+        setter(function(initial){ return text});
+    }
     return <div className="pt-4 flex w-full justify-center landscape:justify-start landscape:ps-16 ">
-                <TextField  />
-                <Button variant="contained" className="relative -left-3" onClick={()=>navigate("/call")} >JOIN</Button>
+                <TextField onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
+                <Button variant="contained" className="relative -left-3" onClick={()=>navigate(`/call/${channel}`)} >JOIN</Button>
     </div>
 }
 
@@ -110,7 +116,6 @@ export function Pitch({cases}){
     return <div className="flex flex-col gap-12 px-6 mt-12 mb-12 mx-auto lg:w-10/12 lg:gap-28 "   >
         {
             cases.map(function(singleCase,index){
-                console.log(index % 2 > 0 ? "brazzy" : "zagey");
                 return index % 2 == 0  ? <Case1 caseData={singleCase}/> : <Case2 caseData={singleCase}/>
             })
         }

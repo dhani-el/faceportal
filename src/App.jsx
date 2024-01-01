@@ -9,7 +9,7 @@ const Router = createBrowserRouter([
     element:<Home/>
   },
   {
-    path:"/call/:channel",
+    path:"/call/:channel/:uid",
     element:<Call/>
   }
 ])

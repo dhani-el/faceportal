@@ -2,29 +2,40 @@ import "../../index.css"
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import smallLogo from "../../assets/logo/small2.png"
+import mediumLogo from "../../assets/logo/medium.png"
+import largeLogo from "../../assets/logo/large2.png"
+import xlargeLogo from "../../assets/logo/xlarge.png"
+import { MenuRounded } from "@mui/icons-material";
 
  function Logo(){
-    return <div id="logoContainer">
-                <h3>FACEPORTAL</h3>
+    return <div id="logoContainer" className=" w-4/6 landscape:w-11/12">
+                <picture className="w-full h-auto" >
+                    <source srcSet={xlargeLogo} media="(min-width: 1500px)" />
+                    <source srcSet={largeLogo} media="(min-width: 950px)" />
+                    <source srcSet={mediumLogo} media="(min-width: 650px)" />
+                    <source srcSet={smallLogo} media="(min-width: 250px)" />
+                    <img src={mediumLogo} alt="face portal logo" />
+                </picture>
     </div>
 }
 
  function Menu(){
     return <div id="menuContainer" className="landscape:lg:hidden" >
-        <p>menu</p>
+        <MenuRounded/>
     </div>
 }
 
 function NavItems(){
     return <div className="hidden landscape:lg:flex w-3/12 justify-between " >
-        <p>ITEM ONE</p>
-        <p>ITEM TWO</p>
-        <p>ITEM THREE</p>
+        <p>HOST</p>
+        <p>JOIN</p>
+        <p>SCHEDULE</p>
     </div>
 }
 export function Header(){
-    return <div  className="flex w-full justify-between px-6 pt-4 lg:px-12 " >
-        <div className="flex gap-2" >
+    return <div  className="flex w-full justify-between px-6 pt-4 lg:px-12 items-center " >
+        <div className="flex gap-2 w-2/4 landscape:w-32 items-center " >
             <Menu/>
             <Logo/>
         </div>
@@ -34,13 +45,11 @@ export function Header(){
 }
 
 function Auth(){
-    return <div>
-        <p>Sign Up</p>
-    </div>
+    return <Button variant="outlined" className="text-xs" >Sign in</Button>
 }
 
 export function Entrance(){
-    return <div className=" mt-28 w-screen h-1/3 relative grid grid-cols-1 landscape:grid-cols-2 " >
+    return <div className=" mt-28 w-screen h-1/3 relative grid grid-cols-1 landscape:grid-cols-2 mb-5 px-4 " >
         <Words/>
         <div className="w-full h-full absolute landscape:relative ">
             <CatchyImage/>
@@ -65,17 +74,27 @@ export function CatchyImage(){
     </div>
 }
 
-export function Join(){
-    const navigate = useNavigate();
-    const [channel, setChannel] = useState("");
+export function Join({modalTriggerFunc, setChannel}){
 
     function handleTextChange(text,setter){
         setter(function(initial){ return text});
     }
     return <div className="pt-4 flex w-full justify-center landscape:justify-start landscape:ps-16 ">
                 <TextField onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
-                <Button variant="contained" className="relative -left-3" onClick={()=>navigate(`/call/${channel}`)} >JOIN</Button>
+                <Button variant="contained" className="relative -left-3" onClick={modalTriggerFunc} >JOIN</Button>
     </div>
+}
+
+export function NameModal({setNameFunc,handleSubmit}){
+
+    function handleTextChange(text){
+        setNameFunc(init=>text);
+    }
+    return <div>
+                <p>Set A Name To Use</p>
+                <TextField onChange={function(e){handleTextChange(e.target.value)}} />
+                <Button onClick={handleSubmit} >USE</Button>
+            </div>
 }
 
 export function FirstSocialProof({evidences}){

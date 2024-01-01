@@ -15,8 +15,8 @@ import { Button } from "@mui/material";
 
 
 
-export default function StreamMain ({channel}){
-    const url = `http://localhost:3000/rtc/${channel}/publisher/userAccount/coderosion`
+export default function StreamMain ({channel,uid}){
+    const url = `http://localhost:3000/rtc/${channel}/publisher/userAccount/${uid}`
     const [appId,setAppId] = useState("945e0c1e774946de9c2e9a599f8c9c84");
     const [token,setToken] = useState(null);
     const client = useRTCClient(AgoraRTC.createClient({mode:"rtc",codec:"vp8"}));
@@ -33,13 +33,13 @@ export default function StreamMain ({channel}){
         GetToken()
     },[])
         return <AgoraRTCProvider client={client} >
-                   {token && <Streams channel={channel} appId={appId} token={token} />}
+                   {token && <Streams channel={channel} appId={appId} token={token} uid={uid} />}
                 </AgoraRTCProvider>
 }
 
-function Streams({appId, channel, token}){
+function Streams({appId, channel, token,uid}){
     console.log("inside streams = ",token);
-    useJoin({appid:appId,  channel:channel,  token:token,uid:"coderosion"},true)
+    useJoin({appid:appId,  channel:channel,  token:token,uid:uid},true)
     const AudioTrack = useLocalMicrophoneTrack();
     const VideoTrack = useLocalCameraTrack();
     const deviceLoading = VideoTrack.isLoading  ||  AudioTrack.isLoading;
@@ -54,7 +54,7 @@ function Streams({appId, channel, token}){
    return <div className="w-screen h-screen" >
                 {deviceLoading && <Loading/> }
                 <div className="w-screen h-1/5 flex gap-4 px-4 justify-center" >
-                    {remoteUsers.map((remoteUser) =>  <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />)}
+                    {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid); return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}
                 </div>
                 {!deviceLoading && <div className="w-full h-3/4 flex items-center justify-center pt-8 ">
                                         <div className="w-3/4 h-full">

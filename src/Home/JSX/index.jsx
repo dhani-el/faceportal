@@ -26,7 +26,7 @@ export default function Home(){
     function handleSubmit(){
         navigate(`/call/${channel}/${uid}`);
     }
-    return <div id="homeContainer" className=" h-screen min-h-screen" >
+    return <div id="homeContainer" className=" h-screen min-h-screen w-screen overflow-x-hidden box-border scro " >
                     <Header/>
                     <Entrance/>
                     <Join modalTriggerFunc={function(){setDisplayModal(init=>true)}} setChannel={setChannel} />

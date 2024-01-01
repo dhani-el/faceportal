@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AgoraRTCProvider
         , useJoin
         , useLocalCameraTrack
@@ -16,16 +16,30 @@ import { Button } from "@mui/material";
 
 
 export default function StreamMain ({channel}){
+    const url = `http://localhost:3000/rtc/${channel}/publisher/userAccount/coderosion`
     const [appId,setAppId] = useState("945e0c1e774946de9c2e9a599f8c9c84");
-    const [token,setToken] = useState("007eJxTYDjN4DYr/dvUHwfrLRKa9gVX3pnh+1f18plsx9MucaUKTQcVGCxNTFMNkg1Tzc1NLE3MUlItk41SLRNNLS3TLJItky1M+P/1pjYEMjLcjJnEysgAgSA+C0NuYmYeAwMAwk8hBA==");
+    const [token,setToken] = useState(null);
     const client = useRTCClient(AgoraRTC.createClient({mode:"rtc",codec:"vp8"}));
+    async function GetToken(){
+        const raw = fetch(url)
+        .then(function(resp){
+            return resp.json();
+        }).then(function(data){
+            console.log(data.rtcToken);
+            setToken((init)=> data.rtcToken);
+        })
+    }
+    useEffect(function(){
+        GetToken()
+    },[])
         return <AgoraRTCProvider client={client} >
-                    <Streams channel={channel} appId={appId} token={token} />
+                   {token && <Streams channel={channel} appId={appId} token={token} />}
                 </AgoraRTCProvider>
 }
 
 function Streams({appId, channel, token}){
-    useJoin({appid:appId,  channel:channel,  token:token})
+    console.log("inside streams = ",token);
+    useJoin({appid:appId,  channel:channel,  token:token,uid:"coderosion"},true)
     const AudioTrack = useLocalMicrophoneTrack();
     const VideoTrack = useLocalCameraTrack();
     const deviceLoading = VideoTrack.isLoading  ||  AudioTrack.isLoading;

@@ -1,5 +1,8 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Header,Entrance, Join, FirstSocialProof, Pitch, SecondSocialProof } from "./component";
+
+import { Header,Entrance, Join, NameModal, FirstSocialProof, Pitch, SecondSocialProof } from "./component";
 
 import mlb from "../../assets/mlb.png";
 import parks from "../../assets/parks.png";
@@ -15,10 +18,18 @@ import wff from "../../assets/wwf.png";
 
 
 export default function Home(){
+    const navigate = useNavigate();
+    const [displayModal, setDisplayModal] = useState(false);
+    const [channel, setChannel] = useState('');
+    const [uid, setUid] = useState('');
+
+    function handleSubmit(){
+        navigate(`/call/${channel}/${uid}`);
+    }
     return <div id="homeContainer" className=" h-screen min-h-screen" >
                     <Header/>
                     <Entrance/>
-                    <Join/>
+                    <Join modalTriggerFunc={function(){setDisplayModal(init=>true)}} setChannel={setChannel} />
                     <div className="w-full flex justify-center mt-12 font-extrabold" >
                         <h3>OUR CUSTOMERS</h3>
                     </div>
@@ -27,6 +38,9 @@ export default function Home(){
                     </div>
                     <Pitch cases={pitchDataSet} />
                     <SecondSocialProof testimonials = {testimonials} />
+                    {displayModal && <div>
+                                        <NameModal setNameFunc={setUid} handleSubmit={handleSubmit} />
+                                    </div>}
             </div>
 }
 

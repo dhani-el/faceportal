@@ -65,17 +65,27 @@ export function CatchyImage(){
     </div>
 }
 
-export function Join(){
-    const navigate = useNavigate();
-    const [channel, setChannel] = useState("");
+export function Join({modalTriggerFunc, setChannel}){
 
     function handleTextChange(text,setter){
         setter(function(initial){ return text});
     }
     return <div className="pt-4 flex w-full justify-center landscape:justify-start landscape:ps-16 ">
                 <TextField onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
-                <Button variant="contained" className="relative -left-3" onClick={()=>navigate(`/call/${channel}`)} >JOIN</Button>
+                <Button variant="contained" className="relative -left-3" onClick={modalTriggerFunc} >JOIN</Button>
     </div>
+}
+
+export function NameModal({setNameFunc,handleSubmit}){
+
+    function handleTextChange(text){
+        setNameFunc(init=>text);
+    }
+    return <div>
+                <p>Set A Name To Use</p>
+                <TextField onChange={function(e){handleTextChange(e.target.value)}} />
+                <Button onClick={handleSubmit} >USE</Button>
+            </div>
 }
 
 export function FirstSocialProof({evidences}){

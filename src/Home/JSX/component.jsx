@@ -1,12 +1,11 @@
 import "../../index.css"
 import { Button, TextField } from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import smallLogo from "../../assets/logo/small2.png"
 import mediumLogo from "../../assets/logo/medium.png"
 import largeLogo from "../../assets/logo/large2.png"
 import xlargeLogo from "../../assets/logo/xlarge.png"
 import { MenuRounded } from "@mui/icons-material";
+import hero from "../../assets/hero/conf3.png";
 
  function Logo(){
     return <div id="logoContainer" className=" w-4/6 landscape:w-11/12">
@@ -34,7 +33,7 @@ function NavItems(){
     </div>
 }
 export function Header(){
-    return <div  className="flex w-full justify-between px-6 pt-4 lg:px-12 items-center " >
+    return <div  className=" bg-lime-700 text-white flex w-full justify-between px-6 pt-4 lg:px-12 items-center " >
         <div className="flex gap-2 w-2/4 landscape:w-32 items-center " >
             <Menu/>
             <Logo/>
@@ -49,7 +48,7 @@ function Auth(){
 }
 
 export function Entrance(){
-    return <div className=" mt-28 w-screen h-1/3 relative grid grid-cols-1 landscape:grid-cols-2 mb-5 px-4 " >
+    return <div className=" mt-16 w-screen  relative grid grid-cols-1 landscape:grid-cols-2 mb-5 px-4 " >
         <Words/>
         <div className="w-full h-full absolute landscape:relative ">
             <CatchyImage/>
@@ -58,7 +57,7 @@ export function Entrance(){
 }
 
 export function Words(){
-    return <div className="flex flex-col items-center w-full pt-9 ">
+    return <div className="flex flex-col items-center w-full pt-9 z-10 justify-center ">
         <h2 className="font-extrabold text-lg text-center " >CONNECT WITH THOSE THAT MATTER</h2>
         <p className="text-sm text-center pt-6 w-11/12 landscape:w-9/12 " >Portal To Those That Matter Be It Family, Friends, Students, Investors...And Maybe Your Pets</p>
         <div className="flex gap-x-6 pt-4 w-full justify-center "  >
@@ -70,7 +69,7 @@ export function Words(){
 
 export function CatchyImage(){
     return <div className="h-full w-full px-3 ">
-        <img src="" alt="" className="h-full w-full" />
+        <img src={hero} alt="hero" className="h-auto w-full landscape:h-full landscape:w-auto " />
     </div>
 }
 
@@ -79,7 +78,7 @@ export function Join({modalTriggerFunc, setChannel}){
     function handleTextChange(text,setter){
         setter(function(initial){ return text});
     }
-    return <div className="pt-4 flex w-full justify-center landscape:justify-start landscape:ps-16 ">
+    return <div className="pt-4 flex w-full justify-center landscape:justify-start landscape:ps-24 relative -top-12 ">
                 <TextField onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
                 <Button variant="contained" className="relative -left-3" onClick={modalTriggerFunc} >JOIN</Button>
     </div>
@@ -98,7 +97,7 @@ export function NameModal({setNameFunc,handleSubmit}){
 }
 
 export function FirstSocialProof({evidences}){
-    return  <div className="flex flex-wrap w-3/4 gap-4 mt-12 items-center justify-center " >
+    return  <div className="flex flex-wrap w-3/4 gap-4  items-center justify-center " >
         {evidences.map(function(evidence){
             return <AsocialProof image={evidence.image} alt={evidence.alt} />
         })}

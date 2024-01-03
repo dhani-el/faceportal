@@ -1,3 +1,14 @@
+
+@font-face {
+    font-family: "bebas";
+    src: url("./assets/fonts/bebas.ttf");
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url("./assets/fonts/Montserrat.ttf");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

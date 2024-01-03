@@ -28,8 +28,8 @@ export default function Home(){
     }
     return <div id="homeContainer" className=" h-screen min-h-screen w-screen overflow-x-hidden box-border  " >
                     <Header/>
-                    <Entrance/>
-                    <Join modalTriggerFunc={function(){setDisplayModal(init=>true)}} setChannel={setChannel} />
+                    <Entrance modalTriggerFunc={function(){setDisplayModal(init=>true)}} setChannel={setChannel}/>
+                    {/* <Join modalTriggerFunc={function(){setDisplayModal(init=>true)}} setChannel={setChannel} /> */}
                     <div className="w-full flex justify-center mt-12 font-extrabold" >
                         <h3>OUR CUSTOMERS</h3>
                     </div>

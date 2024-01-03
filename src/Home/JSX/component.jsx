@@ -1,10 +1,15 @@
 import "../../index.css"
 import { Button, TextField } from "@mui/material";
-import smallLogo from "../../assets/logo/small2.png"
-import mediumLogo from "../../assets/logo/medium.png"
-import largeLogo from "../../assets/logo/large2.png"
-import xlargeLogo from "../../assets/logo/xlarge.png"
-import { MenuRounded } from "@mui/icons-material";
+
+import smallLogo from "../../assets/logo/small3.png"
+import mediumLogo from "../../assets/logo/medium3.png"
+import largeLogo from "../../assets/logo/large3.png"
+import xlargeLogo from "../../assets/logo/xlarge3.png"
+
+import smallMenu  from "../../assets/menu/menuIcon.png"
+import largeMenu  from "../../assets/menu/largeMenu.png"
+import mediumMenu  from "../../assets/menu/mediumMenu.png"
+import xlargeMenu  from "../../assets/menu/xLargeMenu.png"
 import hero from "../../assets/hero/conf3.png";
 
  function Logo(){
@@ -20,8 +25,14 @@ import hero from "../../assets/hero/conf3.png";
 }
 
  function Menu(){
-    return <div id="menuContainer" className="landscape:lg:hidden" >
-        <MenuRounded/>
+    return <div id="menuContainer"  className=" w-4 landscape:lg:hidden" >
+                <picture className="w-full h-auto" >
+                    <source srcSet={xlargeMenu} media="(min-width: 1500px)" />
+                    <source srcSet={largeMenu} media="(min-width: 950px)" />
+                    <source srcSet={mediumMenu} media="(min-width: 650px)" />
+                    <source srcSet={smallMenu} media="(min-width: 250px)" />
+                    <img src={smallMenu} alt="Menu Icon" />
+                </picture>
     </div>
 }
 
@@ -33,7 +44,7 @@ function NavItems(){
     </div>
 }
 export function Header(){
-    return <div  className=" bg-lime-700 text-white flex w-full justify-between px-6 pt-4 lg:px-12 items-center " >
+    return <div  className=" bg-teal-700 text-white flex w-full justify-between px-6 py-2 lg:px-12 items-center font-bebas " >
         <div className="flex gap-2 w-2/4 landscape:w-32 items-center " >
             <Menu/>
             <Logo/>
@@ -47,23 +58,24 @@ function Auth(){
     return <Button variant="outlined" className="text-xs" >Sign in</Button>
 }
 
-export function Entrance(){
-    return <div className=" mt-16 w-screen  relative grid grid-cols-1 landscape:grid-cols-2 mb-5 px-4 " >
-        <Words/>
+export function Entrance({modalTriggerFunc, setChannel}){
+    return <div className=" mt-10 w-screen  relative grid grid-cols-1 landscape:grid-cols-2 mb-5 px-4" >
+        <Words  modalTriggerFunc={modalTriggerFunc} setChannel={setChannel} />
         <div className="w-full h-full absolute landscape:relative ">
             <CatchyImage/>
         </div>
     </div>
 }
 
-export function Words(){
+export function Words({modalTriggerFunc, setChannel}){
     return <div className="flex flex-col items-center w-full pt-9 z-10 justify-center ">
-        <h2 className="font-extrabold text-lg text-center " >CONNECT WITH THOSE THAT MATTER</h2>
-        <p className="text-sm text-center pt-6 w-11/12 landscape:w-9/12 " >Portal To Those That Matter Be It Family, Friends, Students, Investors...And Maybe Your Pets</p>
-        <div className="flex gap-x-6 pt-4 w-full justify-center "  >
+        <h2 className="font-extrabold text-lg text-center font-bebas " >CONNECT WITH THOSE THAT MATTER</h2>
+        <p className="text-sm text-center pt-6 w-11/12 landscape:w-9/12 font-bebas text-gray-600 " >Portal To Those That Matter Be It Family, Friends, Students, Investors...And Maybe Your Pets</p>
+        <div className="flex gap-x-6 pt-4 w-full justify-center font-montserrat font-medium "  >
             <span className="w-1/4 text-center" ><p>300+ million users</p></span>
             <span className="w-1/4 text-center" ><p>39 companies worldwide</p></span>
         </div>
+        <Join modalTriggerFunc={modalTriggerFunc} setChannel={setChannel} />
     </div>
 }
 
@@ -78,7 +90,7 @@ export function Join({modalTriggerFunc, setChannel}){
     function handleTextChange(text,setter){
         setter(function(initial){ return text});
     }
-    return <div className="pt-4 flex w-full justify-center landscape:justify-start landscape:ps-24 relative -top-12 ">
+    return <div className="pt-4 flex w-full justify-center landscape:justify-start landscape:ps-24 ">
                 <TextField onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
                 <Button variant="contained" className="relative -left-3" onClick={modalTriggerFunc} >JOIN</Button>
     </div>

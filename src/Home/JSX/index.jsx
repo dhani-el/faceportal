@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-import { Header,Entrance, Join, NameModal, FirstSocialProof, Pitch, SecondSocialProof } from "./component";
+import { Header,Entrance, NameModal, FirstSocialProof, Pitch, SecondSocialProof } from "./component";
 
 import mlb from "../../assets/mlb.png";
 import parks from "../../assets/parks.png";
@@ -15,6 +15,11 @@ import service from "../../assets/service.png";
 import texas from "../../assets/texas.png";
 import walmart from "../../assets/walmart.png";
 import wff from "../../assets/wwf.png";
+
+import hero1 from "../../assets/hero/conf3.png";
+import hero2 from "../../assets/hero/conf4.png";
+import hero3 from "../../assets/hero/conf5.png";
+import hero4 from "../../assets/hero/conf6.png";
 
 
 export default function Home(){
@@ -29,9 +34,8 @@ export default function Home(){
     return <div id="homeContainer" className=" h-screen min-h-screen w-screen overflow-x-hidden box-border  " >
                     <Header/>
                     <Entrance modalTriggerFunc={function(){setDisplayModal(init=>true)}} setChannel={setChannel}/>
-                    {/* <Join modalTriggerFunc={function(){setDisplayModal(init=>true)}} setChannel={setChannel} /> */}
                     <div className="w-full flex justify-center mt-12 font-extrabold" >
-                        <h3>OUR CUSTOMERS</h3>
+                        <h3 className="font-bebas text-3xl py-10">OUR CUSTOMERS</h3>
                     </div>
                     <div className="w-full flex justify-center ">
                         <FirstSocialProof evidences={[{image:mlb,alt:""},{image:wff,alt:""},{image:nasadaq,alt:""},{image:times,alt:""},{image:rakuten,alt:""},{image:texas,alt:""},{image:service,alt:""},{image:walmart,alt:""},{image:parks,alt:""},{image:capital,alt:""},{image:mofitt,alt:""}]} />
@@ -47,7 +51,7 @@ export default function Home(){
 
 const pitchDataSet = [
     {
-        image:"",
+        image:hero1,
         alt:"this is ______",
         header:"BOILER PLATE HEADER TO SHOWCASE SOMETHING",
         body:`Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -61,7 +65,7 @@ const pitchDataSet = [
         sequi tempora, nihil, officia quasi quidem id iste culpa`,
     },
     {
-        image:"",
+        image:hero2,
         alt:"ffe",
         header:"THE SECOND BOILERPLATE HEADER",
         body:`voluptatibus accusantium obcaecati, exercitationem eius nequ
@@ -74,7 +78,7 @@ const pitchDataSet = [
         necessitatibus neque iure deleniti aliquam nostrum modi. Laboriosam consequatur `,
     },
     {
-        image:"",
+        image:hero3,
         alt:"veve",
         header:"THE THIRD BOILERPLATE HEADER",
         body: ` itaque fugit, repellat officiis soluta modi rem dolorum hic harum, sed totam nobis, 
@@ -87,7 +91,7 @@ const pitchDataSet = [
         iure. Sunt, deleniti. Omnis facere odit quas consequuntur aliquam repudiandae `,
     },
     {
-        image:"",
+        image:hero4,
         alt:"wjke",
         header:"THE FOURTH SUPPOSEDLY UNIQUE HEADER",
         body:`autem consectetur nostrum asperiores. Itaque voluptatum aliquam magni praesentium 
@@ -103,27 +107,27 @@ const pitchDataSet = [
 
 const testimonials = [
     {
-        image :"",
+        image :hero2,
         name:"Levi Ackerman",
         words:`One of the best apps i have used totally recommend 5 stars all the way`
     },
     {
-        image :"",
+        image :hero3,
         name:"Mikasa Jules",
         words:`One of the best apps i have used totally recommend 5 stars all the way`
     },
     {
-        image :"",
+        image :hero1,
         name:"Eren Yeager",
         words:`One of the best apps i have used totally recommend 5 stars all the way`
     },
     {
-        image :"",
+        image :hero4,
         name:"Erwin Smith",
         words:`One of the best apps i have used totally recommend 5 stars all the way`
     },
     {
-        image :"",
+        image :hero2,
         name:"Hinata Shoyou",
         words:`One of the best apps i have used totally recommend 5 stars all the way`
     },

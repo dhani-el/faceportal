@@ -44,7 +44,7 @@ function NavItems(){
     </div>
 }
 export function Header(){
-    return <div  className=" bg-teal-700 text-white flex w-full justify-between px-6 py-2 lg:px-12 items-center font-bebas " >
+    return <div  className=" flex w-full justify-between px-6 py-2 lg:px-12 items-center font-bebas " >
         <div className="flex gap-2 w-2/4 landscape:w-32 items-center " >
             <Menu/>
             <Logo/>
@@ -59,7 +59,7 @@ function Auth(){
 }
 
 export function Entrance({modalTriggerFunc, setChannel}){
-    return <div className=" mt-10 w-screen  relative grid grid-cols-1 landscape:grid-cols-2 mb-5 px-4" >
+    return <div className=" mt-16  landscape:mt-10 w-screen  relative grid grid-cols-1 landscape:grid-cols-2 mb-5 px-4" >
         <Words  modalTriggerFunc={modalTriggerFunc} setChannel={setChannel} />
         <div className="w-full h-full absolute landscape:relative ">
             <CatchyImage/>
@@ -69,19 +69,27 @@ export function Entrance({modalTriggerFunc, setChannel}){
 
 export function Words({modalTriggerFunc, setChannel}){
     return <div className="flex flex-col items-center w-full pt-9 z-10 justify-center ">
-        <h2 className="font-extrabold text-lg text-center font-bebas " >CONNECT WITH THOSE THAT MATTER</h2>
-        <p className="text-sm text-center pt-6 w-11/12 landscape:w-9/12 font-bebas text-gray-600 " >Portal To Those That Matter Be It Family, Friends, Students, Investors...And Maybe Your Pets</p>
-        <div className="flex gap-x-6 pt-4 w-full justify-center font-montserrat font-medium "  >
-            <span className="w-1/4 text-center" ><p>300+ million users</p></span>
-            <span className="w-1/4 text-center" ><p>39 companies worldwide</p></span>
+        <h2 className=" text-3xl font-extrabold landscape:text-5xl text-center font-bebas " >CONNECT WITH THOSE THAT MATTER</h2>
+        <div className="flex justify-center w-full"  >
+            <p className=" text-center pt-1 text-sm landscape:text-base landscape:w-9/12 font-bebas landscape:text-gray-600 " >Portal To Those That Matter Be It Family, Friends, Students, Investors...And Maybe Your Pets</p>
+        </div>
+        <div className="flex gap-x-12 pt-4 w-full justify-center font-montserrat text-xs font-bold landscape:font-semibold landscape:text-sm "  >
+            <span className="flex flex-col items-center">
+                <p >300+</p>
+                <p > MILLION USERS</p>
+            </span>
+            <span className="flex flex-col items-center" >
+                <p>39 COMPANIES </p>
+                <p>WORLDWIDE</p>
+            </span>
         </div>
         <Join modalTriggerFunc={modalTriggerFunc} setChannel={setChannel} />
     </div>
 }
 
 export function CatchyImage(){
-    return <div className="h-full w-full px-3 ">
-        <img src={hero} alt="hero" className="h-auto w-full landscape:h-full landscape:w-auto " />
+    return <div className="h-full w-full  ">
+        <img src={hero} alt="hero" className="h-auto w-full landscape:h-full landscape:w-auto landscape:rounded-lg " />
     </div>
 }
 
@@ -90,7 +98,7 @@ export function Join({modalTriggerFunc, setChannel}){
     function handleTextChange(text,setter){
         setter(function(initial){ return text});
     }
-    return <div className="pt-4 flex w-full justify-center landscape:justify-start landscape:ps-24 ">
+    return <div className="  pt-24 landscape:pt-12 flex w-full justify-center relative top-12 landscape:static  ">
                 <TextField onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
                 <Button variant="contained" className="relative -left-3" onClick={modalTriggerFunc} >JOIN</Button>
     </div>
@@ -109,7 +117,7 @@ export function NameModal({setNameFunc,handleSubmit}){
 }
 
 export function FirstSocialProof({evidences}){
-    return  <div className="flex flex-wrap w-3/4 gap-4  items-center justify-center " >
+    return  <div className="flex flex-wrap w-3/4 gap-4  items-center justify-center  " >
         {evidences.map(function(evidence){
             return <AsocialProof image={evidence.image} alt={evidence.alt} />
         })}
@@ -133,17 +141,17 @@ export function SecondSocialProof({testimonials}){
 }
 
 function Testimonial({testimony}){
-    return <div className=" px-4 flex flex-col items-center gap-3 w-full md:w-2/5 ">
-        <div className="flex gap-2 items-center w-11/12 justify-around " >
-            <span className="w-20 h-20"> <img src={testimony.image} alt="user" className="w-full h-auto" /> </span>
-            <p className="text-center overflow-hidden text-ellipsis">{testimony.name}</p>
+    return <div className=" mt-16 px-4 flex flex-col items-center w-full landscape:w-1/4 ">
+        <div className="flex gap-16 items-center w-11/12  " >
+            <span className="w-20 h-20 flex justify-center "> <img src={testimony.image} alt="user" className="w-full h-auto " style={{borderRadius:"2.5rem"}} /> </span>
+            <p className="text-center overflow-hidden text-ellipsis font-bebas ">{testimony.name}</p>
         </div>
-        <p className="w-full text-center">{testimony.words}</p>
+        <p className="w-full text-center font-montserrat font-medium ">{testimony.words}</p>
     </div>
 }
 
 export function Pitch({cases}){
-    return <div className="flex flex-col gap-12 px-6 mt-12 mb-12 mx-auto lg:w-10/12 lg:gap-28 "   >
+    return <div className="flex flex-col gap-12 px-6 mt-20 m-12 mx-auto landscape:w-10/12 landscape:gap-28  "   >
         {
             cases.map(function(singleCase,index){
                 return index % 2 == 0  ? <Case1 caseData={singleCase}/> : <Case2 caseData={singleCase}/>
@@ -153,29 +161,29 @@ export function Pitch({cases}){
 }
 
 function Case1({caseData}){
-    return <div className="flex flex-col lg:flex-row w-full lg:w-10/12 lg:self-end ">
+    return <div className="flex flex-col landscape:flex-row w-full landscape:w-10/12 lg:self-end justify-around items-center">
         <ImageSection image={caseData.image} alt={caseData.alt}/>
         <TextSection header={caseData.header} body={caseData.body} />
     </div>
 }
 
 function Case2({caseData}){
-    return <div className="flex w-full flex-col-reverse lg:flex-row lg:w-11/12 ">
+    return <div className="flex w-full flex-col-reverse landscape:flex-row landscape:w-10/12 justify-around items-center ">
         <TextSection header={caseData.header} body={caseData.body} />
         <ImageSection image={caseData.image} alt={caseData.alt}/>
     </div>
 }
 
 function TextSection({header,body}){
-    return <div className="text-justify lg:w-3/5" >
-        <h3 className="font-extrabold pb-4 text-center lg:pb-8 "  >{header}</h3>
-        <p>{body}</p>
+    return <div className="text-justify landscape:w-6/12" >
+        <h3 className="font-extrabold pb-4 text-center landscape:pb-6 font-bebas text-xl "  >{header}</h3>
+        <p className="font-montserrat font-medium ">{body}</p>
     </div>
 }
 
 function ImageSection({image,alt}){
-    return <div  className="w-full h-48 mb-4 lg:h-full lg:w-2/5" >
-        <img src={image} alt={alt} className="w-full h-full object-contain object-center " />
+    return <div  className="w-full h-48 mb-4 landscape:h-full landscape:w-2/5" >
+        <img src={image} alt={alt} className="w-full h-full object-contain object-center rounded-lg " />
     </div>
 }
 

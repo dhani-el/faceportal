@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-import { Header,Entrance, NameModal, FirstSocialProof, Pitch, SecondSocialProof } from "./component";
+import { Header,Entrance, NameModal, FirstSocialProof, Pitch, SecondSocialProof, Footer } from "./component";
 
 import mlb from "../../assets/mlb.png";
 import parks from "../../assets/parks.png";
@@ -45,62 +45,46 @@ export default function Home(){
                     {displayModal && <div>
                                         <NameModal setNameFunc={setUid} handleSubmit={handleSubmit} />
                                     </div>}
+                    <Footer/>
             </div>
 }
+
+
 
 
 const pitchDataSet = [
     {
         image:hero1,
         alt:"this is ______",
-        header:"BOILER PLATE HEADER TO SHOWCASE SOMETHING",
-        body:`Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        Nostrum nihil labore asperiores consequuntur perspiciatis 
-        praesentium eligendi vero necessitatibus eos distinctio, 
-        deserunt quas atque aspernatur iste neque, fugit qui
-        quasi amet beatae similique, quia maxime recusandae
-        doloribus! Deleniti earum rerum numquam mollitia itaque 
-        dolore beatae voluptatem ratione neque sit? Ratione doloribus
-        amet ipsa atque ullam! Nam fugiat nulla sapiente laboriosam 
-        sequi tempora, nihil, officia quasi quidem id iste culpa`,
+        header:"1V1 OR CONFERENCE? it's YOUR CHOICE",
+        body:`Faceportal gives you our user the seamless choice of a one on one 
+        call or a group call, without the extra steps, baggage or pricing and is a 
+        feature that works over a wide variety of devices ranging from PC'S to Mobile devices and even Alexa`,
     },
     {
         image:hero2,
         alt:"ffe",
-        header:"THE SECOND BOILERPLATE HEADER",
-        body:`voluptatibus accusantium obcaecati, exercitationem eius nequ
-        animi voluptates. Recusandae ipsum earum praesentium! Ex liber
-        non, eius modi illum sunt nisi, veritatis aliquid quis ducimus
-        est dolorem odio odit omnis saepe quod natus explicabo nam architecto
-        inventore impedit et! Veniam expedita est eos hic corporis sed minus totam 
-        sit impedit doloribus aliquam accusamus voluptas facere amet nisi molestiae 
-        eveniet porro ut laudantium id ea, veritatis quas voluptatum dolor? Quisquam 
-        necessitatibus neque iure deleniti aliquam nostrum modi. Laboriosam consequatur `,
+        header:"HD VIDEO AND VOICE CALLS",
+        body:`Faceportal is made for you our user as a portal to those that matter
+        and so obviousely we want you to hear and see those that matter as clear as possible connecting you to
+        them as seamslessly as possible. so here is our team offering to you HD Voice and Video calls to share 
+        experiences with those that matter  `,
     },
     {
         image:hero3,
         alt:"veve",
-        header:"THE THIRD BOILERPLATE HEADER",
-        body: ` itaque fugit, repellat officiis soluta modi rem dolorum hic harum, sed totam nobis, 
-        aut repudiandae expedita quia vitae illum molestiae? A aliquam vel, esse consequuntur 
-        nisi tempore. Sed nam labore nesciunt temporibus consectetur illo magni 
-        excepturi voluptas vero enim ab blanditiis inventore in nihil beatae debitis 
-        dolor porro, repudiandae quas aliquam exercitationem officiis minus. Deserunt 
-        dolor beatae quae necessitatibus sequi animi voluptates totam debitis magni! 
-        Architecto tenetur reprehenderit ab deserunt atque mollitia beatae, eos suscipit 
-        iure. Sunt, deleniti. Omnis facere odit quas consequuntur aliquam repudiandae `,
+        header:"USER INTERFACE MINUS THE HASSLE ",
+        body: ` We want you to fully relish the experience of talking to those that matter so we once again offer 
+        you a portal to them without the clutter and hassle of of a complicated UI. That is why our team has put in 
+        the effort to give you a simple and intuitive user interface without taking away those features that you love `,
     },
     {
         image:hero4,
         alt:"wjke",
-        header:"THE FOURTH SUPPOSEDLY UNIQUE HEADER",
-        body:`autem consectetur nostrum asperiores. Itaque voluptatum aliquam magni praesentium 
-        obcaecati incidunt dolor autem, saepe unde dolores at accusantium. Deleniti numquam 
-        et, molestias rem laudantium alias neque nostrum libero nulla suscipit inventore 
-        vitae ut facilis? Saepe sit delectus suscipit nulla pariatur! Fugiat consequatur 
-        harum, sint omnis debitis autem placeat cumque itaque cupiditate non ut doloremque, 
-        maiores recusandae! Ipsa, mollitia, obcaecati tenetur amet corporis repellat cupiditate 
-        perferendis, debitis modi nisi molestias suscipit.`,
+        header:"WE ARE FRIENDS OF BUSINESSES",
+        body:`Clients, Investors, Employees and Employers matter a lot too which is why we made sure to give you 
+        unparalled call connections. With facePortal connecting to 50 people is a piece of cake if that is not enough 
+        we have made sure you always have a seamless 100 minutes of call time to hold your virtual business meeting down.`,
     },
 
 ]

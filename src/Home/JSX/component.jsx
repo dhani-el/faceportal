@@ -44,7 +44,7 @@ function NavItems(){
     </div>
 }
 export function Header(){
-    return <div  className=" flex w-full justify-between px-6 py-2 lg:px-12 items-center font-bebas " >
+    return <div  className=" flex w-full justify-between px-6 py-2 lg:px-12 items-center font-bebas bg-sky-400 " >
         <div className="flex gap-2 w-2/4 landscape:w-32 items-center " >
             <Menu/>
             <Logo/>
@@ -188,5 +188,17 @@ function ImageSection({image,alt}){
 }
 
 export function Footer(){
+        return <div className=" flex gap-4 flex-col items-center landscape:flex-row landscape:gap-0 landscape:justify-around landscape:items-center w-screen mt-24  p-6 landscape:p-10  bg-sky-400 font-bebas ">
     
-}
+            <div className="flex justify-around w-11/12 landscape:w-1/3" >
+                <div>Home</div>
+                <div>About</div>
+                <div>Contact</div>
+                <div>Pricing</div>
+            </div>
+            <div className="w-5/6 flex justify-center landscape:w-1/5 ">
+                <Logo/>
+            </div>
+            <div className="flex justify-center" >CopyRight  2024  Faceportal  All  rights  reserved</div>
+        </div>
+    }

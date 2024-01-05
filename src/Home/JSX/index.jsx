@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-import { Header,Entrance, NameModal, FirstSocialProof, Pitch, SecondSocialProof } from "./component";
+import { Header,Entrance, NameModal, FirstSocialProof, Pitch, SecondSocialProof, Footer } from "./component";
 
 import mlb from "../../assets/mlb.png";
 import parks from "../../assets/parks.png";
@@ -45,8 +45,11 @@ export default function Home(){
                     {displayModal && <div>
                                         <NameModal setNameFunc={setUid} handleSubmit={handleSubmit} />
                                     </div>}
+                    <Footer/>
             </div>
 }
+
+
 
 
 const pitchDataSet = [

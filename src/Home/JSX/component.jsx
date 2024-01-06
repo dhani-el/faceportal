@@ -69,6 +69,11 @@ export function Entrance({modalTriggerFunc, setChannel}){
 
 export function Words({modalTriggerFunc, setChannel}){
     return <div className="flex flex-col items-center w-full pt-9 z-10 justify-center ">
+            <div className="w-1/2 absolute -z-10 " >
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#FFFF00" d="M48.4,-50.4C54.4,-42.4,45.3,-21.2,39.1,-6.2C32.9,8.8,29.7,17.6,23.7,21.8C17.6,26,8.8,25.6,-4.5,30.1C-17.9,34.6,-35.7,44.1,-52.3,39.9C-68.9,35.7,-84.2,17.9,-83.4,0.8C-82.6,-16.3,-65.8,-32.6,-49.2,-40.6C-32.6,-48.6,-16.3,-48.4,2.4,-50.8C21.2,-53.3,42.4,-58.4,48.4,-50.4Z" transform="translate(100 100)" />
+                </svg>
+            </div>
         <h2 className=" text-3xl font-extrabold landscape:text-5xl text-center font-bebas " >CONNECT WITH THOSE THAT MATTER</h2>
         <div className="flex justify-center w-full"  >
             <p className=" text-center pt-1 text-sm landscape:text-base landscape:w-9/12 font-bebas landscape:text-gray-600 " >Portal To Those That Matter Be It Family, Friends, Students, Investors...And Maybe Your Pets</p>

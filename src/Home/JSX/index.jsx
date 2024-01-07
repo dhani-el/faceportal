@@ -31,7 +31,11 @@ export default function Home(){
     function handleSubmit(){
         navigate(`/call/${channel}/${uid}`);
     }
-    return <div id="homeContainer" className=" h-screen min-h-screen w-screen overflow-x-hidden box-border  " >
+
+    function handleCancel(){
+        setDisplayModal(init => !init)
+    }
+    return <div id="homeContainer" className=" relative h-screen min-h-screen w-screen overflow-x-hidden box-border  " >
                     <Header/>
                     <Entrance modalTriggerFunc={function(){setDisplayModal(init=>true)}} setChannel={setChannel}/>
                     <div className="w-full flex justify-center mt-12 font-extrabold" >
@@ -47,8 +51,8 @@ export default function Home(){
                     </div>
                     <Pitch cases={pitchDataSet} />
                     <SecondSocialProof testimonials = {testimonials} />
-                    {displayModal && <div>
-                                        <NameModal setNameFunc={setUid} handleSubmit={handleSubmit} />
+                    {displayModal && <div className="absolute w-screen h-screen top-0 bg-teal-100 z-20 bg-opacity-80" >
+                                        <NameModal setNameFunc={setUid} handleSubmit={handleSubmit} handleCancel = {handleCancel} />
                                     </div>}
                     <Footer/>
             </div>

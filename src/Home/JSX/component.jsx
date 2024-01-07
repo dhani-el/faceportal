@@ -110,15 +110,19 @@ export function Join({modalTriggerFunc, setChannel}){
     </div>
 }
 
-export function NameModal({setNameFunc,handleSubmit}){
+export function NameModal({setNameFunc,handleSubmit, handleCancel}){
 
     function handleTextChange(text){
         setNameFunc(init=>text);
     }
-    return <div>
-                <p>Set A Name To Use</p>
-                <TextField onChange={function(e){handleTextChange(e.target.value)}} />
-                <Button onClick={handleSubmit} >USE</Button>
+    return <div className="flex w-full h-full justify-center items-center font-bebas z-20" >
+
+                <div className="p-4 flex flex-col bg-yellow-200 justify-center items-center gap-4 text-black rounded-xl w-3/4 landscape:w-2/5 z-20 ">
+                    <Button className="self-end" sx={{fontFamily:"inherit",color:'black', }} onClick={handleCancel} >x</Button>
+                    <p>Set A Name To Use</p>
+                    <TextField onChange={function(e){handleTextChange(e.target.value)}} />
+                    <Button variant="contained" onClick={handleSubmit} sx={{background:"black", color:"white", fontFamily:"inherit"}} >USE</Button>
+                </div>
             </div>
 }
 

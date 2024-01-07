@@ -35,7 +35,12 @@ export default function Home(){
                     <Header/>
                     <Entrance modalTriggerFunc={function(){setDisplayModal(init=>true)}} setChannel={setChannel}/>
                     <div className="w-full flex justify-center mt-12 font-extrabold" >
-                        <h3 className="font-bebas text-3xl py-10">OUR CUSTOMERS</h3>
+                        <div className="relative">
+                            <svg className="absolute -z-10"  viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#141213" d="M48.4,-50.4C54.4,-42.4,45.3,-21.2,39.1,-6.2C32.9,8.8,29.7,17.6,23.7,21.8C17.6,26,8.8,25.6,-4.5,30.1C-17.9,34.6,-35.7,44.1,-52.3,39.9C-68.9,35.7,-84.2,17.9,-83.4,0.8C-82.6,-16.3,-65.8,-32.6,-49.2,-40.6C-32.6,-48.6,-16.3,-48.4,2.4,-50.8C21.2,-53.3,42.4,-58.4,48.4,-50.4Z" transform="translate(100 100)" />
+                        </svg>
+                        <h3 className="font-bebas text-3xl py-10 text-yellow-400 ">OUR CUSTOMERS</h3>
+                        </div>
                     </div>
                     <div className="w-full flex justify-center ">
                         <FirstSocialProof evidences={[{image:mlb,alt:""},{image:wff,alt:""},{image:nasadaq,alt:""},{image:times,alt:""},{image:rakuten,alt:""},{image:texas,alt:""},{image:service,alt:""},{image:walmart,alt:""},{image:parks,alt:""},{image:capital,alt:""},{image:mofitt,alt:""}]} />

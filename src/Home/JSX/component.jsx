@@ -1,16 +1,17 @@
 import "../../index.css"
 import { Button, TextField } from "@mui/material";
 
-import smallLogo from "../../assets/logo/small3.png"
-import mediumLogo from "../../assets/logo/medium3.png"
-import largeLogo from "../../assets/logo/large3.png"
-import xlargeLogo from "../../assets/logo/xlarge3.png"
+import smallLogo from "../../assets/logo/smallge.png"
+import mediumLogo from "../../assets/logo/mediumge.png"
+import largeLogo from "../../assets/logo/largege.png"
+import xlargeLogo from "../../assets/logo/xlargege.png"
 
 import smallMenu  from "../../assets/menu/menuIcon.png"
 import largeMenu  from "../../assets/menu/largeMenu.png"
 import mediumMenu  from "../../assets/menu/mediumMenu.png"
 import xlargeMenu  from "../../assets/menu/xLargeMenu.png"
 import hero from "../../assets/hero/conf3.png";
+
 
  function Logo(){
     return <div id="logoContainer" className=" w-4/6 landscape:w-11/12">
@@ -44,7 +45,7 @@ function NavItems(){
     </div>
 }
 export function Header(){
-    return <div  className=" flex w-full justify-between px-6 py-2 lg:px-12 items-center font-bebas bg-sky-400 " >
+    return <div  className=" flex w-full justify-between px-6 py-2 lg:px-12 items-center font-bebas bg-yellow-00 " >
         <div className="flex gap-2 w-2/4 landscape:w-32 items-center " >
             <Menu/>
             <Logo/>
@@ -55,7 +56,7 @@ export function Header(){
 }
 
 function Auth(){
-    return <Button variant="outlined" className="text-xs" >Sign in</Button>
+    return <Button variant="contained" className="text-xs font-bebas" sx={{backgroundColor:"#fff001", color:"black",  fontFamily:"inherit"}} >Sign in</Button>
 }
 
 export function Entrance({modalTriggerFunc, setChannel}){
@@ -69,9 +70,9 @@ export function Entrance({modalTriggerFunc, setChannel}){
 
 export function Words({modalTriggerFunc, setChannel}){
     return <div className="flex flex-col items-center w-full pt-9 z-10 justify-center ">
-            <div className="w-1/2 absolute -z-10 " >
+            <div className="w-1/2 absolute -z-10 hidden landscape:block" >
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="#FFFF00" d="M48.4,-50.4C54.4,-42.4,45.3,-21.2,39.1,-6.2C32.9,8.8,29.7,17.6,23.7,21.8C17.6,26,8.8,25.6,-4.5,30.1C-17.9,34.6,-35.7,44.1,-52.3,39.9C-68.9,35.7,-84.2,17.9,-83.4,0.8C-82.6,-16.3,-65.8,-32.6,-49.2,-40.6C-32.6,-48.6,-16.3,-48.4,2.4,-50.8C21.2,-53.3,42.4,-58.4,48.4,-50.4Z" transform="translate(100 100)" />
+                    <path fill="#15bab3" d="M48.4,-50.4C54.4,-42.4,45.3,-21.2,39.1,-6.2C32.9,8.8,29.7,17.6,23.7,21.8C17.6,26,8.8,25.6,-4.5,30.1C-17.9,34.6,-35.7,44.1,-52.3,39.9C-68.9,35.7,-84.2,17.9,-83.4,0.8C-82.6,-16.3,-65.8,-32.6,-49.2,-40.6C-32.6,-48.6,-16.3,-48.4,2.4,-50.8C21.2,-53.3,42.4,-58.4,48.4,-50.4Z" transform="translate(100 100)" />
                 </svg>
             </div>
         <h2 className=" text-3xl font-extrabold landscape:text-5xl text-center font-bebas " >CONNECT WITH THOSE THAT MATTER</h2>
@@ -103,9 +104,9 @@ export function Join({modalTriggerFunc, setChannel}){
     function handleTextChange(text,setter){
         setter(function(initial){ return text});
     }
-    return <div className="  pt-24 landscape:pt-12 flex w-full justify-center relative top-12 landscape:static  ">
-                <TextField onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
-                <Button variant="contained" className="relative -left-3" onClick={modalTriggerFunc} >JOIN</Button>
+    return <div className="  pt-24 landscape:pt-12 flex w-full justify-center relative top-12 landscape:static font-montserrat ">
+                <TextField  sx={{fontFamily:"montserrat",fontWeight:"700"}} onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
+                <Button variant="contained" className="relative -left-3  " onClick={modalTriggerFunc} sx={{backgroundColor:"#fff001", color:"black", fontWeight:"700", fontFamily:"inherit"}}  >JOIN</Button>
     </div>
 }
 
@@ -181,8 +182,13 @@ function Case2({caseData}){
 
 function TextSection({header,body}){
     return <div className="text-justify landscape:w-6/12" >
-        <h3 className="font-extrabold pb-4 text-center landscape:pb-6 font-bebas text-xl "  >{header}</h3>
-        <p className="font-montserrat font-medium ">{body}</p>
+                <div className="relative flex justify-center items-center">
+                    <svg className="absolute -z-10 w-24 " viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#000000" d="M48.4,-50.4C54.4,-42.4,45.3,-21.2,39.1,-6.2C32.9,8.8,29.7,17.6,23.7,21.8C17.6,26,8.8,25.6,-4.5,30.1C-17.9,34.6,-35.7,44.1,-52.3,39.9C-68.9,35.7,-84.2,17.9,-83.4,0.8C-82.6,-16.3,-65.8,-32.6,-49.2,-40.6C-32.6,-48.6,-16.3,-48.4,2.4,-50.8C21.2,-53.3,42.4,-58.4,48.4,-50.4Z" transform="translate(100 100)" />
+                    </svg>
+                    <h3 className="font-extrabold pb-4 text-center landscape:pb-6 font-bebas text-xl text-teal-600 "  >{header}</h3>
+                </div>
+                <p className="font-montserrat font-medium ">{body}</p>
     </div>
 }
 
@@ -193,8 +199,7 @@ function ImageSection({image,alt}){
 }
 
 export function Footer(){
-        return <div className=" flex gap-4 flex-col items-center landscape:flex-row landscape:gap-0 landscape:justify-around landscape:items-center w-screen mt-24  p-6 landscape:p-10  bg-sky-400 font-bebas ">
-    
+        return <div className=" overflow-hidden h-1/6 relative flex gap-4 flex-col items-center landscape:flex-row landscape:gap-0 landscape:justify-around landscape:items-center w-screen mt-24 bg-yellow-200 landscape:p-10 font-bebas " >
             <div className="flex justify-around w-11/12 landscape:w-1/3" >
                 <div>Home</div>
                 <div>About</div>
@@ -205,5 +210,6 @@ export function Footer(){
                 <Logo/>
             </div>
             <div className="flex justify-center" >CopyRight  2024  Faceportal  All  rights  reserved</div>
+
         </div>
     }

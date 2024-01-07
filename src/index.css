@@ -13,3 +13,12 @@
 @tailwind components;
 @tailwind utilities;
 
+
+div.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
+    font-family: inherit;
+    font-weight: inherit;
+}
+
+div.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root > input{
+    text-align: center;
+}

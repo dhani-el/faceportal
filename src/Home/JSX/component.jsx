@@ -14,7 +14,7 @@ import hero from "../../assets/hero/conf3.png";
 
 
  function Logo(){
-    return <div id="logoContainer" className=" w-4/6 landscape:w-11/12">
+    return <div id="logoContainer" className=" w-4/6 md:w-1/2 landscape:w-11/12">
                 <picture className="w-full h-auto" >
                     <source srcSet={xlargeLogo} media="(min-width: 1500px)" />
                     <source srcSet={largeLogo} media="(min-width: 950px)" />
@@ -26,7 +26,7 @@ import hero from "../../assets/hero/conf3.png";
 }
 
  function Menu(){
-    return <div id="menuContainer"  className=" w-4 landscape:lg:hidden" >
+    return <div id="menuContainer"  className=" w-4 md:w-8 landscape:lg:hidden" >
                 <picture className="w-full h-auto" >
                     <source srcSet={xlargeMenu} media="(min-width: 1500px)" />
                     <source srcSet={largeMenu} media="(min-width: 950px)" />
@@ -46,7 +46,7 @@ function NavItems(){
 }
 export function Header(){
     return <div  className=" flex w-full justify-between px-6 py-2 lg:px-12 items-center font-bebas bg-yellow-00 " >
-        <div className="flex gap-2 w-2/4 landscape:w-32 items-center " >
+        <div className="flex gap-2 md:gap-4 w-2/4 landscape:w-32 items-center " >
             <Menu/>
             <Logo/>
         </div>
@@ -60,7 +60,7 @@ function Auth(){
 }
 
 export function Entrance({modalTriggerFunc, setChannel}){
-    return <div className=" mt-16  landscape:mt-10 w-screen  relative grid grid-cols-1 landscape:grid-cols-2 mb-5 px-4" >
+    return <div className=" mt-16 md:mt-0 landscape:mt-10 w-screen  relative grid grid-cols-1 landscape:grid-cols-2 mb-5 px-4" >
         <Words  modalTriggerFunc={modalTriggerFunc} setChannel={setChannel} />
         <div className="w-full h-full absolute landscape:relative ">
             <CatchyImage/>
@@ -69,33 +69,35 @@ export function Entrance({modalTriggerFunc, setChannel}){
 }
 
 export function Words({modalTriggerFunc, setChannel}){
-    return <div className="flex flex-col items-center w-full pt-9 z-10 justify-center ">
+    return <div className="  flex flex-col items-center w-full pt-9 z-10 justify-center">
             <div className="w-1/2 absolute -z-10 hidden landscape:block" >
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                     <path fill="#15bab3" d="M48.4,-50.4C54.4,-42.4,45.3,-21.2,39.1,-6.2C32.9,8.8,29.7,17.6,23.7,21.8C17.6,26,8.8,25.6,-4.5,30.1C-17.9,34.6,-35.7,44.1,-52.3,39.9C-68.9,35.7,-84.2,17.9,-83.4,0.8C-82.6,-16.3,-65.8,-32.6,-49.2,-40.6C-32.6,-48.6,-16.3,-48.4,2.4,-50.8C21.2,-53.3,42.4,-58.4,48.4,-50.4Z" transform="translate(100 100)" />
                 </svg>
             </div>
-        <h2 className=" text-3xl font-extrabold landscape:text-5xl text-center font-bebas " >CONNECT WITH THOSE THAT MATTER</h2>
-        <div className="flex justify-center w-full"  >
-            <p className=" text-center pt-1 text-sm landscape:text-base landscape:w-9/12 font-bebas landscape:text-gray-600 " >Portal To Those That Matter Be It Family, Friends, Students, Investors...And Maybe Your Pets</p>
-        </div>
-        <div className="flex gap-x-12 pt-4 w-full justify-center font-montserrat text-xs font-bold landscape:font-semibold landscape:text-sm "  >
-            <span className="flex flex-col items-center">
+            <div className="bg-teal-700 bg-opacity-40 p-2  landscape:bg-transparent rounded-lg md:rounded-2xl " >
+                <h2 className=" text-3xl md:text-5xl font-extrabold landscape:text-5xl text-center font-bebas " >CONNECT WITH THOSE THAT MATTER</h2>
+                <div className="flex justify-center w-full"  >
+                    <p className=" text-center pt-1 text-sm md:text-2xl landscape:text-base landscape:w-9/12 font-bebas landscape:text-gray-600 " >Portal To Those That Matter Be It Family, Friends, Students, Investors...And Maybe Your Pets</p>
+                </div>
+                <div className="flex gap-x-12 pt-4 w-full justify-center font-montserrat text-xs font-bold landscape:font-semibold landscape:text-sm "  >
+            <span className="flex flex-col items-center md:text-xl landscape:text-sm ">
                 <p >300+</p>
                 <p > MILLION USERS</p>
             </span>
-            <span className="flex flex-col items-center" >
+            <span className="flex flex-col items-center md:text-xl landscape:text-sm " >
                 <p>39 COMPANIES </p>
                 <p>WORLDWIDE</p>
             </span>
-        </div>
+                </div>
+            </div>
         <Join modalTriggerFunc={modalTriggerFunc} setChannel={setChannel} />
     </div>
 }
 
 export function CatchyImage(){
     return <div className="h-full w-full  ">
-        <img src={hero} alt="hero" className="h-auto w-full landscape:h-full landscape:w-auto landscape:rounded-lg " />
+        <img src={hero} alt="hero" className="h-auto w-full md:h-full md:object-cover landscape:h-full landscape:w-auto landscape:rounded-lg " />
     </div>
 }
 
@@ -104,7 +106,7 @@ export function Join({modalTriggerFunc, setChannel}){
     function handleTextChange(text,setter){
         setter(function(initial){ return text});
     }
-    return <div className="  pt-24 landscape:pt-12 flex w-full justify-center relative top-12 landscape:static font-montserrat ">
+    return <div className="  pt-24 md:top-20 landscape:pt-12 flex w-full justify-center relative top-12 landscape:static font-montserrat ">
                 <TextField  sx={{fontFamily:"montserrat",fontWeight:"700"}} onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
                 <Button variant="contained" className="relative -left-3  " onClick={modalTriggerFunc} sx={{backgroundColor:"#fff001", color:"black", fontWeight:"700", fontFamily:"inherit"}}  >JOIN</Button>
     </div>
@@ -151,7 +153,7 @@ export function SecondSocialProof({testimonials}){
 }
 
 function Testimonial({testimony}){
-    return <div className=" mt-16 px-4 flex flex-col items-center w-full landscape:w-1/4 ">
+    return <div className=" mt-16 px-4 flex flex-col items-center w-full md:w-2/5 landscape:w-1/4 ">
         <div className="flex gap-16 items-center w-11/12  " >
             <span className="w-20 h-20 flex justify-center "> <img src={testimony.image} alt="user" className="w-full h-auto " style={{borderRadius:"2.5rem"}} /> </span>
             <p className="text-center overflow-hidden text-ellipsis font-bebas ">{testimony.name}</p>
@@ -171,7 +173,7 @@ export function Pitch({cases}){
 }
 
 function Case1({caseData}){
-    return <div className="flex flex-col landscape:flex-row w-full landscape:w-10/12 lg:self-end justify-around items-center">
+    return <div className="flex flex-col landscape:flex-row w-full landscape:w-10/12 landscape:self-end justify-around items-center">
         <ImageSection image={caseData.image} alt={caseData.alt}/>
         <TextSection header={caseData.header} body={caseData.body} />
     </div>
@@ -192,7 +194,7 @@ function TextSection({header,body}){
                     </svg>
                     <h3 className="font-extrabold pb-4 text-center landscape:pb-6 font-bebas text-xl text-teal-600 "  >{header}</h3>
                 </div>
-                <p className="font-montserrat font-medium ">{body}</p>
+                <p className="font-montserrat font-medium md:px-14 landscape:px-0 ">{body}</p>
     </div>
 }
 
@@ -203,7 +205,7 @@ function ImageSection({image,alt}){
 }
 
 export function Footer(){
-        return <div className=" overflow-hidden h-1/6 relative flex gap-4 flex-col items-center landscape:flex-row landscape:gap-0 landscape:justify-around landscape:items-center w-screen mt-24 bg-yellow-200 landscape:p-10 font-bebas " >
+        return <div className="  relative flex gap-4 flex-col items-center landscape:flex-row landscape:gap-0 landscape:justify-around landscape:items-center w-screen mt-24 bg-yellow-200 landscape:p-10 font-bebas " >
             <div className="flex justify-around w-11/12 landscape:w-1/3" >
                 <div>Home</div>
                 <div>About</div>

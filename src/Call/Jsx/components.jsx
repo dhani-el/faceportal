@@ -51,14 +51,15 @@ function Streams({appId, channel, token,uid}){
     const [playVideo, setPlayVideo] = useState(true);
     const [audioState, setAudioState] = useState(true);
         
-   return <div className="w-screen h-screen" >
+   return <div className="w-full h-full flex flex-col justify-around items-center px-6 col-start-1 col-end-4 " >
                 {deviceLoading && <Loading/> }
-                <div className="w-screen h-1/5 flex gap-4 px-4 justify-center" >
+                <div className="w-full h-1/6 flex gap-4 px-2 justify-center" >
                     {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid); return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}
                 </div>
-                {!deviceLoading && <div className="w-full h-3/4 flex items-center justify-center pt-8 ">
-                                        <div className="w-3/4 h-full">
-                                            <LocalUser videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
+                {!deviceLoading && <div className="w-full h-4/6 flex items-center justify-center ">
+                                        <div className="w-full h-full ">
+                                            <div className="text-white text-xs absolute z-20 ps-4 pt-4">you</div>
+                                            <LocalUser className="border-yellow-400 border-2 rounded-xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
                                         </div>
                                     </div>
                 }
@@ -67,8 +68,9 @@ function Streams({appId, channel, token,uid}){
 }
 
 function RemoteStream({id, user, playVideo, playAudio}){
-    return <div className="w-1/4 h-full" key={id}>
-                <RemoteUser user={user} playVideo={playVideo} playAudio={playAudio} />
+    return <div className="w-32 h-full relative" key={id}>
+                <div className="text-white text-xs absolute z-20 ps-2 pb-2 bottom-0 " > Daniel</div>
+                <RemoteUser user={user} playVideo={playVideo} playAudio={playAudio} className="rounded-xl border-yellow-400 border-2 " />
         </div>
 }
 
@@ -85,22 +87,15 @@ function StreamControls({micFun,camFun}){
         camFun(initial => !initial)
     }
 
-    return <div className="w-full flex justify-center gap-4">
+    return <div className="w-full flex justify-center gap-4  " style={{height:"10%"}} >
         <Button onClick={ToggleMic} >Mic</Button>
         <Button onClick={ToggleCam}>Camera</Button>
+        <Button >chat</Button>
+        <Button >shareScreen</Button>
     </div>
 }
 
 
-
-function LocalStream({track, play, muted}){
-    return <div className="w-full h-3/4 flex items-center justify-center ">
-        <div className="w-3/4 h-full">
-            {/* <LocalVideoTrack track={track} play = {play} muted = {muted} /> */}
-            <LocalVideoTrack track={VideoTrack.localCameraTrack} play ={true} muted = {false}/>
-        </div>
-    </div>
-}
 
 
 

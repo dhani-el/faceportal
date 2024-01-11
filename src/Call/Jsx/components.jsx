@@ -52,15 +52,15 @@ function Streams({appId, channel, token,uid}){
     const [playVideo, setPlayVideo] = useState(true);
     const [audioState, setAudioState] = useState(true);
         
-   return <div className="w-8/12 h-full flex flex-col justify-around items-center px-6 " >
+   return <div className="w-full landscape:w-8/12 relative h-full flex flex-col justify-around items-center landscape:px-6 " >
                 {deviceLoading && <Loading/> }
-                <div className="w-full h-1/6 flex gap-4 px-2 justify-center" >
+                <div className="w-full absolute top-4 landscape:top-0 z-10 h-[10%] landscape:relative landscape:h-1/6 flex gap-4 px-2 justify-center" >
                     {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid);  return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}
                 </div>
-                {!deviceLoading && <div className="w-full h-4/6 flex items-center justify-center ">
+                {!deviceLoading && <div className="w-full h-full landscape:h-4/6 flex items-center justify-center ">
                                         <div className="w-full h-full relative ">
-                                            <div className="text-yellow-400 bg-teal-700 bg-opacity-50 capitalize rounded-md text-xs absolute z-20 p-2 left-4 top-4">you</div>
-                                            <LocalUser className="border-yellow-400 border-2 rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
+                                            <div className="text-yellow-400 hidden landscape:block bg-teal-700 bg-opacity-50 capitalize rounded-md text-xs absolute z-20 p-2 left-4 top-4">you</div>
+                                            <LocalUser className="border-yellow-400 border-2 landscape:rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
                                         </div>
                                     </div>
                 }
@@ -91,7 +91,7 @@ function StreamControls({micFun,camFun,micState,camState}){
         camFun(initial => !initial)
     }
 
-    return <div className="w-10/12 flex justify-center items-center gap-8 " style={{height:"10%"}} >
+    return <div className="w-10/12 z-10 absolute bottom-4 landscape:bottom-0 landscape:relative flex justify-center items-center gap-8 " style={{height:"10%"}} >
         <Button   onClick={ToggleMic} variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} >{micState ? <Mic sx={{height:"1rem"}} /> : <MicOff sx={{height:"1rem"}}/> }</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} onClick={ToggleCam}>{camState ? <VideocamRounded sx={{height:"1rem"}} /> : <VideocamOffRounded  sx={{height:"1rem"}}/>}</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2.9rem", height:"2.9rem", borderRadius:"1.9rem",padding:"0", minWidth:"0"}}><LocalPhone  sx={{height:"1.8rem",color:"#c30010"}}/></Button>

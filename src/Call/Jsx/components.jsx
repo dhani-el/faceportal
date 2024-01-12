@@ -11,8 +11,8 @@ import { AgoraRTCProvider
         , LocalVideoTrack, 
         LocalUser} from "agora-rtc-react";
 import AgoraRTC from "agora-rtc-sdk-ng";
-import { Button } from "@mui/material";
-import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
+import { Button, TextField } from "@mui/material";
+import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
 
 
 
@@ -101,8 +101,32 @@ function StreamControls({micFun,camFun,micState,camState}){
 }
 
 
+export function ChatNParticipant(){
+    return <div className="landscape:w-[30%] landscape:h-full border-yellow-200 border-solid border-2" >
+        <ChatNParticipantToggle/>
+        <ChatDisplayArea/>
+        <ChatEntry/>
+    </div>
+}
 
+function ChatNParticipantToggle(){
 
+    return  <div className="w-full flex justify-around pt-4 font-bebas">
+                <Button variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:"#15bab3", color:"#fff001", font:"inherit"}} >Participants</Button>
+                <Button variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:"#15bab3", color:"#fff001", font:"inherit"}} >Chat</Button>
+            </div>
+}
 
+function ChatDisplayArea(){
+    return <div className="w-full min-h-[70%] border-2 border-teal-700 border-solid">
 
+            </div>
+}
 
+function ChatEntry(){
+
+    return <div className="flex w-full justify-center items-center">
+                <TextField/>
+                <Button><Send/></Button>
+            </div>
+}

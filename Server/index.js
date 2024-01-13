@@ -83,7 +83,7 @@ io.on("connection", function(packet){
             if(room === ""){
                   return
             }
-            if(!text.id){
+            if(!text.user){
               console.log("message id is missing");
             }
             packet.to(room).emit("receive-message",text)

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { AgoraRTCProvider
         , useJoin
         , useLocalCameraTrack
@@ -13,6 +13,7 @@ import { AgoraRTCProvider
 import AgoraRTC from "agora-rtc-sdk-ng";
 import { Button, TextField } from "@mui/material";
 import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
+import tants from "../../constants";
 
 
 
@@ -101,11 +102,11 @@ function StreamControls({micFun,camFun,micState,camState}){
 }
 
 
-export function ChatNParticipant(){
+export function ChatNParticipant({text, setTextfunc,handleSendTextClick,messages}){
     return <div className="landscape:w-[30%] landscape:h-full border-yellow-200 border-solid border-2" >
         <ChatNParticipantToggle/>
-        <ChatDisplayArea/>
-        <ChatEntry/>
+        <ChatDisplayArea messages={messages}/>
+        <ChatEntry setTextfunc={setTextfunc} handleSendTextClick={handleSendTextClick} text={text} />
     </div>
 }
 
@@ -117,16 +118,36 @@ function ChatNParticipantToggle(){
             </div>
 }
 
-function ChatDisplayArea(){
+function ChatDisplayArea({messages}){
     return <div className="w-full min-h-[70%] border-2 border-teal-700 border-solid">
-
+                    {
+                        messages?.map(function(message,index){
+                            return message.user === tants.YOU ? <YourMessage id={index} message={message.message} /> : <MemberMessage id={index} message={message.message} />
+                        })
+                    }
             </div>
 }
 
-function ChatEntry(){
+function YourMessage({id,message}){
+    return <div id={id} >
+                <p>{message}</p>
+    </div>
+}
+
+function MemberMessage({id,message}){
+    return <div>
+                <p>{message}</p>
+    </div>
+}
+
+function ChatEntry({text ,setTextfunc,handleSendTextClick}){
+console.log(text);
+    function handleTextChange(e){
+        setTextfunc(initial => e.target.value)
+    }
 
     return <div className="flex w-full justify-center items-center">
-                <TextField/>
-                <Button><Send/></Button>
+                <input  onChange={(e) => handleTextChange(e)} value={text}  />
+                <Button onClick={handleSendTextClick} ><Send/></Button>
             </div>
 }

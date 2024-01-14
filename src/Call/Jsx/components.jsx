@@ -103,18 +103,39 @@ function StreamControls({micFun,camFun,micState,camState}){
 
 
 export function ChatNParticipant({text, setTextfunc,handleSendTextClick,messages}){
+        const [displayChat, setDisplayChat] = useState(false);
+        const [displayParticipant, setDisplayParticipant] = useState(true);
+
+        function handleParticipantClick(){
+                setDisplayChat((init)=> false);
+                setDisplayParticipant((init)=>true)
+        }
+
+        
+        function handleChatClick(){
+                setDisplayChat((init)=> true);
+                setDisplayParticipant((init)=>false):
+        }
+        
     return <div className="landscape:w-[30%] landscape:h-full border-yellow-200 border-solid border-2" >
-        <ChatNParticipantToggle/>
-        <ChatDisplayArea messages={messages}/>
-        <ChatEntry setTextfunc={setTextfunc} handleSendTextClick={handleSendTextClick} text={text} />
+        <ChatNParticipantToggle chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
+            { displayChat && <div>
+                                <ChatDisplayArea messages={messages}/>
+                                <ChatEntry setTextfunc={setTextfunc} handleSendTextClick={handleSendTextClick} text={text} />
+                              </div>
+            }
+
+            { displayParticipant && <div>
+                    display participants 
+            </div>
     </div>
 }
 
-function ChatNParticipantToggle(){
+function ChatNParticipantToggle({chatClick, participantClick}){
 
     return  <div className="w-full flex justify-around pt-4 font-bebas">
-                <Button variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:"#15bab3", color:"#fff001", font:"inherit"}} >Participants</Button>
-                <Button variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:"#15bab3", color:"#fff001", font:"inherit"}} >Chat</Button>
+                <Button variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:"#15bab3", color:"#fff001", font:"inherit"}} onClick ={()=> participantClick()} >Participants</Button>
+                <Button variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:"#15bab3", color:"#fff001", font:"inherit"}} onClick ={()=> chatClick()} >Chat</Button>
             </div>
 }
 

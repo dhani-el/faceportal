@@ -22,3 +22,10 @@ div.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
 div.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root > input{
     text-align: center;
 }
+
+div > #part.css-hsdl99-MuiButtonBase-root-MuiButton-root:hover{
+    background-color: #15bab3;
+}
+div > #chattTogg.css-15qw4ar-MuiButtonBase-root-MuiButton-root:hover{
+    background-color: #15bab3;
+}

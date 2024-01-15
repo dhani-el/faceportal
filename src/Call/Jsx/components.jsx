@@ -128,6 +128,7 @@ export function ChatNParticipant({text, setTextfunc,handleSendTextClick,messages
             { displayParticipant && <div>
                     display participants 
             </div>
+            }
     </div>
 }
 

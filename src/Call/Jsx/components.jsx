@@ -10,12 +10,15 @@ import { AgoraRTCProvider
         , RemoteUser
         , LocalVideoTrack, 
         LocalUser} from "agora-rtc-react";
-import AgoraRTC from "agora-rtc-sdk-ng";
+        import AgoraRTC from "agora-rtc-sdk-ng";
+import { io } from "socket.io-client";
 import { Button, TextField } from "@mui/material";
 import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
-import tants from "../../constants";
+import Tants from "../../constants";
 
+const backendUrl = "http://localhost:3000"
 
+const Socket  = io(backendUrl);
 
 export default function StreamMain ({channel,uid}){
     const url = `http://localhost:3000/rtc/${channel}/publisher/userAccount/${uid}`
@@ -102,20 +105,59 @@ function StreamControls({micFun,camFun,micState,camState}){
 }
 
 
-export function ChatNParticipant({text, setTextfunc,handleSendTextClick,messages}){
+export function ChatNParticipant({channel,uid}){
         const [displayChat, setDisplayChat] = useState(false);
         const [displayParticipant, setDisplayParticipant] = useState(true);
-
-        function handleParticipantClick(){
-                setDisplayChat((init)=> false);
-                setDisplayParticipant((init)=>true)
+        const [text,setText] = useState('');
+        const [messages, setMessages] = useState([]);
+    
+        async function handleSendTextClick(){
+            return new Promise(function(resolve){
+                setMessages(initialMessages =>{
+                    const newMessages = initialMessages.concat([{message:text,user:Tants.YOU}]);
+                    return newMessages
+                })
+                return resolve()
+            }).then(function(result){
+                Socket.emit(Tants.SEND_MESSAGE,{message:text,user:uid},channel);
+                return result
+            }).then(function(result){
+            setText(initial => " ");
+                return result
+            })
         }
-
         
-        function handleChatClick(){
-                setDisplayChat((init)=> true);
-                setDisplayParticipant((init)=>false)
+        function handleReceiveMessage(text){
+            setMessages(initialMessages =>{
+                const newMessages = initialMessages.concat([{message:text.message,user:text.user}]);
+                return newMessages
+            })
         }
+        function handleParticipantClick(){
+            setDisplayChat((init)=> false);
+            setDisplayParticipant((init)=>true)
+    } 
+    function handleChatClick(){
+            setDisplayChat((init)=> true);
+            setDisplayParticipant((init)=>false)
+    }
+        useEffect(function(){
+            Socket.on("connect",function(){
+                Socket.emit(Tants.JOIN_ROOM, channel, uid);
+            });
+    
+    
+            Socket.on(Tants.RECEIVE_MESSAGE,function(text){
+                handleReceiveMessage(text)
+            })
+    
+            // @todo handle presentation of new member event 
+            Socket.on(Tants.NEW_MEMBER,function(text){
+               console.log(text);
+            })
+    
+        },[]);
+
         
     return <div className="landscape:w-[30%] landscape:h-full  flex flex-col items-center gap-[2%] " >
             <div className="w-full h-full px-4 py-2 flex flex-col gap-4 " >
@@ -124,7 +166,7 @@ export function ChatNParticipant({text, setTextfunc,handleSendTextClick,messages
                     { displayChat &&     <ChatDisplayArea messages={messages}/>}
                     { displayParticipant && <div className="h-[85%]">display participants </div>}
                 </div>
-                { displayChat && <ChatEntry setTextfunc={setTextfunc} handleSendTextClick={handleSendTextClick} text={text} />}
+                { displayChat && <ChatEntry setTextfunc={setText} handleSendTextClick={handleSendTextClick} text={text} />}
             </div>
     </div>
 }
@@ -149,7 +191,7 @@ function ChatDisplayArea({messages}){
     return <div className="w-full h-[85%] px-4 pt-4 flex flex-col overflow-y-scroll " ref={displayAreaRef}>
                     {
                         messages?.map(function(message,index){
-                            return message.user === tants.YOU ? <YourMessage id={index} message={message.message} /> : <MemberMessage id={index} message={message} />
+                            return message.user === Tants.YOU ? <YourMessage id={index} message={message.message} /> : <MemberMessage id={index} message={message} />
                         })
                     }
             </div>
@@ -172,10 +214,10 @@ function MemberMessage({id,message}){
     </div>
 }
 
-function ChatEntry({text ,setTextfunc,handleSendTextClick}){
+function ChatEntry({text , setTextfunc,handleSendTextClick}){
 console.log(text);
     function handleTextChange(e){
-        setTextfunc(initial => e.target.value)
+    setTextfunc(initial => e.target.value)
     }
 
     return <div className="flex w-full h-[12%] justify-center items-center py-1 bg-teal-100 rounded-lg">

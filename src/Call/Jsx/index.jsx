@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import StreamMain,{ChatNParticipant} from "./components";
 import { useEffect, useState } from "react";
 import Tants from "../../constants";
+import "../../index.css"
 
 
 const backendUrl = "http://localhost:3000"

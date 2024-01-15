@@ -114,12 +114,12 @@ export function ChatNParticipant({text, setTextfunc,handleSendTextClick,messages
         
         function handleChatClick(){
                 setDisplayChat((init)=> true);
-                setDisplayParticipant((init)=>false):
+                setDisplayParticipant((init)=>false)
         }
         
-    return <div className="landscape:w-[30%] landscape:h-full border-yellow-200 border-solid border-2" >
-        <ChatNParticipantToggle chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
-            { displayChat && <div>
+    return <div className="landscape:w-[30%] landscape:h-full border-yellow-200 border-solid border-2 flex flex-col items-center gap-[2%] " >
+        <ChatNParticipantToggle displayChat = {displayChat} chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
+            { displayChat && <div className="w-full h-[80%]" >
                                 <ChatDisplayArea messages={messages}/>
                                 <ChatEntry setTextfunc={setTextfunc} handleSendTextClick={handleSendTextClick} text={text} />
                               </div>
@@ -132,16 +132,16 @@ export function ChatNParticipant({text, setTextfunc,handleSendTextClick,messages
     </div>
 }
 
-function ChatNParticipantToggle({chatClick, participantClick}){
+function ChatNParticipantToggle({displayChat, chatClick, participantClick}){
 
-    return  <div className="w-full flex justify-around pt-4 font-bebas">
-                <Button variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:"#15bab3", color:"#fff001", font:"inherit"}} onClick ={()=> participantClick()} >Participants</Button>
-                <Button variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:"#15bab3", color:"#fff001", font:"inherit"}} onClick ={()=> chatClick()} >Chat</Button>
+    return  <div className="w-[70%] flex justify-around  font-bebas p-2 bg-slate-400 rounded-lg ">
+                <Button id="partTogg" className={`z-${displayChat ? 1 :10} `}  variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:`${displayChat ? "inherit":"#15bab3"}`, boxShadow:`${displayChat ? "none":"#"}`, color:"#fff001", font:"inherit", position:"relative", right:"-1rem"}} onClick ={()=> participantClick()} >Participants</Button>
+                <Button id="chatTogg" className={`z-${displayChat ? 10 :1}  `} variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:`${displayChat ? "#15bab3":"inherit"}`, boxShadow:`${displayChat ? "#":"none"}`,color:"#fff001", font:"inherit", position:"relative", left:"-0.85rem"}} onClick ={()=> chatClick()} >Chat</Button>
             </div>
 }
 
 function ChatDisplayArea({messages}){
-    return <div className="w-full min-h-[70%] border-2 border-teal-700 border-solid">
+    return <div className="w-full h-full border-2 border-teal-700 border-solid">
                     {
                         messages?.map(function(message,index){
                             return message.user === tants.YOU ? <YourMessage id={index} message={message.message} /> : <MemberMessage id={index} message={message.message} />

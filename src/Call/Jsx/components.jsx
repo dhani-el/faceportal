@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { AgoraRTCProvider
         , useJoin
         , useLocalCameraTrack
@@ -10,11 +10,15 @@ import { AgoraRTCProvider
         , RemoteUser
         , LocalVideoTrack, 
         LocalUser} from "agora-rtc-react";
-import AgoraRTC from "agora-rtc-sdk-ng";
+        import AgoraRTC from "agora-rtc-sdk-ng";
+import { io } from "socket.io-client";
 import { Button, TextField } from "@mui/material";
 import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
+import Tants from "../../constants";
 
+const backendUrl = "http://localhost:3000"
 
+const Socket  = io(backendUrl);
 
 export default function StreamMain ({channel,uid}){
     const url = `http://localhost:3000/rtc/${channel}/publisher/userAccount/${uid}`
@@ -101,32 +105,123 @@ function StreamControls({micFun,camFun,micState,camState}){
 }
 
 
-export function ChatNParticipant(){
-    return <div className="landscape:w-[30%] landscape:h-full border-yellow-200 border-solid border-2" >
-        <ChatNParticipantToggle/>
-        <ChatDisplayArea/>
-        <ChatEntry/>
+export function ChatNParticipant({channel,uid}){
+        const [displayChat, setDisplayChat] = useState(false);
+        const [displayParticipant, setDisplayParticipant] = useState(true);
+        const [text,setText] = useState('');
+        const [messages, setMessages] = useState([]);
+    
+        async function handleSendTextClick(){
+            return new Promise(function(resolve){
+                setMessages(initialMessages =>{
+                    const newMessages = initialMessages.concat([{message:text,user:Tants.YOU}]);
+                    return newMessages
+                })
+                return resolve()
+            }).then(function(result){
+                Socket.emit(Tants.SEND_MESSAGE,{message:text,user:uid},channel);
+                return result
+            }).then(function(result){
+            setText(initial => " ");
+                return result
+            })
+        }
+        
+        function handleReceiveMessage(text){
+            setMessages(initialMessages =>{
+                const newMessages = initialMessages.concat([{message:text.message,user:text.user}]);
+                return newMessages
+            })
+        }
+        function handleParticipantClick(){
+            setDisplayChat((init)=> false);
+            setDisplayParticipant((init)=>true)
+    } 
+    function handleChatClick(){
+            setDisplayChat((init)=> true);
+            setDisplayParticipant((init)=>false)
+    }
+        useEffect(function(){
+            Socket.on("connect",function(){
+                Socket.emit(Tants.JOIN_ROOM, channel, uid);
+            });
+    
+    
+            Socket.on(Tants.RECEIVE_MESSAGE,function(text){
+                handleReceiveMessage(text)
+            })
+    
+            // @todo handle presentation of new member event 
+            Socket.on(Tants.NEW_MEMBER,function(text){
+               console.log(text);
+            })
+    
+        },[]);
+
+        
+    return <div className="landscape:w-[30%] landscape:h-full  flex flex-col items-center gap-[2%] " >
+            <div className="w-full h-full px-4 py-2 flex flex-col gap-4 " >
+                <div className="w-full h-[85%] flex flex-col items-center justify-around bg-teal-100 rounded-2xl">
+                   <ChatNParticipantToggle displayChat = {displayChat} chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
+                    { displayChat &&     <ChatDisplayArea messages={messages}/>}
+                    { displayParticipant && <div className="h-[85%]">display participants </div>}
+                </div>
+                { displayChat && <ChatEntry setTextfunc={setText} handleSendTextClick={handleSendTextClick} text={text} />}
+            </div>
     </div>
 }
 
-function ChatNParticipantToggle(){
+function ChatNParticipantToggle({displayChat, chatClick, participantClick}){
 
-    return  <div className="w-full flex justify-around pt-4 font-bebas">
-                <Button variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:"#15bab3", color:"#fff001", font:"inherit"}} >Participants</Button>
-                <Button variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:"#15bab3", color:"#fff001", font:"inherit"}} >Chat</Button>
+    return  <div className="w-[70%] flex justify-around  font-bebas py-1 bg-white rounded-lg "  style={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)"}} >
+                <Button id="partTogg" className={`z-${displayChat ? 1 :10} `}  variant="contained" sx={{minWidth:0, width:"52%", backgroundColor:`${displayChat ? "inherit":"#15bab3"}`, boxShadow:`${displayChat ? "none":"#"}`, color:`${displayChat ? "#15bab3":"#fff001"}`, font:"inherit", position:"relative", right:"-0.3rem"}} onClick ={()=> participantClick()} >Participants</Button>
+                <Button id="chatTogg" className={`z-${displayChat ? 10 :1}  `} variant="contained" sx={{minWidth:0, width:"52%", backgroundColor:`${displayChat ? "#15bab3":"inherit"}`, boxShadow:`${displayChat ? "#":"none"}`,color:`${displayChat ? "#fff001":"#15bab3"}`, font:"inherit", position:"relative", left:"-0.3rem"}} onClick ={()=> chatClick()} >Chat</Button>
             </div>
 }
 
-function ChatDisplayArea(){
-    return <div className="w-full min-h-[70%] border-2 border-teal-700 border-solid">
+function ChatDisplayArea({messages}){
+    const displayAreaRef = useRef(null); 
 
+    useEffect(function(){
+        if (displayAreaRef.current != null) {
+            displayAreaRef.current.scrollTo(0,displayAreaRef.current.scrollHeight)
+        }
+    })
+
+    return <div className="w-full h-[85%] px-4 pt-4 flex flex-col overflow-y-scroll " ref={displayAreaRef}>
+                    {
+                        messages?.map(function(message,index){
+                            return message.user === Tants.YOU ? <YourMessage id={index} message={message.message} /> : <MemberMessage id={index} message={message} />
+                        })
+                    }
             </div>
 }
 
-function ChatEntry(){
+function YourMessage({id,message}){
+    return <div key={id} className="max-w-[65%] self-end" >
+                <div className="w-full bg-yellow-500 rounded-lg mb-4 text-sm p-2 " >
+                    <p className="break-words">{message}</p>
+                </div>
+    </div>
+}
 
-    return <div className="flex w-full justify-center items-center">
-                <TextField/>
-                <Button><Send/></Button>
+function MemberMessage({id,message}){
+    return <div key={id} className="max-w-[65%] self-start " >
+                <p className="text-xs max-w-full ">{message.user}</p>
+                <div className="w-full bg-teal-800 rounded-lg mb-4 text-sm p-2 " >
+                    <p className="break-words text-white ">{message.message}</p>
+                </div>
+    </div>
+}
+
+function ChatEntry({text , setTextfunc,handleSendTextClick}){
+console.log(text);
+    function handleTextChange(e){
+    setTextfunc(initial => e.target.value)
+    }
+
+    return <div className="flex w-full h-[12%] justify-center items-center py-1 bg-teal-100 rounded-lg">
+                <input className="w-[75%] h-[85%] bg-teal-300 outline-0 rounded-lg px-4 " placeholder="type message..."  onChange={(e) => handleTextChange(e)} value={text} />
+                <Button onClick={handleSendTextClick} ><Send/></Button>
             </div>
 }

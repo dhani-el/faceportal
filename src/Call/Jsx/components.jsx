@@ -117,48 +117,58 @@ export function ChatNParticipant({text, setTextfunc,handleSendTextClick,messages
                 setDisplayParticipant((init)=>false)
         }
         
-    return <div className="landscape:w-[30%] landscape:h-full border-yellow-200 border-solid border-2 flex flex-col items-center gap-[2%] " >
-        <ChatNParticipantToggle displayChat = {displayChat} chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
-            { displayChat && <div className="w-full h-[80%]" >
-                                <ChatDisplayArea messages={messages}/>
-                                <ChatEntry setTextfunc={setTextfunc} handleSendTextClick={handleSendTextClick} text={text} />
-                              </div>
-            }
-
-            { displayParticipant && <div>
-                    display participants 
+    return <div className="landscape:w-[30%] landscape:h-full  flex flex-col items-center gap-[2%] " >
+            <div className="w-full h-full px-4 py-2 flex flex-col gap-4 " >
+                <div className="w-full h-[85%] flex flex-col items-center justify-around bg-teal-100 rounded-2xl">
+                   <ChatNParticipantToggle displayChat = {displayChat} chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
+                    { displayChat &&     <ChatDisplayArea messages={messages}/>}
+                    { displayParticipant && <div className="h-[85%]">display participants </div>}
+                </div>
+                { displayChat && <ChatEntry setTextfunc={setTextfunc} handleSendTextClick={handleSendTextClick} text={text} />}
             </div>
-            }
     </div>
 }
 
 function ChatNParticipantToggle({displayChat, chatClick, participantClick}){
 
-    return  <div className="w-[70%] flex justify-around  font-bebas p-2 bg-slate-400 rounded-lg ">
-                <Button id="partTogg" className={`z-${displayChat ? 1 :10} `}  variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:`${displayChat ? "inherit":"#15bab3"}`, boxShadow:`${displayChat ? "none":"#"}`, color:"#fff001", font:"inherit", position:"relative", right:"-1rem"}} onClick ={()=> participantClick()} >Participants</Button>
-                <Button id="chatTogg" className={`z-${displayChat ? 10 :1}  `} variant="contained" sx={{minWidth:0, width:"40%", backgroundColor:`${displayChat ? "#15bab3":"inherit"}`, boxShadow:`${displayChat ? "#":"none"}`,color:"#fff001", font:"inherit", position:"relative", left:"-0.85rem"}} onClick ={()=> chatClick()} >Chat</Button>
+    return  <div className="w-[70%] flex justify-around  font-bebas py-1 bg-white rounded-lg "  style={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)"}} >
+                <Button id="partTogg" className={`z-${displayChat ? 1 :10} `}  variant="contained" sx={{minWidth:0, width:"52%", backgroundColor:`${displayChat ? "inherit":"#15bab3"}`, boxShadow:`${displayChat ? "none":"#"}`, color:`${displayChat ? "#15bab3":"#fff001"}`, font:"inherit", position:"relative", right:"-0.3rem"}} onClick ={()=> participantClick()} >Participants</Button>
+                <Button id="chatTogg" className={`z-${displayChat ? 10 :1}  `} variant="contained" sx={{minWidth:0, width:"52%", backgroundColor:`${displayChat ? "#15bab3":"inherit"}`, boxShadow:`${displayChat ? "#":"none"}`,color:`${displayChat ? "#fff001":"#15bab3"}`, font:"inherit", position:"relative", left:"-0.3rem"}} onClick ={()=> chatClick()} >Chat</Button>
             </div>
 }
 
 function ChatDisplayArea({messages}){
-    return <div className="w-full h-full border-2 border-teal-700 border-solid">
+    const displayAreaRef = useRef(null); 
+
+    useEffect(function(){
+        if (displayAreaRef.current != null) {
+            displayAreaRef.current.scrollTo(0,displayAreaRef.current.scrollHeight)
+        }
+    })
+
+    return <div className="w-full h-[85%] px-4 pt-4 flex flex-col overflow-y-scroll " ref={displayAreaRef}>
                     {
                         messages?.map(function(message,index){
-                            return message.user === tants.YOU ? <YourMessage id={index} message={message.message} /> : <MemberMessage id={index} message={message.message} />
+                            return message.user === tants.YOU ? <YourMessage id={index} message={message.message} /> : <MemberMessage id={index} message={message} />
                         })
                     }
             </div>
 }
 
 function YourMessage({id,message}){
-    return <div id={id} >
-                <p>{message}</p>
+    return <div key={id} className="max-w-[65%] self-end" >
+                <div className="w-full bg-yellow-500 rounded-lg mb-4 text-sm p-2 " >
+                    <p className="break-words">{message}</p>
+                </div>
     </div>
 }
 
 function MemberMessage({id,message}){
-    return <div>
-                <p>{message}</p>
+    return <div key={id} className="max-w-[65%] self-start " >
+                <p className="text-xs max-w-full ">{message.user}</p>
+                <div className="w-full bg-teal-800 rounded-lg mb-4 text-sm p-2 " >
+                    <p className="break-words text-white ">{message.message}</p>
+                </div>
     </div>
 }
 
@@ -168,8 +178,8 @@ console.log(text);
         setTextfunc(initial => e.target.value)
     }
 
-    return <div className="flex w-full justify-center items-center">
-                <input  onChange={(e) => handleTextChange(e)} value={text}  />
+    return <div className="flex w-full h-[12%] justify-center items-center py-1 bg-teal-100 rounded-lg">
+                <input className="w-[75%] h-[85%] bg-teal-300 outline-0 rounded-lg px-4 " placeholder="type message..."  onChange={(e) => handleTextChange(e)} value={text} />
                 <Button onClick={handleSendTextClick} ><Send/></Button>
             </div>
 }

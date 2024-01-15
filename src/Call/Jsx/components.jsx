@@ -117,7 +117,7 @@ export function ChatNParticipant({text, setTextfunc,handleSendTextClick,messages
                 setDisplayParticipant((init)=>false)
         }
         
-    return <div className="landscape:w-[30%] landscape:h-full border-yellow-200 border-solid border-2 flex flex-col items-center gap-[2%] " >
+    return <div className="landscape:w-[30%] landscape:h-full  flex flex-col items-center gap-[2%] " >
             <div className="w-full h-full px-4 py-2 flex flex-col gap-4 " >
                 <div className="w-full h-[85%] flex flex-col items-center justify-around bg-teal-100 rounded-2xl">
                    <ChatNParticipantToggle displayChat = {displayChat} chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
@@ -156,7 +156,7 @@ function ChatDisplayArea({messages}){
 }
 
 function YourMessage({id,message}){
-    return <div key={id} className="w-[65%] self-end" >
+    return <div key={id} className="max-w-[65%] self-end" >
                 <div className="w-full bg-yellow-500 rounded-lg mb-4 text-sm p-2 " >
                     <p className="break-words">{message}</p>
                 </div>
@@ -164,8 +164,8 @@ function YourMessage({id,message}){
 }
 
 function MemberMessage({id,message}){
-    return <div key={id} className="w-[65%] " >
-                <p>{message.user}</p>
+    return <div key={id} className="max-w-[65%] self-start " >
+                <p className="text-xs max-w-full ">{message.user}</p>
                 <div className="w-full bg-teal-800 rounded-lg mb-4 text-sm p-2 " >
                     <p className="break-words text-white ">{message.message}</p>
                 </div>

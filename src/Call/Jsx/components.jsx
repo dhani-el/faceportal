@@ -13,6 +13,7 @@ import { AgoraRTCProvider
         import AgoraRTC from "agora-rtc-sdk-ng";
 import { io } from "socket.io-client";
 import { Button, TextField } from "@mui/material";
+import { motion } from "framer-motion";
 import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
 import Tants from "../../constants";
 
@@ -20,7 +21,7 @@ const backendUrl = "http://localhost:3000"
 
 const Socket  = io(backendUrl);
 
-export default function StreamMain ({channel,uid}){
+export default function StreamMain ({channel,uid, upRef}){
     const url = `http://localhost:3000/rtc/${channel}/publisher/userAccount/${uid}`
     const [appId,setAppId] = useState("945e0c1e774946de9c2e9a599f8c9c84");
     const [token,setToken] = useState(null);
@@ -38,12 +39,11 @@ export default function StreamMain ({channel,uid}){
         GetToken()
     },[])
         return <AgoraRTCProvider client={client} >
-                   {token && <Streams channel={channel} appId={appId} token={token} uid={uid} />}
+                   {token && <Streams channel={channel} appId={appId} token={token} uid={uid} upRef = {upRef} />}
                 </AgoraRTCProvider>
 }
 
-function Streams({appId, channel, token,uid}){
-    console.log("inside streams = ",token);
+function Streams({appId, channel, token, uid, animController, upRef}){
     useJoin({appid:appId,  channel:channel,  token:token,uid:uid},true)
     const AudioTrack = useLocalMicrophoneTrack();
     const VideoTrack = useLocalCameraTrack();
@@ -55,8 +55,21 @@ function Streams({appId, channel, token,uid}){
 
     const [playVideo, setPlayVideo] = useState(true);
     const [audioState, setAudioState] = useState(true);
+    const subRef = useRef();
+
+    function toggleFullScreen(){
+        if(upRef != null){
+            upRef.current.classList.toggle("landscape:flex");
+            if(subRef != null){
+                subRef.current.classList.toggle("landscape:w-8/12");
+                subRef.current.classList.toggle("z-[1]");
+                subRef.current.classList.toggle("-z-[4]");
+                
+            }
+        }
+    }
         
-   return <div className="w-full landscape:w-8/12 relative h-full flex flex-col justify-around items-center landscape:px-6 " >
+   return <motion.div className={`w-full  absolute h-full flex flex-col z-[1] justify-around landscape:z-0 items-center landscape:px-6 landscape:relative `} animate={animController} ref={subRef} >
                 {deviceLoading && <Loading/> }
                 <div className="w-full absolute top-4 landscape:top-0 z-10 h-[10%] landscape:relative landscape:h-1/6 flex gap-4 px-2 justify-center" >
                     {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid);  return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}
@@ -68,8 +81,8 @@ function Streams({appId, channel, token,uid}){
                                         </div>
                                     </div>
                 }
-                <StreamControls camFun={setPlayVideo} micFun={setAudioState} micState={audioState} camState={playVideo} />
-    </div>
+                <StreamControls camFun={setPlayVideo} micFun={setAudioState} micState={audioState} camState={playVideo} toggleFullScreen={toggleFullScreen} />
+    </motion.div>
 }
 
 function RemoteStream({id, user, playVideo, playAudio}){
@@ -86,7 +99,7 @@ function Loading(){
     return <div>loading component</div>
 }
 
-function StreamControls({micFun,camFun,micState,camState}){
+function StreamControls({micFun,camFun,micState,camState,toggleFullScreen}){
 
     function ToggleMic(){
         micFun(initial => !initial)
@@ -99,10 +112,14 @@ function StreamControls({micFun,camFun,micState,camState}){
         <Button   onClick={ToggleMic} variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} >{micState ? <Mic sx={{height:"1rem"}} /> : <MicOff sx={{height:"1rem"}}/> }</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} onClick={ToggleCam}>{camState ? <VideocamRounded sx={{height:"1rem"}} /> : <VideocamOffRounded  sx={{height:"1rem"}}/>}</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2.9rem", height:"2.9rem", borderRadius:"1.9rem",padding:"0", minWidth:"0"}}><LocalPhone  sx={{height:"1.8rem",color:"#c30010"}}/></Button>
-        <Button   variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} ><ChatRounded  sx={{height:"1rem"}}/></Button>
+        <Button   variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} onClick={toggleFullScreen} ><ChatRounded  sx={{height:"1rem"}}/></Button>
         <Button   variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} ><ScreenShare  sx={{height:"1rem"}}/></Button>
     </div>
 }
+
+
+
+
 
 
 export function ChatNParticipant({channel,uid}){
@@ -110,6 +127,7 @@ export function ChatNParticipant({channel,uid}){
         const [displayParticipant, setDisplayParticipant] = useState(true);
         const [text,setText] = useState('');
         const [messages, setMessages] = useState([]);
+        const participantRef  = useRef(null);
     
         async function handleSendTextClick(){
             return new Promise(function(resolve){
@@ -126,7 +144,6 @@ export function ChatNParticipant({channel,uid}){
                 return result
             })
         }
-        
         function handleReceiveMessage(text){
             setMessages(initialMessages =>{
                 const newMessages = initialMessages.concat([{message:text.message,user:text.user}]);
@@ -135,12 +152,20 @@ export function ChatNParticipant({channel,uid}){
         }
         function handleParticipantClick(){
             setDisplayChat((init)=> false);
-            setDisplayParticipant((init)=>true)
-    } 
-    function handleChatClick(){
+            setDisplayParticipant((init)=>true);
+            if (participantRef.current != null) {
+                    participantRef.current.classList.remove("h-[88%]");
+                    participantRef.current.classList.add("h-[100%]"); 
+            }
+        } 
+        function handleChatClick(){
             setDisplayChat((init)=> true);
-            setDisplayParticipant((init)=>false)
-    }
+            setDisplayParticipant((init)=>false);
+            if (participantRef.current != null) {
+                participantRef.current.classList.remove("h-[100%]");
+                participantRef.current.classList.add("h-[88%]"); 
+        }
+        }
         useEffect(function(){
             Socket.on("connect",function(){
                 Socket.emit(Tants.JOIN_ROOM, channel, uid);
@@ -159,12 +184,15 @@ export function ChatNParticipant({channel,uid}){
         },[]);
 
         
-    return <div className="landscape:w-[30%] landscape:h-full  flex flex-col items-center gap-[2%] " >
-            <div className="w-full h-full px-4 py-2 flex flex-col gap-4 " >
-                <div className="w-full h-[85%] flex flex-col items-center justify-around bg-teal-100 rounded-2xl">
+    return <div className="w-full h-full absolute top-0 -z-[0] landscape:relative landscape:z-0 landscape:w-[30%] landscape:h-full  landscape:flex landscape:flex-col landscape:items-center landscape:gap-[2%] pt-8 landscape:pt-0  " >
+            <div  className="landscape:hidden absolute right-0 top-0">
+                <Button  >CLOSE</Button>
+            </div>
+            <div className="w-full h-full landscape:px-4 landscape:py-2 flex flex-col landscape:gap-4 " >
+                <div className={`w-full h-full flex flex-col items-center justify-around bg-teal-100 rounded-t-3xl`} ref = {participantRef} >
                    <ChatNParticipantToggle displayChat = {displayChat} chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
                     { displayChat &&     <ChatDisplayArea messages={messages}/>}
-                    { displayParticipant && <div className="h-[85%]">display participants </div>}
+                    { displayParticipant && <div className="h-[90%]"> <p>display participants</p> </div>}
                 </div>
                 { displayChat && <ChatEntry setTextfunc={setText} handleSendTextClick={handleSendTextClick} text={text} />}
             </div>
@@ -220,7 +248,7 @@ console.log(text);
     setTextfunc(initial => e.target.value)
     }
 
-    return <div className="flex w-full h-[12%] justify-center items-center py-1 bg-teal-100 rounded-lg">
+    return <div className="flex w-full h-[12%] justify-center items-center landscape:py-1 bg-teal-100  landscape:rounded-lg">
                 <input className="w-[75%] h-[85%] bg-teal-300 outline-0 rounded-lg px-4 " placeholder="type message..."  onChange={(e) => handleTextChange(e)} value={text} />
                 <Button onClick={handleSendTextClick} ><Send/></Button>
             </div>

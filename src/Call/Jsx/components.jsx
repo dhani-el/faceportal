@@ -13,7 +13,7 @@ import { AgoraRTCProvider
         import AgoraRTC from "agora-rtc-sdk-ng";
 import { io } from "socket.io-client";
 import { Button, TextField } from "@mui/material";
-import { motion } from "framer-motion";
+import { motion, useAnimationControls } from "framer-motion";
 import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
 import Tants from "../../constants";
 
@@ -21,7 +21,7 @@ const backendUrl = "http://localhost:3000"
 
 const Socket  = io(backendUrl);
 
-export default function StreamMain ({channel,uid, upRef}){
+export default function StreamMain ({channel,uid, upRef, animController}){
     const url = `http://localhost:3000/rtc/${channel}/publisher/userAccount/${uid}`
     const [appId,setAppId] = useState("945e0c1e774946de9c2e9a599f8c9c84");
     const [token,setToken] = useState(null);
@@ -39,37 +39,55 @@ export default function StreamMain ({channel,uid, upRef}){
         GetToken()
     },[])
         return <AgoraRTCProvider client={client} >
-                   {token && <Streams channel={channel} appId={appId} token={token} uid={uid} upRef = {upRef} />}
+                   {token && <Streams channel={channel} appId={appId} token={token} uid={uid} upRef = {upRef} animController = {animController} />}
                 </AgoraRTCProvider>
 }
 
 function Streams({appId, channel, token, uid, animController, upRef}){
-    useJoin({appid:appId,  channel:channel,  token:token,uid:uid},true)
-    const AudioTrack = useLocalMicrophoneTrack();
-    const VideoTrack = useLocalCameraTrack();
+    useJoin({appid:appId,  channel:channel,  token:token,uid:uid},true);
+    let AudioTrack = useLocalMicrophoneTrack();
+    let VideoTrack = useLocalCameraTrack();
     const deviceLoading = VideoTrack.isLoading  ||  AudioTrack.isLoading;
     usePublish([AudioTrack.localMicrophoneTrack, VideoTrack.localCameraTrack]);
-    const remoteUsers = useRemoteUsers();
-    const {audioTracks} = useRemoteAudioTracks(remoteUsers);
+    let remoteUsers = useRemoteUsers();
+    let {audioTracks} = useRemoteAudioTracks(remoteUsers);
     audioTracks.map(function(track){ return track.play()});
+
 
     const [playVideo, setPlayVideo] = useState(true);
     const [audioState, setAudioState] = useState(true);
+    const [fullScreen, setFullScreen] = useState(false);
     const subRef = useRef();
+    const controlMain = useAnimationControls();
+
+    useEffect(function(){
+    })
 
     function toggleFullScreen(){
         if(upRef != null){
-            upRef.current.classList.toggle("landscape:flex");
+            // upRef.current.classList.toggle("landscape:flex");
+            animController.start(fullScreen ?"flex":"initial")
             if(subRef != null){
-                subRef.current.classList.toggle("landscape:w-8/12");
-                subRef.current.classList.toggle("z-[1]");
-                subRef.current.classList.toggle("-z-[4]");
-                
+                controlMain.start(fullScreen ?"dec":"initial")
+                // subRef.current.classList.toggle("z-[1]");
+                // subRef.current.classList.toggle("-z-[4]"); 
+                setFullScreen(init=>!init);
             }
         }
     }
-        
-   return <motion.div className={`w-full  absolute h-full flex flex-col z-[1] justify-around landscape:z-0 items-center landscape:px-6 landscape:relative `} animate={animController} ref={subRef} >
+    
+    const animationToggle = {
+        initial:{
+            width:"100%"
+        },
+        dec:{
+            width:"66.666667%",
+        },
+        duration:"4s"
+    }
+
+
+   return <motion.div className={`w-full  absolute h-full flex flex-col z-[1] justify-around landscape:z-0 items-center landscape:px-6 landscape:relative `} animate={controlMain} ref={subRef} variants={animationToggle} >
                 {deviceLoading && <Loading/> }
                 <div className="w-full absolute top-4 landscape:top-0 z-10 h-[10%] landscape:relative landscape:h-1/6 flex gap-4 px-2 justify-center" >
                     {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid);  return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}

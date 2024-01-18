@@ -40,5 +40,6 @@ export default function Call(){
         <motion.div variants={!isLandscape?animation2:null} initial = {"initial"} animate={chatNParticipantControls}  className="w-full h-full absolute top-0 -z-[0] landscape:relative landscape:z-0 landscape:w-[30%] landscape:h-full  landscape:flex landscape:flex-col landscape:items-center landscape:gap-[2%] pt-8 landscape:pt-0  " >
             <ChatNParticipant  channel={params.channel} uid={params.uid} />
         </motion.div>
+
     </motion.div>
 }

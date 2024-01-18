@@ -18,7 +18,7 @@ import { motion, useAnimationControls } from "framer-motion";
 import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
 import Tants from "../../constants";
 
-const backendUrl = "http://localhost:3000"
+const backendUrl = "http://localhost:3000";
 
 const Socket  = io(backendUrl);
 
@@ -60,6 +60,7 @@ function Streams({appId, channel, token, uid, animController, animController2}){
     const [fullScreen, setFullScreen] = useState(true);
     const subRef = useRef();
     const controlMain = useAnimationControls();
+    const streamAnimControl = useAnimationControls();
     const isLandscape = useMediaQuery({query:'(orientation: landscape)'})
 
 
@@ -87,8 +88,11 @@ function Streams({appId, channel, token, uid, animController, animController2}){
         duration:"2s"
     }
 
+    useEffect(function(){
+        streamAnimControl.start("firstAnimation")
+    },[])
 
-   return <motion.div className={`w-full  absolute h-full flex flex-col  justify-around landscape:z-0 items-center landscape:px-6 landscape:relative `} initial={"initial"} animate={controlMain} ref={subRef} variants={animationToggle} >
+   return <motion.div  className={`w-full  absolute h-full flex flex-col  justify-around landscape:z-0 items-center landscape:px-6 landscape:relative `} initial={"initial"} animate={controlMain} ref={subRef} variants={animationToggle} >
                 {deviceLoading && <Loading/> }
                 {!fullScreen && <div  className="landscape:hidden absolute right-0 top-0 inline">
                         <Button variant="contained" className="z-20" onClick={toggleFullScreen} >CLOSE</Button>
@@ -96,14 +100,14 @@ function Streams({appId, channel, token, uid, animController, animController2}){
                 <div className="w-full absolute top-4 landscape:top-0 z-10 h-[10%] landscape:relative landscape:h-1/6 flex gap-4 px-2 justify-center" >
                     {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid);  return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}
                 </div>
-                {!deviceLoading && <div className="w-full h-full landscape:h-4/6 flex items-center justify-center ">
+                {!deviceLoading && <motion.div className="w-full h-full landscape:h-[82%] flex items-center justify-center " onClick={()=>streamAnimControl.start("click")}  >
                                         <div className="w-full h-full relative ">
                                             <div className="text-yellow-400 hidden landscape:block bg-teal-700 bg-opacity-50 capitalize rounded-md text-xs absolute z-20 p-2 left-4 top-4">you</div>
                                             <LocalUser className="border-yellow-400 border-2 landscape:rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
                                         </div>
-                                    </div>
+                                    </motion.div>
                 }
-                <StreamControls camFun={setPlayVideo} micFun={setAudioState} micState={audioState} camState={playVideo} toggleFullScreen={toggleFullScreen} />
+                <StreamControls camFun={setPlayVideo} micFun={setAudioState} micState={audioState} camState={playVideo} toggleFullScreen={toggleFullScreen} animController={streamAnimControl} />
     </motion.div>
 }
 
@@ -121,7 +125,8 @@ function Loading(){
     return <div>loading component</div>
 }
 
-function StreamControls({micFun,camFun,micState,camState,toggleFullScreen}){
+function StreamControls({micFun,camFun,micState,camState,toggleFullScreen,animController}){
+    const isLandscape = useMediaQuery({query:'(orientation: landscape)'});
 
     function ToggleMic(){
         micFun(initial => !initial)
@@ -129,14 +134,40 @@ function StreamControls({micFun,camFun,micState,camState,toggleFullScreen}){
     function ToggleCam(){
         camFun(initial => !initial)
     }
+    const animation = {
+                initial:{
+                    opacity:0,
+                },
+                firstAnimation:{
+                    opacity:[1,0],
+                    transition:{
+                        delay:10,
+                        duration:1
+                    }
+                },
+                hover:{
+                    opacity:1,
+                    transition:{
+                        duration:1,
+                    }
+                },
+                click:{
+                    opacity:[1,0],
+                    transition:{
+                        delay:10,
+                        duration:1,
+                    }
+                }
 
-    return <div className="w-10/12 z-[2] absolute bottom-4 landscape:bottom-0 landscape:relative flex justify-center items-center gap-8 " style={{height:"10%"}} >
+    }
+
+    return <motion.div variants={animation} initial = {"initial"} whileFocus={"hover"} whileHover={"hover"} animate = {animController}  className="w-10/12 z-[2] absolute bottom-4  landscape:bottom-0  flex justify-center items-center gap-8 " style={{height:"10%"}} >
         <Button   onClick={ToggleMic} variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} >{micState ? <Mic sx={{height:"1rem"}} /> : <MicOff sx={{height:"1rem"}}/> }</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} onClick={ToggleCam}>{camState ? <VideocamRounded sx={{height:"1rem"}} /> : <VideocamOffRounded  sx={{height:"1rem"}}/>}</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2.9rem", height:"2.9rem", borderRadius:"1.9rem",padding:"0", minWidth:"0"}}><LocalPhone  sx={{height:"1.8rem",color:"#c30010"}}/></Button>
         <Button   variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} onClick={toggleFullScreen} ><ChatRounded  sx={{height:"1rem"}}/></Button>
         <Button   variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} ><ScreenShare  sx={{height:"1rem"}}/></Button>
-    </div>
+    </motion.div>
 }
 
 

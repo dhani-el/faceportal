@@ -1,4 +1,4 @@
-import {  useEffect, useRef, useState } from "react";
+import {  useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AgoraRTCProvider
         , useJoin
         , useLocalCameraTrack
@@ -17,8 +17,8 @@ import { Button, TextField } from "@mui/material";
 import { motion, useAnimationControls } from "framer-motion";
 import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
 import Tants from "../../constants";
-
-const backendUrl = "http://localhost:3000"
+import song from "../../../public/join.mp3"
+const backendUrl = "http://localhost:3000";
 
 const Socket  = io(backendUrl);
 
@@ -44,6 +44,8 @@ export default function StreamMain ({channel,uid, upRef, animController, animCon
                 </AgoraRTCProvider>
 }
 
+
+
 function Streams({appId, channel, token, uid, animController, animController2}){
     useJoin({appid:appId,  channel:channel,  token:token,uid:uid},true);
     let AudioTrack = useLocalMicrophoneTrack();
@@ -60,6 +62,7 @@ function Streams({appId, channel, token, uid, animController, animController2}){
     const [fullScreen, setFullScreen] = useState(true);
     const subRef = useRef();
     const controlMain = useAnimationControls();
+    const streamAnimControl = useAnimationControls();
     const isLandscape = useMediaQuery({query:'(orientation: landscape)'})
 
 
@@ -79,16 +82,38 @@ function Streams({appId, channel, token, uid, animController, animController2}){
     
     const animationToggle = {
         initial:{
-            width:"100%"
+            width:isLandscape?"80%":"100%",
+            marginLeft:isLandscape?"10%":"0"
         },
         dec:{
             width:"66.666667%",
+            marginLeft:isLandscape?"0%":"0"
         },
         duration:"2s"
     }
+    const mainVidAnim = {
+        initial:{
+            scale:0.9,
+
+        },
+        scaleUp:{
+            scale:1.0,
+            transition:{
+                duration:0.2
+            }
+        }
+    }
+    useEffect(function(){
+        // function playSound(){
+        //     const sound = new Audio(song)
+        //     sound.play();
+        // }
+        // playSound();
+        streamAnimControl.start("firstAnimation")
+    },[]);
 
 
-   return <motion.div className={`w-full  absolute h-full flex flex-col  justify-around landscape:z-0 items-center landscape:px-6 landscape:relative `} initial={"initial"} animate={controlMain} ref={subRef} variants={animationToggle} >
+   return <motion.div  className={`w-full  absolute h-full flex flex-col  justify-around landscape:z-0 items-center landscape:pl-4 landscape:relative `} initial={"initial"} animate={controlMain} ref={subRef} variants={animationToggle} >
                 {deviceLoading && <Loading/> }
                 {!fullScreen && <div  className="landscape:hidden absolute right-0 top-0 inline">
                         <Button variant="contained" className="z-20" onClick={toggleFullScreen} >CLOSE</Button>
@@ -96,14 +121,14 @@ function Streams({appId, channel, token, uid, animController, animController2}){
                 <div className="w-full absolute top-4 landscape:top-0 z-10 h-[10%] landscape:relative landscape:h-1/6 flex gap-4 px-2 justify-center" >
                     {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid);  return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}
                 </div>
-                {!deviceLoading && <div className="w-full h-full landscape:h-4/6 flex items-center justify-center ">
-                                        <div className="w-full h-full relative ">
+                {!deviceLoading && <motion.div className="w-full h-full landscape:h-[82%] flex items-center justify-center " variants={mainVidAnim} initial ={"initial"} animate={"scaleUp"} onClick={()=>{streamAnimControl.start("click"); }}    >
+                                        <div className="w-full h-full relative landscape:flex justify-center items-center landscape:pb-2 "   >
                                             <div className="text-yellow-400 hidden landscape:block bg-teal-700 bg-opacity-50 capitalize rounded-md text-xs absolute z-20 p-2 left-4 top-4">you</div>
-                                            <LocalUser className="border-yellow-400 border-2 landscape:rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
+                                            <LocalUser className=" landscape:rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
                                         </div>
-                                    </div>
+                                    </motion.div>
                 }
-                <StreamControls camFun={setPlayVideo} micFun={setAudioState} micState={audioState} camState={playVideo} toggleFullScreen={toggleFullScreen} />
+                <StreamControls camFun={setPlayVideo} micFun={setAudioState} micState={audioState} camState={playVideo} toggleFullScreen={toggleFullScreen} animController={streamAnimControl} />
     </motion.div>
 }
 
@@ -121,7 +146,8 @@ function Loading(){
     return <div>loading component</div>
 }
 
-function StreamControls({micFun,camFun,micState,camState,toggleFullScreen}){
+function StreamControls({micFun,camFun,micState,camState,toggleFullScreen,animController}){
+    const isLandscape = useMediaQuery({query:'(orientation: landscape)'});
 
     function ToggleMic(){
         micFun(initial => !initial)
@@ -129,14 +155,40 @@ function StreamControls({micFun,camFun,micState,camState,toggleFullScreen}){
     function ToggleCam(){
         camFun(initial => !initial)
     }
+    const animation = {
+                initial:{
+                    opacity:0,
+                },
+                firstAnimation:{
+                    opacity:[1,0],
+                    transition:{
+                        delay:10,
+                        duration:1
+                    }
+                },
+                hover:{
+                    opacity:1,
+                    transition:{
+                        duration:1,
+                    }
+                },
+                click:{
+                    opacity:[1,0],
+                    transition:{
+                        delay:10,
+                        duration:1,
+                    }
+                }
 
-    return <div className="w-10/12 z-[2] absolute bottom-4 landscape:bottom-0 landscape:relative flex justify-center items-center gap-8 " style={{height:"10%"}} >
+    }
+
+    return <motion.div variants={animation} initial = {"initial"} whileFocus={"hover"} whileHover={"hover"} animate = {animController}  className="w-10/12 z-[2] absolute bottom-4  landscape:bottom-4  flex justify-center items-center gap-8 " style={{height:"10%"}} >
         <Button   onClick={ToggleMic} variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} >{micState ? <Mic sx={{height:"1rem"}} /> : <MicOff sx={{height:"1rem"}}/> }</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} onClick={ToggleCam}>{camState ? <VideocamRounded sx={{height:"1rem"}} /> : <VideocamOffRounded  sx={{height:"1rem"}}/>}</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2.9rem", height:"2.9rem", borderRadius:"1.9rem",padding:"0", minWidth:"0"}}><LocalPhone  sx={{height:"1.8rem",color:"#c30010"}}/></Button>
         <Button   variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} onClick={toggleFullScreen} ><ChatRounded  sx={{height:"1rem"}}/></Button>
         <Button   variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} ><ScreenShare  sx={{height:"1rem"}}/></Button>
-    </div>
+    </motion.div>
 }
 
 
@@ -211,8 +263,8 @@ export function ChatNParticipant({channel,uid}){
 
         
     return <>
-            <div className="w-full h-full landscape:px-4 landscape:py-2 z-[] flex flex-col landscape:gap-4 " >
-                <div className={`w-full h-full flex flex-col items-center justify-around bg-teal-100 rounded-t-3xl relative`} ref = {participantRef} >
+            <div className="w-full h-full  z-[] flex flex-col  "  >
+                <div className={`w-full h-full flex flex-col items-center justify-around bg-teal-100 rounded-t-3xl landscape:rounded-none relative`} ref = {participantRef} >
                    <ChatNParticipantToggle displayChat = {displayChat} chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
                     { displayChat &&     <ChatDisplayArea messages={messages}/>}
                     { displayParticipant && <div className="h-[90%]"> <p>display participants</p> </div>}
@@ -224,7 +276,7 @@ export function ChatNParticipant({channel,uid}){
 
 function ChatNParticipantToggle({displayChat, chatClick, participantClick}){
 
-    return  <div className="w-[70%]  flex justify-around  font-bebas py-1  bg-white rounded-lg "  style={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)"}} >
+    return  <div className="w-[70%]  flex justify-around  font-bebas py-1 relative mt-4 bg-white rounded-lg "  style={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)"}} >
                 <Button id="partTogg" className={`z-${displayChat ? 1 :30} `}  variant="contained" sx={{minWidth:0, width:"52%", backgroundColor:`${displayChat ? "inherit":"#15bab3"}`, boxShadow:`${displayChat ? "none":"#"}`, color:`${displayChat ? "#15bab3":"#fff001"}`, font:"inherit", position:"relative", right:"-0.3rem"}} onClick ={()=> participantClick()} >Participants</Button>
                 <Button id="chatTogg" className={`z-${displayChat ? 30 :1}  `} variant="contained" sx={{minWidth:0, width:"52%", backgroundColor:`${displayChat ? "#15bab3":"inherit"}`, boxShadow:`${displayChat ? "#":"none"}`,color:`${displayChat ? "#fff001":"#15bab3"}`, font:"inherit", position:"relative", left:"-0.3rem"}} onClick ={()=> chatClick()} >Chat</Button>
             </div>
@@ -239,7 +291,7 @@ function ChatDisplayArea({messages}){
         }
     })
 
-    return <div className="w-full h-[85%] px-4 pt-4 flex flex-col overflow-y-scroll " ref={displayAreaRef}>
+    return <div className="w-full h-[88%] px-2 pt-4 flex flex-col overflow-y-scroll " ref={displayAreaRef}>
                     {
                         messages?.map(function(message,index){
                             return message.user === Tants.YOU ? <YourMessage id={index} message={message.message} /> : <MemberMessage id={index} message={message} />
@@ -271,7 +323,7 @@ console.log(text);
     setTextfunc(initial => e.target.value)
     }
 
-    return <div className="flex w-full h-[12%] justify-center items-center landscape:py-1 bg-teal-100  landscape:rounded-lg">
+    return <div className="flex w-full h-[12%] justify-center items-center landscape:py-1 bg-teal-100  ">
                 <input className="w-[75%] h-[85%] bg-teal-300 outline-0 rounded-lg px-4 " placeholder="type message..."  onChange={(e) => handleTextChange(e)} value={text} />
                 <Button onClick={handleSendTextClick} ><Send/></Button>
             </div>

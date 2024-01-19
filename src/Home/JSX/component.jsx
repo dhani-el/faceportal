@@ -129,15 +129,31 @@ export function NameModal({setNameFunc,handleSubmit, handleCancel}){
     function handleTextChange(text){
         setNameFunc(init=>text);
     }
-    return <div className="flex w-full h-full justify-center items-center font-bebas z-20" >
 
-                <div className="p-4 flex flex-col bg-yellow-200 justify-center items-center gap-4 text-black rounded-xl w-3/4 landscape:w-2/5 z-20 ">
+    const animation={
+        initial:{
+            scale:0.5
+        },
+        animate:{
+            scale:1,
+            duration:1
+        }
+    }
+
+    return <motion.div variants={animation} initial="initial" animate="animate" className="flex w-full h-full justify-center items-center font-bebas z-20" >
+
+                <div className="absolute w-full h-full top-0" >
+                        <svg viewBox="-15 -10 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                            <path fill="#15bab3" d="M48.4,-50.4C54.4,-42.4,45.3,-21.2,39.1,-6.2C32.9,8.8,29.7,17.6,23.7,21.8C17.6,26,8.8,25.6,-4.5,30.1C-17.9,34.6,-35.7,44.1,-52.3,39.9C-68.9,35.7,-84.2,17.9,-83.4,0.8C-82.6,-16.3,-65.8,-32.6,-49.2,-40.6C-32.6,-48.6,-16.3,-48.4,2.4,-50.8C21.2,-53.3,42.4,-58.4,48.4,-50.4Z" transform="translate(100 100)" />
+                        </svg>
+                </div>
+                <div className="relative p-4 flex flex-col bg-yellw-200 justify-center items-center gap-4 text-black rounded-xl w-3/4 landscape:w-2/5 z-20 ">
                     <Button className="self-end" sx={{fontFamily:"inherit",color:'black', }} onClick={handleCancel} >x</Button>
                     <p>Set A Name To Use</p>
-                    <TextField onChange={function(e){handleTextChange(e.target.value)}} />
+                    <TextField  variant="standard" onChange={function(e){handleTextChange(e.target.value)}} />
                     <Button variant="contained" onClick={handleSubmit} sx={{background:"black", color:"white", fontFamily:"inherit"}} >USE</Button>
                 </div>
-            </div>
+            </motion.div>
 }
 
 export function FirstSocialProof({evidences}){

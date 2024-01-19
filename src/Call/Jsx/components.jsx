@@ -276,7 +276,7 @@ export function ChatNParticipant({channel,uid}){
 
 function ChatNParticipantToggle({displayChat, chatClick, participantClick}){
 
-    return  <div className="w-[70%]  flex justify-around  font-bebas py-1  bg-white rounded-lg "  style={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)"}} >
+    return  <div className="w-[70%]  flex justify-around  font-bebas py-1 relative mt-4 bg-white rounded-lg "  style={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)"}} >
                 <Button id="partTogg" className={`z-${displayChat ? 1 :30} `}  variant="contained" sx={{minWidth:0, width:"52%", backgroundColor:`${displayChat ? "inherit":"#15bab3"}`, boxShadow:`${displayChat ? "none":"#"}`, color:`${displayChat ? "#15bab3":"#fff001"}`, font:"inherit", position:"relative", right:"-0.3rem"}} onClick ={()=> participantClick()} >Participants</Button>
                 <Button id="chatTogg" className={`z-${displayChat ? 30 :1}  `} variant="contained" sx={{minWidth:0, width:"52%", backgroundColor:`${displayChat ? "#15bab3":"inherit"}`, boxShadow:`${displayChat ? "#":"none"}`,color:`${displayChat ? "#fff001":"#15bab3"}`, font:"inherit", position:"relative", left:"-0.3rem"}} onClick ={()=> chatClick()} >Chat</Button>
             </div>

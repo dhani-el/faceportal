@@ -1,5 +1,6 @@
 import "../../index.css"
 import { Button, TextField } from "@mui/material";
+import {motion} from "framer-motion";
 
 import smallLogo from "../../assets/logo/smallge.png"
 import mediumLogo from "../../assets/logo/mediumge.png"
@@ -62,9 +63,9 @@ function Auth(){
 export function Entrance({modalTriggerFunc, setChannel}){
     return <div className=" mt-16 md:mt-0 lg:mt-10 landscape:mt-10 w-screen  relative grid grid-cols-1 lg:grid-cols-2 landscape:grid-cols-2 mb-5 px-4" >
         <Words  modalTriggerFunc={modalTriggerFunc} setChannel={setChannel} />
-        <div className="w-full h-full absolute lg:relative landscape:relative ">
+        <motion.div className="w-full h-full absolute lg:relative landscape:relative landscape:overflow-hidden ">
             <CatchyImage/>
-        </div>
+        </motion.div>
     </div>
 }
 
@@ -96,8 +97,19 @@ export function Words({modalTriggerFunc, setChannel}){
 }
 
 export function CatchyImage(){
+    const imageAnimation = {
+        initial:{
+            scale:1.4
+        },
+        animate:{
+            scale:1,
+            transition:{
+                duration:1.2,
+            }
+        }
+    }
     return <div className="h-full w-full  ">
-        <img src={hero} alt="hero" className="h-auto w-full md:h-full md:object-cover lg:h-full lg:w-auto landscape:h-full landscape:w-auto lg:rounded-xl landscape:rounded-lg " />
+        <motion.img src={hero}  variants = {imageAnimation} initial ="initial" animate= "animate" alt="hero" className="h-auto w-full md:h-full md:object-cover lg:h-full lg:w-auto landscape:h-full landscape:w-auto lg:rounded-xl landscape:rounded-lg " />
     </div>
 }
 
@@ -173,17 +185,45 @@ export function Pitch({cases}){
 }
 
 function Case1({caseData}){
-    return <div className="flex flex-col lg:flex-row landscape:flex-row w-full lg:w-10/12 landscape:w-10/12 lg:self-end landscape:self-end justify-around items-center">
+
+    const animations={
+            main:{
+                initial :{
+                    x:"5%"
+                },
+                animate:{
+                    x:0,
+                    transition:{
+                        duration:1.5
+                    }
+                }
+            }
+    }
+
+    return <motion.div variants={animations.main} initial="initial" whileInView={"animate"} className="flex flex-col lg:flex-row landscape:flex-row w-full lg:w-10/12 landscape:w-10/12 lg:self-end landscape:self-end justify-around items-center">
         <ImageSection image={caseData.image} alt={caseData.alt}/>
         <TextSection header={caseData.header} body={caseData.body} />
-    </div>
+    </motion.div>
 }
 
 function Case2({caseData}){
-    return <div className="flex w-full flex-col-reverse lg:flex-row landscape:flex-row lg:w-10/12 landscape:w-10/12 justify-around items-center ">
+    const animations={
+        main:{
+            initial :{
+                x:"-5%"
+            },
+            animate:{
+                x:0,
+                transition:{
+                    duration:1.5
+                }
+            }
+        }
+}
+    return <motion.div variants={animations.main} initial="initial" whileInView={"animate"}  className="flex w-full flex-col-reverse lg:flex-row landscape:flex-row lg:w-10/12 landscape:w-10/12 justify-around items-center ">
         <TextSection header={caseData.header} body={caseData.body} />
         <ImageSection image={caseData.image} alt={caseData.alt}/>
-    </div>
+    </motion.div>
 }
 
 function TextSection({header,body}){

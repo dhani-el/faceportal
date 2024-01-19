@@ -165,13 +165,27 @@ export function SecondSocialProof({testimonials}){
 }
 
 function Testimonial({testimony}){
-    return <div className=" mt-16 px-4 flex flex-col items-center w-full md:w-2/5 landscape:w-1/4 ">
+    const animation = {
+        initial:{
+            rotateX:"0deg",
+            rotateZ:"0deg"
+        },
+        animate:{
+            rotateX:["5deg","0deg"],
+            rotateZ:["5deg","0deg"],
+            transition:{
+                duration:1,
+                times:[0.5,0.7]
+            }
+        }
+    }
+    return <motion.div variants={animation} initial="initial" whileHover="animate" className=" mt-16 px-4 py-4 flex flex-col items-center w-full md:w-2/5 landscape:w-1/4 landscape:rounded-lg landscape:bg-slate-100 drop-shadow-2xl ">
         <div className="flex gap-16 items-center w-11/12  " >
             <span className="w-20 h-20 flex justify-center "> <img src={testimony.image} alt="user" className="w-full h-auto " style={{borderRadius:"2.5rem"}} /> </span>
             <p className="text-center overflow-hidden text-ellipsis font-bebas ">{testimony.name}</p>
         </div>
         <p className="w-full text-center font-montserrat font-medium ">{testimony.words}</p>
-    </div>
+    </motion.div>
 }
 
 export function Pitch({cases}){
@@ -234,7 +248,7 @@ function TextSection({header,body}){
                     </svg>
                     <h3 className="font-extrabold pb-4 text-center landscape:pb-6 font-bebas text-xl text-teal-600 "  >{header}</h3>
                 </div>
-                <p className="font-montserrat font-medium md:px-14 landscape:px-0 ">{body}</p>
+                <p className="font-montserrat text-center font-medium md:px-14 landscape:px-0 ">{body}</p>
     </div>
 }
 

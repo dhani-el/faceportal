@@ -82,10 +82,12 @@ function Streams({appId, channel, token, uid, animController, animController2}){
     
     const animationToggle = {
         initial:{
-            width:"100%"
+            width:isLandscape?"80%":"100%",
+            marginLeft:isLandscape?"10%":"0"
         },
         dec:{
             width:"66.666667%",
+            marginLeft:isLandscape?"0%":"0"
         },
         duration:"2s"
     }
@@ -120,7 +122,7 @@ function Streams({appId, channel, token, uid, animController, animController2}){
                     {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid);  return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}
                 </div>
                 {!deviceLoading && <motion.div className="w-full h-full landscape:h-[82%] flex items-center justify-center " variants={mainVidAnim} initial ={"initial"} animate={"scaleUp"} onClick={()=>{streamAnimControl.start("click"); }}    >
-                                        <div className="w-full h-full relative "   >
+                                        <div className="w-full h-full relative landscape:flex justify-center items-center "   >
                                             <div className="text-yellow-400 hidden landscape:block bg-teal-700 bg-opacity-50 capitalize rounded-md text-xs absolute z-20 p-2 left-4 top-4">you</div>
                                             <LocalUser className=" landscape:rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
                                         </div>

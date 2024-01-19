@@ -1,5 +1,6 @@
 import "../../index.css"
 import { Button, TextField } from "@mui/material";
+import {motion} from "framer-motion";
 
 import smallLogo from "../../assets/logo/smallge.png"
 import mediumLogo from "../../assets/logo/mediumge.png"
@@ -62,9 +63,9 @@ function Auth(){
 export function Entrance({modalTriggerFunc, setChannel}){
     return <div className=" mt-16 md:mt-0 lg:mt-10 landscape:mt-10 w-screen  relative grid grid-cols-1 lg:grid-cols-2 landscape:grid-cols-2 mb-5 px-4" >
         <Words  modalTriggerFunc={modalTriggerFunc} setChannel={setChannel} />
-        <div className="w-full h-full absolute lg:relative landscape:relative ">
+        <motion.div className="w-full h-full absolute lg:relative landscape:relative landscape:overflow-hidden ">
             <CatchyImage/>
-        </div>
+        </motion.div>
     </div>
 }
 
@@ -96,8 +97,19 @@ export function Words({modalTriggerFunc, setChannel}){
 }
 
 export function CatchyImage(){
+    const imageAnimation = {
+        initial:{
+            scale:1.4
+        },
+        animate:{
+            scale:1,
+            transition:{
+                duration:1.2,
+            }
+        }
+    }
     return <div className="h-full w-full  ">
-        <img src={hero} alt="hero" className="h-auto w-full md:h-full md:object-cover lg:h-full lg:w-auto landscape:h-full landscape:w-auto lg:rounded-xl landscape:rounded-lg " />
+        <motion.img src={hero}  variants = {imageAnimation} initial ="initial" animate= "animate" alt="hero" className="h-auto w-full md:h-full md:object-cover lg:h-full lg:w-auto landscape:h-full landscape:w-auto lg:rounded-xl landscape:rounded-lg " />
     </div>
 }
 
@@ -153,13 +165,27 @@ export function SecondSocialProof({testimonials}){
 }
 
 function Testimonial({testimony}){
-    return <div className=" mt-16 px-4 flex flex-col items-center w-full md:w-2/5 landscape:w-1/4 ">
+    const animation = {
+        initial:{
+            rotateX:"0deg",
+            rotateZ:"0deg"
+        },
+        animate:{
+            rotateX:["5deg","0deg"],
+            rotateZ:["5deg","0deg"],
+            transition:{
+                duration:1,
+                times:[0.5,0.7]
+            }
+        }
+    }
+    return <motion.div variants={animation} initial="initial" whileHover="animate" className=" mt-16 px-4 py-4 flex flex-col items-center w-full md:w-2/5 landscape:w-1/4 landscape:rounded-lg landscape:bg-slate-100 drop-shadow-2xl ">
         <div className="flex gap-16 items-center w-11/12  " >
             <span className="w-20 h-20 flex justify-center "> <img src={testimony.image} alt="user" className="w-full h-auto " style={{borderRadius:"2.5rem"}} /> </span>
             <p className="text-center overflow-hidden text-ellipsis font-bebas ">{testimony.name}</p>
         </div>
         <p className="w-full text-center font-montserrat font-medium ">{testimony.words}</p>
-    </div>
+    </motion.div>
 }
 
 export function Pitch({cases}){
@@ -173,17 +199,45 @@ export function Pitch({cases}){
 }
 
 function Case1({caseData}){
-    return <div className="flex flex-col lg:flex-row landscape:flex-row w-full lg:w-10/12 landscape:w-10/12 lg:self-end landscape:self-end justify-around items-center">
+
+    const animations={
+            main:{
+                initial :{
+                    x:"5%"
+                },
+                animate:{
+                    x:0,
+                    transition:{
+                        duration:1.5
+                    }
+                }
+            }
+    }
+
+    return <motion.div variants={animations.main} initial="initial" whileInView={"animate"} className="flex flex-col lg:flex-row landscape:flex-row w-full lg:w-10/12 landscape:w-10/12 lg:self-end landscape:self-end justify-around items-center">
         <ImageSection image={caseData.image} alt={caseData.alt}/>
         <TextSection header={caseData.header} body={caseData.body} />
-    </div>
+    </motion.div>
 }
 
 function Case2({caseData}){
-    return <div className="flex w-full flex-col-reverse lg:flex-row landscape:flex-row lg:w-10/12 landscape:w-10/12 justify-around items-center ">
+    const animations={
+        main:{
+            initial :{
+                x:"-5%"
+            },
+            animate:{
+                x:0,
+                transition:{
+                    duration:1.5
+                }
+            }
+        }
+}
+    return <motion.div variants={animations.main} initial="initial" whileInView={"animate"}  className="flex w-full flex-col-reverse lg:flex-row landscape:flex-row lg:w-10/12 landscape:w-10/12 justify-around items-center ">
         <TextSection header={caseData.header} body={caseData.body} />
         <ImageSection image={caseData.image} alt={caseData.alt}/>
-    </div>
+    </motion.div>
 }
 
 function TextSection({header,body}){
@@ -194,7 +248,7 @@ function TextSection({header,body}){
                     </svg>
                     <h3 className="font-extrabold pb-4 text-center landscape:pb-6 font-bebas text-xl text-teal-600 "  >{header}</h3>
                 </div>
-                <p className="font-montserrat font-medium md:px-14 landscape:px-0 ">{body}</p>
+                <p className="font-montserrat text-center font-medium md:px-14 landscape:px-0 ">{body}</p>
     </div>
 }
 

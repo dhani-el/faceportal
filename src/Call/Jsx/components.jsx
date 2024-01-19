@@ -113,7 +113,7 @@ function Streams({appId, channel, token, uid, animController, animController2}){
     },[]);
 
 
-   return <motion.div  className={`w-full  absolute h-full flex flex-col  justify-around landscape:z-0 items-center landscape:px-6 landscape:relative `} initial={"initial"} animate={controlMain} ref={subRef} variants={animationToggle} >
+   return <motion.div  className={`w-full  absolute h-full flex flex-col  justify-around landscape:z-0 items-center landscape:pl-4 landscape:relative `} initial={"initial"} animate={controlMain} ref={subRef} variants={animationToggle} >
                 {deviceLoading && <Loading/> }
                 {!fullScreen && <div  className="landscape:hidden absolute right-0 top-0 inline">
                         <Button variant="contained" className="z-20" onClick={toggleFullScreen} >CLOSE</Button>
@@ -122,7 +122,7 @@ function Streams({appId, channel, token, uid, animController, animController2}){
                     {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid);  return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}
                 </div>
                 {!deviceLoading && <motion.div className="w-full h-full landscape:h-[82%] flex items-center justify-center " variants={mainVidAnim} initial ={"initial"} animate={"scaleUp"} onClick={()=>{streamAnimControl.start("click"); }}    >
-                                        <div className="w-full h-full relative landscape:flex justify-center items-center "   >
+                                        <div className="w-full h-full relative landscape:flex justify-center items-center landscape:pb-2 "   >
                                             <div className="text-yellow-400 hidden landscape:block bg-teal-700 bg-opacity-50 capitalize rounded-md text-xs absolute z-20 p-2 left-4 top-4">you</div>
                                             <LocalUser className=" landscape:rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
                                         </div>
@@ -182,7 +182,7 @@ function StreamControls({micFun,camFun,micState,camState,toggleFullScreen,animCo
 
     }
 
-    return <motion.div variants={animation} initial = {"initial"} whileFocus={"hover"} whileHover={"hover"} animate = {animController}  className="w-10/12 z-[2] absolute bottom-4  landscape:bottom-0  flex justify-center items-center gap-8 " style={{height:"10%"}} >
+    return <motion.div variants={animation} initial = {"initial"} whileFocus={"hover"} whileHover={"hover"} animate = {animController}  className="w-10/12 z-[2] absolute bottom-4  landscape:bottom-4  flex justify-center items-center gap-8 " style={{height:"10%"}} >
         <Button   onClick={ToggleMic} variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} >{micState ? <Mic sx={{height:"1rem"}} /> : <MicOff sx={{height:"1rem"}}/> }</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} onClick={ToggleCam}>{camState ? <VideocamRounded sx={{height:"1rem"}} /> : <VideocamOffRounded  sx={{height:"1rem"}}/>}</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2.9rem", height:"2.9rem", borderRadius:"1.9rem",padding:"0", minWidth:"0"}}><LocalPhone  sx={{height:"1.8rem",color:"#c30010"}}/></Button>
@@ -263,8 +263,8 @@ export function ChatNParticipant({channel,uid}){
 
         
     return <>
-            <div className="w-full h-full landscape:px-4 landscape:py-2 z-[] flex flex-col landscape:gap-4 " >
-                <div className={`w-full h-full flex flex-col items-center justify-around bg-teal-100 rounded-t-3xl relative`} ref = {participantRef} >
+            <div className="w-full h-full  z-[] flex flex-col  "  >
+                <div className={`w-full h-full flex flex-col items-center justify-around bg-teal-100 rounded-t-3xl landscape:rounded-none relative`} ref = {participantRef} >
                    <ChatNParticipantToggle displayChat = {displayChat} chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
                     { displayChat &&     <ChatDisplayArea messages={messages}/>}
                     { displayParticipant && <div className="h-[90%]"> <p>display participants</p> </div>}
@@ -291,7 +291,7 @@ function ChatDisplayArea({messages}){
         }
     })
 
-    return <div className="w-full h-[85%] px-4 pt-4 flex flex-col overflow-y-scroll " ref={displayAreaRef}>
+    return <div className="w-full h-[88%] px-2 pt-4 flex flex-col overflow-y-scroll " ref={displayAreaRef}>
                     {
                         messages?.map(function(message,index){
                             return message.user === Tants.YOU ? <YourMessage id={index} message={message.message} /> : <MemberMessage id={index} message={message} />
@@ -323,7 +323,7 @@ console.log(text);
     setTextfunc(initial => e.target.value)
     }
 
-    return <div className="flex w-full h-[12%] justify-center items-center landscape:py-1 bg-teal-100  landscape:rounded-lg">
+    return <div className="flex w-full h-[12%] justify-center items-center landscape:py-1 bg-teal-100  ">
                 <input className="w-[75%] h-[85%] bg-teal-300 outline-0 rounded-lg px-4 " placeholder="type message..."  onChange={(e) => handleTextChange(e)} value={text} />
                 <Button onClick={handleSendTextClick} ><Send/></Button>
             </div>

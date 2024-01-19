@@ -89,7 +89,18 @@ function Streams({appId, channel, token, uid, animController, animController2}){
         },
         duration:"2s"
     }
+    const mainVidAnim = {
+        initial:{
+            scale:0.9,
 
+        },
+        scaleUp:{
+            scale:1.0,
+            transition:{
+                duration:0.2
+            }
+        }
+    }
     useEffect(function(){
         // function playSound(){
         //     const sound = new Audio(song)
@@ -108,10 +119,10 @@ function Streams({appId, channel, token, uid, animController, animController2}){
                 <div className="w-full absolute top-4 landscape:top-0 z-10 h-[10%] landscape:relative landscape:h-1/6 flex gap-4 px-2 justify-center" >
                     {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid);  return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}
                 </div>
-                {!deviceLoading && <motion.div className="w-full h-full landscape:h-[82%] flex items-center justify-center " onClick={()=>{streamAnimControl.start("click"); }}    >
+                {!deviceLoading && <motion.div className="w-full h-full landscape:h-[82%] flex items-center justify-center " variants={mainVidAnim} initial ={"initial"} animate={"scaleUp"} onClick={()=>{streamAnimControl.start("click"); }}    >
                                         <div className="w-full h-full relative "   >
                                             <div className="text-yellow-400 hidden landscape:block bg-teal-700 bg-opacity-50 capitalize rounded-md text-xs absolute z-20 p-2 left-4 top-4">you</div>
-                                            <LocalUser className="border-yellow-400 border-2 landscape:rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
+                                            <LocalUser className=" landscape:rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
                                         </div>
                                     </motion.div>
                 }

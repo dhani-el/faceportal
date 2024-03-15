@@ -33,12 +33,7 @@ export default function Call(){
     },
     duration:"4s"
    }
-    useEffect(function(){
-        //window.storeAcrossSessions(true);
-        //webgazer should start recording 
-        //webgazer.showVideoPreview(false);
-        
-    },[])
+
 
     return <motion.div className="w-screen h-screen block bg-teal-100 overflow-hidden relative justify-between "  ref={mainRef} variants={animation1} initial = {"initial"} animate = {openChatControls} >
         <StreamMain channel={params.channel} uid={params.uid} animController = {openChatControls} animController2 = {chatNParticipantControls} upRef = {mainRef} />

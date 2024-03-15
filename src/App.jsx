@@ -1,6 +1,7 @@
 import  "./index.css";
 import Home from "./Home/JSX";
 import Call from "./Call/Jsx";
+import Host from "./Host/Jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const Router = createBrowserRouter([
@@ -11,6 +12,10 @@ const Router = createBrowserRouter([
   {
     path:"/call/:channel/:uid",
     element:<Call/>
+  },
+  {
+    path:"/host",
+    element:<Host/>
   }
 ])
 

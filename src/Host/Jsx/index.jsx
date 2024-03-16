@@ -73,7 +73,6 @@ export default function Host(){
         navigate(link);
     }
     return <motion.div id="container">
-                <Header/>
                     <p>HOST</p>
                     <motion.div id="hostForm">
                     <TextField  onChange={(e)=>inputValueChange(setDisplayName,e.currentTarget.value)} value={displayName} placeholder="Your Display Name" variant="filled" autoComplete="false" sx={{paddingBottom:"1.5rem",}}/>
@@ -85,7 +84,6 @@ export default function Host(){
                     <TextField value={autoLink} placeholder="Copy Link" sx={{paddingTop:"3rem",}}/>
                     <Button onClick={goToMeeting} disabled = {link === "" ? true : false} variant="contained" >Go to Meeting</Button>
                     </motion.div>
-                <Footer/>
             </motion.div>
 }
 

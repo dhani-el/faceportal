@@ -83,8 +83,7 @@ export default function Home(){
     }
 }
 
-    return <div id="homeContainer" className=" relative h-screen min-h-screen w-screen overflow-x-hidden box-border  " >
-                    <Header/>
+    return <div id="homeContainer" className=" relative w-screen overflow-x-hidden box-border  " >
                     <Entrance modalTriggerFunc={ModalTrigger} setChannel={setChannel}/>
                     <motion.div variants={socialProofAnimation.header} initial = "initial" whileInView={"animate"} className="w-full flex justify-center mt-12 md:mt-24 lg:mt:12 font-extrabold" >
                         <div className="relative">
@@ -102,7 +101,6 @@ export default function Home(){
                     {displayModal && <div className="absolute w-screen h-screen top-0 bg-teal-100 z-20 bg-opacity-80" >
                                         <NameModal setNameFunc={setUid} handleSubmit={handleSubmit} handleCancel = {handleCancel} />
                                     </div>}
-                    <Footer/>
             </div>
 }
 

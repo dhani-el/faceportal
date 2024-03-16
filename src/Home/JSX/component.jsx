@@ -46,7 +46,7 @@ function NavItems(){
     </div>
 }
 export function Header(){
-    return <div  className=" flex w-full justify-between px-6 py-2  landscape:px-12 items-center font-bebas bg-yellow-200 " >
+    return <div  className=" flex w-full justify-between px-6 py-2  landscape:px-12 items-center font-bebas bg-yellow-200 sticky top-0 z-40 " >
         <div className="flex gap-2 md:gap-4 w-2/4 portrait:lg:w-2/12 landscape:w-32 items-center " >
             <Menu/>
             <Logo/>
@@ -275,7 +275,7 @@ function ImageSection({image,alt}){
 }
 
 export function Footer(){
-        return <div className="  relative flex gap-4 flex-col items-center landscape:flex-row landscape:gap-0 landscape:justify-around landscape:items-center w-screen mt-24 bg-yellow-200 landscape:p-10 font-bebas " >
+        return <div className="  relative flex gap-4 flex-col items-center landscape:flex-row landscape:gap-0 landscape:justify-around landscape:items-center w-screen bg-yellow-200 landscape:p-10 font-bebas " >
             <div className="flex justify-around w-11/12 landscape:w-1/3" >
                 <div>Home</div>
                 <div>About</div>

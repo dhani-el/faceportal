@@ -18,6 +18,7 @@ import { motion, useAnimationControls } from "framer-motion";
 import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
 import Tants from "../../constants";
 import song from "/src/Mp3/join.mp3"
+
 const backendUrl = "http://localhost:3000";
 
 const Socket  = io(backendUrl);
@@ -112,7 +113,6 @@ function Streams({appId, channel, token, uid, animController, animController2}){
         streamAnimControl.start("firstAnimation")
     },[]);
 
-
    return <motion.div  className={`w-full  absolute h-full flex flex-col  justify-around landscape:z-0 items-center landscape:pl-4 landscape:relative `} initial={"initial"} animate={controlMain} ref={subRef} variants={animationToggle} >
                 {deviceLoading && <Loading/> }
                 {!fullScreen && <div  className="landscape:hidden absolute right-0 top-0 inline">
@@ -123,6 +123,7 @@ function Streams({appId, channel, token, uid, animController, animController2}){
                 </div>
                 {!deviceLoading && <motion.div className="w-full h-full landscape:h-[82%] flex items-center justify-center " variants={mainVidAnim} initial ={"initial"} animate={"scaleUp"} onClick={()=>{streamAnimControl.start("click"); }}    >
                                         <div className="w-full h-full relative landscape:flex justify-center items-center landscape:pb-2 "   >
+
                                             <div className="text-yellow-400 hidden landscape:block bg-teal-700 bg-opacity-50 capitalize rounded-md text-xs absolute z-20 p-2 left-4 top-4">you</div>
                                             <LocalUser className=" landscape:rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
                                         </div>
@@ -179,6 +180,7 @@ function StreamControls({micFun,camFun,micState,camState,toggleFullScreen,animCo
                         duration:1,
                     }
                 }
+
 
     }
 

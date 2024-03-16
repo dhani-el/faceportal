@@ -2,6 +2,7 @@ import  "./index.css";
 import Home from "./Home/JSX";
 import Call from "./Call/Jsx";
 import Host from "./Host/Jsx";
+import Join from "./Join/Jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const Router = createBrowserRouter([
@@ -16,6 +17,10 @@ const Router = createBrowserRouter([
   {
     path:"/host",
     element:<Host/>
+  },
+  {
+    path:"/join/:channelid",
+    element:<Join/>
   }
 ])
 

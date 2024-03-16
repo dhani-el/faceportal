@@ -46,7 +46,7 @@ function NavItems(){
     </div>
 }
 export function Header(){
-    return <div  className=" flex w-full justify-between px-6 py-2  landscape:px-12 items-center font-bebas bg-yellow-00 " >
+    return <div  className=" flex w-full justify-between px-6 py-2  landscape:px-12 items-center font-bebas bg-yellow-200 " >
         <div className="flex gap-2 md:gap-4 w-2/4 portrait:lg:w-2/12 landscape:w-32 items-center " >
             <Menu/>
             <Logo/>

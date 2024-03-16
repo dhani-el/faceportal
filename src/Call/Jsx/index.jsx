@@ -4,7 +4,7 @@ import { motion, useAnimationControls } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 import "../../index.css"
 import { useRef } from "react";
-
+//import webgazer
 
 export default function Call(){
     const params = useParams();
@@ -33,6 +33,7 @@ export default function Call(){
     },
     duration:"4s"
    }
+
 
     return <motion.div className="w-screen h-screen block bg-teal-100 overflow-hidden relative justify-between "  ref={mainRef} variants={animation1} initial = {"initial"} animate = {openChatControls} >
         <StreamMain channel={params.channel} uid={params.uid} animController = {openChatControls} animController2 = {chatNParticipantControls} upRef = {mainRef} />

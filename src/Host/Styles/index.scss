@@ -1,0 +1,24 @@
+
+
+#container{
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    #hostForm{
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        #buttonContainers{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
+}
+

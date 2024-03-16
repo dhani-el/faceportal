@@ -17,8 +17,7 @@ import { Button, TextField } from "@mui/material";
 import { motion, useAnimationControls } from "framer-motion";
 import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
 import Tants from "../../constants";
-
-import song from "../../../public/join.mp3"
+import song from "/src/Mp3/join.mp3"
 
 const backendUrl = "http://localhost:3000";
 

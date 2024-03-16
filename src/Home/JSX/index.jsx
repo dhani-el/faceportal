@@ -30,11 +30,21 @@ export default function Home(){
     const [uid, setUid] = useState('');
 
     function handleSubmit(){
+        if (uid.trim() == "") {
+            return
+        }
         navigate(`/call/${channel}/${uid}`);
     }
 
     function handleCancel(){
         setDisplayModal(init => !init)
+    }
+
+    function ModalTrigger(){
+        if (channel.trim() == "") {
+            return
+        }
+        setDisplayModal(init=>true)
     }
 
     const socialProofAnimation = {
@@ -75,7 +85,7 @@ export default function Home(){
 
     return <div id="homeContainer" className=" relative h-screen min-h-screen w-screen overflow-x-hidden box-border  " >
                     <Header/>
-                    <Entrance modalTriggerFunc={function(){setDisplayModal(init=>true)}} setChannel={setChannel}/>
+                    <Entrance modalTriggerFunc={ModalTrigger} setChannel={setChannel}/>
                     <motion.div variants={socialProofAnimation.header} initial = "initial" whileInView={"animate"} className="w-full flex justify-center mt-12 md:mt-24 lg:mt:12 font-extrabold" >
                         <div className="relative">
                             <svg className="absolute -z-10"  viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">

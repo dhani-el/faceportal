@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "../Styles/index.css"
 
 
-const baseUrl = "http://localhost:5173/";
+const baseUrl = "http://localhost:5173";
 
 export default function Host(){
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function Host(){
     }
     function generateChannelID(length){
         const charStore ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let channelID = ' ';
+        let channelID = '';
         const charactersLength = charStore.length;
         for ( let i = 0; i < length; i++ ) {
             channelID += charStore.charAt(Math.floor(Math.random() * charactersLength));
@@ -45,7 +45,7 @@ export default function Host(){
             return
         }
         const channelID = generateChannelID(channelIdLength);
-        setAutoLink(`${baseUrl}/call/${channelID}`)
+        setAutoLink(`${baseUrl}/join/${channelID}`)
         setLink(`../call/${channelID}/${displayName}`);
     }
     function GenerateCustomLink(){
@@ -66,7 +66,7 @@ export default function Host(){
         if (customLink.trim() == "") {
             return
         }
-        setAutoLink(`${baseUrl}/call/${customLink}`);
+        setAutoLink(`${baseUrl}/join/${customLink}`);
         setLink(`../call/${customLink}/${displayName}`);
     }
     function goToMeeting(){

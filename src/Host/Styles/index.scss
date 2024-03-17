@@ -2,11 +2,10 @@
 
 #container{
     width: 100vw;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    gap: 15vh;
     #hostForm{
         display: flex;
         flex-direction: column;
@@ -20,5 +19,31 @@
             gap: 0.5rem;
         }
     }
+    #copyNGo{
+        .MuiFormControl-root.MuiTextField-root.css-12z7npj-MuiFormControl-root-MuiTextField-root{
+            width: 100%;
+        }
+    }
+    #copyNGo > button{
+        width: 100%;
+    }
 }
 
+
+
+
+@media (orientation :"landscape") {
+    #container{
+        gap: 5vh;
+        #copyNGo{
+            padding-top: 3rem;
+            .MuiFormControl-root.MuiTextField-root.p-0.css-12z7npj-MuiFormControl-root-MuiTextField-root{
+                padding-top: 0px;
+            }
+            button{
+                width:fit-content ;
+                height: fit-content;
+            }
+        }
+    }
+}

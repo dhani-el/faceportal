@@ -73,7 +73,7 @@ export default function Host(){
         navigate(link);
     }
     return <motion.div id="container">
-                    <p>HOST</p>
+                    <p className="pt-16" >HOST</p>
                     <motion.div id="hostForm">
                     <TextField  onChange={(e)=>inputValueChange(setDisplayName,e.currentTarget.value)} value={displayName} placeholder="Your Display Name" variant="filled" autoComplete="false" sx={{paddingBottom:"1.5rem",}}/>
                     <TextField   onChange={(e)=>inputValueChange(setCustomLink,e.currentTarget.value)}  value={customLink} placeholder="Enter Custom Link" variant="filled" disabled = {autoGenerate} sx={{paddingBottom:"1.5rem",}}/>

@@ -17,4 +17,28 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+}
+#container #copyNGo .MuiFormControl-root.MuiTextField-root.css-12z7npj-MuiFormControl-root-MuiTextField-root {
+  width: 100%;
+}
+#container #copyNGo > button {
+  width: 100%;
+}
+
+@media (orientation: landscape) {
+  #container {
+    gap: 5vh;
+  }
+  #container #copyNGo {
+    padding-top: 3rem;
+  }
+  #container #copyNGo .MuiFormControl-root.MuiTextField-root.p-0.css-12z7npj-MuiFormControl-root-MuiTextField-root {
+    padding-top: 0px;
+  }
+  #container #copyNGo button {
+    width: -moz-fit-content;
+    width: fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+  }
 }/*# sourceMappingURL=index.css.map */

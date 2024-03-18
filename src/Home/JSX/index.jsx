@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {motion} from "framer-motion"
 
@@ -82,6 +82,7 @@ export default function Home(){
         }
     }
 }
+
 
     return <div id="homeContainer" className=" relative w-screen overflow-x-hidden box-border  " >
                     <Entrance modalTriggerFunc={ModalTrigger} setChannel={setChannel}/>

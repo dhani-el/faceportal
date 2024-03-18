@@ -85,6 +85,7 @@ function MobileMenuBody({ShouldSlideOut,slideToggle}){
     return <motion.div variants={animation} initial = 'initial' animate = {ShouldSlideOut?"slideOut":"slideIn"} className="w-screen h-screen absolute top-0  flex flex-col gap-[5vh]  bg-yellow-500 " >
                 <Close sx={{fontSize:"3rem",color:"black",alignSelf:"flex-end",position:"relative",right:"1rem"}} onClick = {slideToggle} />
                 <motion.div className="flex flex-col w-full h-[70%] items-center justify-center text-5xl gap-8">
+                    <motion.p onClick={()=>linkClick("/")} >HOME</motion.p>
                     <motion.p onClick={()=>linkClick("/host")} >HOST</motion.p>
                     <motion.p onClick={()=>linkClick("/#JoinDest")}  >JOIN</motion.p>
                     <motion.p  onClick={()=>linkClick("/schedule")} >SCHEDULE</motion.p>

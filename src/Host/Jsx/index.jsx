@@ -90,7 +90,7 @@ export default function Host(){
     }
 
     return <motion.div id="container">
-                    <p className="pt-16 text-2xl font-montserrat font-semibold" >HOST</p>
+                    <p className="pt-16 text-2xl font-montserrat font-semibold" >HOST A MEETING</p>
                     <motion.div id="hostForm">
                     <TextField  onChange={(e)=>inputValueChange(setDisplayName,e.currentTarget.value)} value={displayName} placeholder="Your Display Name" variant="filled" autoComplete="false" sx={{paddingBottom:"1.5rem",}}/>
                     <TextField   onChange={(e)=>inputValueChange(setCustomLink,e.currentTarget.value)}  value={customLink} placeholder="Enter Custom ID" variant="filled" disabled = {autoGenerate} sx={{paddingBottom:"1.5rem",}}/>

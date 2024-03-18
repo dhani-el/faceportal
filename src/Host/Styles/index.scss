@@ -1,5 +1,11 @@
 
 
+
+*::-webkit-scrollbar{
+    width: 0px;
+    height: 0px;
+}
+
 #container{
     width: 100vw;
     display: flex;
@@ -17,6 +23,12 @@
             justify-content: center;
             align-items: center;
             gap: 0.5rem;
+            button:focus{
+                background-color: teal;
+            }
+            button:hover{
+                background-color: teal;
+            }
         }
     }
     #copyNGo{
@@ -27,6 +39,33 @@
     #copyNGo > button{
         width: 100%;
     }
+    #copyNGo > button:hover{
+        background-color: teal;
+    }
+    .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl.MuiInputBase-adornedEnd.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root{
+        padding-right: 0px;
+    }
+    .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root{
+        font-family: inherit;
+    }
+    .MuiInputBase-input.MuiFilledInput-input.css-10botns-MuiInputBase-input-MuiFilledInput-input{
+        text-align: center;
+        font-family: "montserrat";
+        font-weight: 600;
+    }
+    .MuiFormControl-root.MuiTextField-root.p-0.font-montserrat.css-12z7npj-MuiFormControl-root-MuiTextField-root.copied{
+        input{
+            text-align: center;
+        }
+        .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl.MuiInputBase-adornedEnd.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root{
+            background-color: greenyellow;
+            opacity: 0.7;
+        }
+    }
+    .css-1oggoan-MuiButtonBase-root-MuiButton-root:hover{
+        border-color: black;
+    }
+
 }
 
 
@@ -35,6 +74,9 @@
 @media (orientation :"landscape") {
     #container{
         gap: 5vh;
+        #hostForm{
+            width: 55%;
+        }
         #copyNGo{
             padding-top: 3rem;
             .MuiFormControl-root.MuiTextField-root.p-0.css-12z7npj-MuiFormControl-root-MuiTextField-root{

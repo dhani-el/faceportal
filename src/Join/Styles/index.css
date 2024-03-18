@@ -1,0 +1,29 @@
+.css-x140nh-MuiButtonBase-root-MuiButton-root:focus {
+  background-color: teal;
+}
+
+.css-x140nh-MuiButtonBase-root-MuiButton-root:hover {
+  background-color: teal;
+}
+
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  font-family: inherit;
+}
+
+.MuiInputBase-input.MuiFilledInput-input.css-10botns-MuiInputBase-input-MuiFilledInput-input {
+  text-align: center;
+  font-family: "montserrat";
+  font-weight: 600;
+}
+
+.MuiFormControl-root.MuiTextField-root.p-0.font-montserrat.css-12z7npj-MuiFormControl-root-MuiTextField-root.copied input {
+  text-align: center;
+}
+.MuiFormControl-root.MuiTextField-root.p-0.font-montserrat.css-12z7npj-MuiFormControl-root-MuiTextField-root.copied .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl.MuiInputBase-adornedEnd.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  background-color: greenyellow;
+  opacity: 0.7;
+}
+
+.css-1oggoan-MuiButtonBase-root-MuiButton-root:hover {
+  border-color: black;
+}/*# sourceMappingURL=index.css.map */

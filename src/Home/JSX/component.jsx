@@ -1,5 +1,6 @@
 import "../../index.css"
 import { Button, TextField } from "@mui/material";
+import { Close } from "@mui/icons-material";
 import {motion} from "framer-motion";
 import { Link , useNavigate} from "react-router-dom";
 
@@ -13,6 +14,7 @@ import largeMenu  from "../../assets/menu/largeMenu.png"
 import mediumMenu  from "../../assets/menu/mediumMenu.png"
 import xlargeMenu  from "../../assets/menu/xLargeMenu.png"
 import hero from "../../assets/hero/conf3.png";
+import { useState } from "react";
 
 
  function Logo(){
@@ -47,13 +49,68 @@ function NavItems(){
         <Link to={"/schedule"} >SCHEDULE</Link>
     </div>
 }
+
+function MobileMenuButton({slideToggle}){
+    return <motion.div className="flex flex-col gap-1 items-end" onClick={slideToggle} >
+                <motion.div id="hamburgerLines" className="w-6 h-1 bg-black " ></motion.div>
+                <motion.div id="hamburgerLines" className="w-4 h-1 bg-black " ></motion.div>
+                <motion.div id="hamburgerLines" className="w-5 h-1 bg-black " ></motion.div>
+            </motion.div>
+}
+
+function MobileMenuBody({ShouldSlideOut,slideToggle}){
+    const navigate = useNavigate();
+    const animation = {
+        initial:{
+            right:"-100vw"
+        },
+        slideOut:{
+            right:"0vw",
+            transition:{
+                duration:0.5,
+            }
+        },
+        slideIn:{
+            right:"-100vw",
+            transition:{
+                duration:0.5,
+            }
+        }
+    }
+
+    function linkClick(link){
+        slideToggle();
+        navigate(link)
+    }
+    return <motion.div variants={animation} initial = 'initial' animate = {ShouldSlideOut?"slideOut":"slideIn"} className="w-screen h-screen absolute top-0  flex flex-col gap-[5vh]  bg-yellow-500 " >
+                <Close sx={{fontSize:"3rem",color:"black",alignSelf:"flex-end",position:"relative",right:"1rem"}} onClick = {slideToggle} />
+                <motion.div className="flex flex-col w-full h-[70%] items-center justify-center text-5xl gap-8">
+                    <motion.p onClick={()=>linkClick("/host")} >HOST</motion.p>
+                    <motion.p onClick={()=>linkClick("/#JoinDest")}  >JOIN</motion.p>
+                    <motion.p  onClick={()=>linkClick("/schedule")} >SCHEDULE</motion.p>
+                </motion.div>
+    </motion.div>
+}
+
+function MobileNav(){
+    const [shouldSlideOut, setShouldSlideout] = useState(false);
+
+    function toggleSlide(){
+        setShouldSlideout(init => !init)
+    }
+    return <motion.div className="landscape:hidden">
+                <MobileMenuButton  slideToggle={toggleSlide} />
+                <MobileMenuBody ShouldSlideOut={shouldSlideOut} slideToggle={toggleSlide}  />
+            </motion.div>
+}
+
 export function Header(){
     return <div  className=" flex w-full justify-between px-6 py-2  landscape:px-12 items-center font-bebas bg-yellow-200 sticky top-0 z-40 " >
         <div className="flex gap-2 md:gap-4 w-2/4 portrait:lg:w-2/12 landscape:w-32 items-center " >
-            <Menu/>
             <Logo/>
         </div>
         <NavItems/>
+        <MobileNav/>
     </div>
 }
 

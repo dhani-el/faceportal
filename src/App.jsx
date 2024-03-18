@@ -4,6 +4,7 @@ import Call from "./Call/Jsx";
 import Host from "./Host/Jsx";
 import Join from "./Join/Jsx";
 import Layout from "./Layout/Jsx";
+import Schedule from "./Schedule";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 
@@ -27,6 +28,10 @@ const Router = createBrowserRouter([
           {
             path:"/join/:channelid",
             element:<Join/>
+          },
+          {
+            path:"/schedule",
+            element:<Schedule/>
           }
     ]
   },

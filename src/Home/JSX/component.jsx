@@ -44,7 +44,7 @@ function NavItems(){
     return <div className="hidden lg:flex landscape:lg:flex w-3/12 justify-between " >
         <Link to={"/host"} >HOST</Link>
         <a href="/#JoinDest" >JOIN</a>
-        <Link to={""} >SCHEDULE</Link>
+        <Link to={"/schedule"} >SCHEDULE</Link>
     </div>
 }
 export function Header(){
@@ -281,7 +281,7 @@ export function Footer(){
                 <Link to="/">Home</Link>
                 <Link to="/host" >Host</Link >
                 <a href="/#JoinDest" >Join</a >
-                <Link to="" >Schedule</Link >
+                <Link to="/schedule" >Schedule</Link >
             </div>
             <div className="w-5/6 flex justify-center lg:w-1/3 landscape:w-1/5 ">
                 <Logo/>

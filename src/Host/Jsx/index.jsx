@@ -87,8 +87,8 @@ export default function Host(){
                     </motion.div>
                     <motion.div id="copyNGo" className="w-Screen landscape:flex landscape:items-center landscape:flex-col landscape:gap-6 " >
                         <TextField value={autoLink} placeholder="Copy Link" sx={{paddingTop:"3rem",}} className="p-0" InputProps={{endAdornment:(
-                            <InputAdornment  position="start"  ><CopyAllRounded className="hover:cursor-pointer" onClick = {Copy()} /></InputAdornment>
-                        )}}  />
+                            <InputAdornment  position="start"  ><CopyAllRounded className="hover:cursor-pointer" onClick = {Copy()}  /></InputAdornment>
+                        )}} inputProps={{readOnly:"true"}} />
                         <Button onClick={goToMeeting} disabled = {link === "" ? true : false} variant="contained" className="w-fit" >Go to Meeting</Button>
                     </motion.div>
                     </motion.div>

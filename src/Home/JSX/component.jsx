@@ -1,7 +1,7 @@
 import "../../index.css"
 import { Button, TextField } from "@mui/material";
 import {motion} from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 
 import smallLogo from "../../assets/logo/smallge.png"
 import mediumLogo from "../../assets/logo/mediumge.png"
@@ -16,7 +16,8 @@ import hero from "../../assets/hero/conf3.png";
 
 
  function Logo(){
-    return <div id="logoContainer" className=" w-4/6 md:w-1/2 lg:w-full landscape:w-11/12">
+    const navigate = useNavigate();
+    return <div  onClick={()=> navigate("/")} id="logoContainer" className=" w-4/6 md:w-1/2 lg:w-full landscape:w-11/12">
                 <picture className="w-full h-auto" >
                     <source srcSet={xlargeLogo} media="(min-width: 1500px)" />
                     <source srcSet={largeLogo} media="(min-width: 950px)" />
@@ -53,7 +54,6 @@ export function Header(){
             <Logo/>
         </div>
         <NavItems/>
-        {/* <Auth/> */}
     </div>
 }
 

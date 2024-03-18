@@ -258,14 +258,14 @@ function Case2({caseData}){
 }
 
 function TextSection({header,body}){
-    return <div className="text-justify landscape:w-6/12" >
+    return <div className="landscape:text-justify landscape:w-6/12" >
                 <div className="relative flex justify-center items-center">
                     <svg className="absolute -z-10 w-24 " viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                         <path fill="#000000" d="M48.4,-50.4C54.4,-42.4,45.3,-21.2,39.1,-6.2C32.9,8.8,29.7,17.6,23.7,21.8C17.6,26,8.8,25.6,-4.5,30.1C-17.9,34.6,-35.7,44.1,-52.3,39.9C-68.9,35.7,-84.2,17.9,-83.4,0.8C-82.6,-16.3,-65.8,-32.6,-49.2,-40.6C-32.6,-48.6,-16.3,-48.4,2.4,-50.8C21.2,-53.3,42.4,-58.4,48.4,-50.4Z" transform="translate(100 100)" />
                     </svg>
                     <h3 className="font-extrabold pb-4 text-center landscape:pb-6 font-bebas text-xl text-teal-600 "  >{header}</h3>
                 </div>
-                <p className="font-montserrat text-center font-medium md:px-14 landscape:px-0 ">{body}</p>
+                <p className="font-montserrat landscape:text-center font-medium md:px-14 landscape:px-0 ">{body}</p>
     </div>
 }
 

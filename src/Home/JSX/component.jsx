@@ -1,6 +1,7 @@
 import "../../index.css"
 import { Button, TextField } from "@mui/material";
 import {motion} from "framer-motion";
+import { Link , useNavigate} from "react-router-dom";
 
 import smallLogo from "../../assets/logo/smallge.png"
 import mediumLogo from "../../assets/logo/mediumge.png"
@@ -15,7 +16,8 @@ import hero from "../../assets/hero/conf3.png";
 
 
  function Logo(){
-    return <div id="logoContainer" className=" w-4/6 md:w-1/2 lg:w-full landscape:w-11/12">
+    const navigate = useNavigate();
+    return <div  onClick={()=> navigate("/")} id="logoContainer" className=" w-4/6 md:w-1/2 lg:w-full landscape:w-11/12">
                 <picture className="w-full h-auto" >
                     <source srcSet={xlargeLogo} media="(min-width: 1500px)" />
                     <source srcSet={largeLogo} media="(min-width: 950px)" />
@@ -40,9 +42,9 @@ import hero from "../../assets/hero/conf3.png";
 
 function NavItems(){
     return <div className="hidden lg:flex landscape:lg:flex w-3/12 justify-between " >
-        <p>HOST</p>
-        <p>JOIN</p>
-        <p>SCHEDULE</p>
+        <Link to={"/host"} >HOST</Link>
+        <a href="/#JoinDest" >JOIN</a>
+        <Link to={"/schedule"} >SCHEDULE</Link>
     </div>
 }
 export function Header(){
@@ -52,7 +54,6 @@ export function Header(){
             <Logo/>
         </div>
         <NavItems/>
-        <Auth/>
     </div>
 }
 
@@ -118,8 +119,8 @@ export function Join({modalTriggerFunc, setChannel}){
     function handleTextChange(text,setter){
         setter(function(initial){ return text});
     }
-    return <div className="  pt-24 md:top-20 lg:top-0 landscape:pt-12 flex w-full justify-center relative top-12 landscape:static font-montserrat ">
-                <TextField className="bg-white landscape:bg-transparent" sx={{fontFamily:"montserrat",fontWeight:"700"}} onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
+    return <div id="JoinDest" className="  pt-24 md:top-20 lg:top-0 landscape:pt-12 flex w-full justify-center relative top-12 landscape:static font-montserrat ">
+                <TextField  className="bg-white landscape:bg-transparent" sx={{fontFamily:"montserrat",fontWeight:"700"}} onChange={function(e){handleTextChange(e.target.value,setChannel)}} />
                 <Button variant="contained" className="relative -left-3  " onClick={modalTriggerFunc} sx={{backgroundColor:"#fff001", color:"black", fontWeight:"700", fontFamily:"inherit"}}  >JOIN</Button>
     </div>
 }
@@ -171,7 +172,7 @@ function AsocialProof({image , alt}){
 }
 
 export function SecondSocialProof({testimonials}){
-    return <div className="flex flex-wrap justify-center gap-6 w-full " >
+    return <div className="my-20 flex flex-wrap justify-center gap-6 w-full " >
         {
             testimonials.map(function(testimony){
                 return <Testimonial testimony={testimony} />
@@ -195,7 +196,7 @@ function Testimonial({testimony}){
             }
         }
     }
-    return <motion.div variants={animation} initial="initial" whileHover="animate" className=" mt-16 px-4 py-4 flex flex-col items-center w-full md:w-2/5 landscape:w-1/4 landscape:rounded-lg landscape:bg-slate-100 drop-shadow-2xl ">
+    return <motion.div variants={animation} initial="initial" whileHover="animate" className=" mt-16  px-4 py-4 flex flex-col items-center w-full md:w-2/5 landscape:w-1/4 landscape:rounded-lg landscape:bg-slate-100 drop-shadow-2xl ">
         <div className="flex gap-16 items-center w-11/12  " >
             <span className="w-20 h-20 flex justify-center "> <img src={testimony.image} alt="user" className="w-full h-auto " style={{borderRadius:"2.5rem"}} /> </span>
             <p className="text-center overflow-hidden text-ellipsis font-bebas ">{testimony.name}</p>
@@ -257,14 +258,14 @@ function Case2({caseData}){
 }
 
 function TextSection({header,body}){
-    return <div className="text-justify landscape:w-6/12" >
+    return <div className="landscape:text-justify landscape:w-6/12" >
                 <div className="relative flex justify-center items-center">
                     <svg className="absolute -z-10 w-24 " viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                         <path fill="#000000" d="M48.4,-50.4C54.4,-42.4,45.3,-21.2,39.1,-6.2C32.9,8.8,29.7,17.6,23.7,21.8C17.6,26,8.8,25.6,-4.5,30.1C-17.9,34.6,-35.7,44.1,-52.3,39.9C-68.9,35.7,-84.2,17.9,-83.4,0.8C-82.6,-16.3,-65.8,-32.6,-49.2,-40.6C-32.6,-48.6,-16.3,-48.4,2.4,-50.8C21.2,-53.3,42.4,-58.4,48.4,-50.4Z" transform="translate(100 100)" />
                     </svg>
                     <h3 className="font-extrabold pb-4 text-center landscape:pb-6 font-bebas text-xl text-teal-600 "  >{header}</h3>
                 </div>
-                <p className="font-montserrat text-center font-medium md:px-14 landscape:px-0 ">{body}</p>
+                <p className="font-montserrat landscape:text-center font-medium md:px-14 landscape:px-0 ">{body}</p>
     </div>
 }
 
@@ -277,10 +278,10 @@ function ImageSection({image,alt}){
 export function Footer(){
         return <div className="  relative flex gap-4 flex-col items-center landscape:flex-row landscape:gap-0 landscape:justify-around landscape:items-center w-screen bg-yellow-200 landscape:p-10 font-bebas " >
             <div className="flex justify-around w-11/12 landscape:w-1/3" >
-                <div>Home</div>
-                <div>About</div>
-                <div>Contact</div>
-                <div>Pricing</div>
+                <Link to="/">Home</Link>
+                <Link to="/host" >Host</Link >
+                <a href="/#JoinDest" >Join</a >
+                <Link to="/schedule" >Schedule</Link >
             </div>
             <div className="w-5/6 flex justify-center lg:w-1/3 landscape:w-1/5 ">
                 <Logo/>

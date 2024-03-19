@@ -23,7 +23,7 @@ const backendUrl = "http://localhost:3000";
 
 const Socket  = io(backendUrl);
 
-export default function StreamMain ({channel,uid, upRef, animController, animController2}){
+export default function StreamMain ({channel,uid, upRef, animController, animController2, setParticipantsData}){
     const url = `http://localhost:3000/rtc/${channel}/publisher/userAccount/${uid}`
     const [appId,setAppId] = useState("945e0c1e774946de9c2e9a599f8c9c84");
     const [token,setToken] = useState(null);
@@ -41,13 +41,12 @@ export default function StreamMain ({channel,uid, upRef, animController, animCon
         GetToken()
     },[])
         return <AgoraRTCProvider client={client} >
-                   {token && <Streams channel={channel} appId={appId} token={token} uid={uid} upRef = {upRef} animController = {animController} animController2={animController2} />}
+                   {token && <Streams channel={channel} appId={appId} token={token} uid={uid} upRef = {upRef} animController = {animController} animController2={animController2} setParticipantsData={setParticipantsData} />}
                 </AgoraRTCProvider>
 }
 
 
-
-function Streams({appId, channel, token, uid, animController, animController2}){
+function Streams({appId, channel, token, uid, animController, animController2 ,setParticipantsData}){
     useJoin({appid:appId,  channel:channel,  token:token,uid:uid},true);
     let AudioTrack = useLocalMicrophoneTrack();
     let VideoTrack = useLocalCameraTrack();
@@ -110,7 +109,8 @@ function Streams({appId, channel, token, uid, animController, animController2}){
         //     sound.play();
         // }
         // playSound();
-        streamAnimControl.start("firstAnimation")
+        streamAnimControl.start("firstAnimation");
+        setParticipantsData(remoteUsers)
     },[]);
 
    return <motion.div  className={`w-full  absolute h-full flex flex-col  justify-around landscape:z-0 items-center landscape:pl-4 landscape:relative `} initial={"initial"} animate={controlMain} ref={subRef} variants={animationToggle} >
@@ -198,14 +198,24 @@ function StreamControls({micFun,camFun,micState,camState,toggleFullScreen,animCo
 
 
 
-export function ChatNParticipant({channel,uid}){
+export function ChatNParticipant({channel,uid,participantData}){
         const [displayChat, setDisplayChat] = useState(true);
         const [displayParticipant, setDisplayParticipant] = useState(false);
         const [text,setText] = useState('');
         const [messages, setMessages] = useState([]);
         const participantRef  = useRef(null);
+       
+        function processParticipantData(){
+            const data = participantData.map(function(info){
+                return {
+                            name: info.uid,
+                            audioData : info.audioTrack,
+                            videoData : info.videoTrack,
+                        }
+            })
+        }
 
-
+        const partData = processParticipantData() || []
     
         async function handleSendTextClick(){
             return new Promise(function(resolve){
@@ -269,7 +279,8 @@ export function ChatNParticipant({channel,uid}){
                 <div className={`w-full h-full flex flex-col items-center justify-around bg-teal-100 rounded-t-3xl landscape:rounded-none relative`} ref = {participantRef} >
                    <ChatNParticipantToggle displayChat = {displayChat} chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
                     { displayChat &&     <ChatDisplayArea messages={messages}/>}
-                    { displayParticipant && <div className="h-[90%]"> <p>display participants</p> </div>}
+                    {/* { displayParticipant && <div className="h-[90%]"> <p>display participants</p> </div>} */}
+                    { displayParticipant && <Partcipants participantsData={partData}/>}
                 </div>
                 { displayChat && <ChatEntry setTextfunc={setText} handleSendTextClick={handleSendTextClick} text={text} />}
             </div>
@@ -330,3 +341,60 @@ console.log(text);
                 <Button onClick={handleSendTextClick} ><Send/></Button>
             </div>
 }
+
+function Partcipants({participantsData}){
+    return <motion.div>
+                    {participantsData.map(function(data){
+                        return <Participant name={data.name} audioData={data.audioData} videoData={data.videoData} />
+                    })}
+            </motion.div>
+}
+
+function Participant({name,videoData,audioData}){
+    return <motion.div>
+                <Initials nameString={name}/>
+                <ParticipantName name={name} />
+                <ParticipantMetadata videoData={videoData} audioData={audioData} />
+            </motion.div>
+}
+
+function Initials({nameString}){
+    function abbreviator(string){
+        const stepOne = string.split(" ");
+        let initials 
+        if (stepOne.length > 1) {
+             initials = stepOne[0][0] + stepOne[1][0];
+             return initials;
+        }
+        if (stepOne.length == 1) {
+            initials = string[0];
+            return initials;
+        }
+        return "?"
+    }
+    return <motion.div>
+                <motion.p>
+                    {abbreviator(nameString)}
+                </motion.p>
+            </motion.div>
+}
+
+function ParticipantName({name}){
+    return <motion.div>
+                <motion.p>{name}</motion.p>
+             </motion.div>
+}
+
+function ParticipantMetadata({videoData,audioData}){
+    return <motion.div>
+                {videoData ? <Mic/> : <MicOff/>}
+                {audioData ? <VideocamRounded/> : <VideocamOffRounded/>}
+             </motion.div>
+}
+
+
+// const singleDat = {
+//     name : "",
+//     audioData : "true" || {} ,
+//     videoData : "true" || {} ,
+// }

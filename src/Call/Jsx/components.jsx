@@ -23,7 +23,7 @@ const backendUrl = "http://localhost:3000";
 
 const Socket  = io(backendUrl);
 
-export default function StreamMain ({channel,uid, upRef, animController, animController2}){
+export default function StreamMain ({channel,uid, upRef, animController, animController2, }){
     const url = `http://localhost:3000/rtc/${channel}/publisher/userAccount/${uid}`
     const [appId,setAppId] = useState("945e0c1e774946de9c2e9a599f8c9c84");
     const [token,setToken] = useState(null);
@@ -41,13 +41,12 @@ export default function StreamMain ({channel,uid, upRef, animController, animCon
         GetToken()
     },[])
         return <AgoraRTCProvider client={client} >
-                   {token && <Streams channel={channel} appId={appId} token={token} uid={uid} upRef = {upRef} animController = {animController} animController2={animController2} />}
+                   {token && <Streams channel={channel} appId={appId} token={token} uid={uid} upRef = {upRef} animController = {animController} animController2={animController2}  />}
                 </AgoraRTCProvider>
 }
 
 
-
-function Streams({appId, channel, token, uid, animController, animController2}){
+function Streams({appId, channel, token, uid, animController, animController2 ,}){
     useJoin({appid:appId,  channel:channel,  token:token,uid:uid},true);
     let AudioTrack = useLocalMicrophoneTrack();
     let VideoTrack = useLocalCameraTrack();
@@ -78,6 +77,7 @@ function Streams({appId, channel, token, uid, animController, animController2}){
             animController2.start(fullScreen ?"slide":"initial");
             setFullScreen(init=>!init);
         }
+        exposeRemoteStreamData()
 
     }
     
@@ -110,8 +110,9 @@ function Streams({appId, channel, token, uid, animController, animController2}){
         //     sound.play();
         // }
         // playSound();
-        streamAnimControl.start("firstAnimation")
+        streamAnimControl.start("firstAnimation");
     },[]);
+
 
    return <motion.div  className={`w-full  absolute h-full flex flex-col  justify-around landscape:z-0 items-center landscape:pl-4 landscape:relative `} initial={"initial"} animate={controlMain} ref={subRef} variants={animationToggle} >
                 {deviceLoading && <Loading/> }
@@ -119,7 +120,9 @@ function Streams({appId, channel, token, uid, animController, animController2}){
                         <Button variant="contained" className="z-20" onClick={toggleFullScreen} >CLOSE</Button>
                 </div>}
                 <div className="w-full absolute top-4 landscape:top-0 z-10 h-[10%] landscape:relative landscape:h-1/6 flex gap-4 px-2 justify-center" >
-                    {remoteUsers.map((remoteUser) =>  {console.log("a uid",remoteUser.uid);  return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})}
+                    {
+                    remoteUsers.map((remoteUser) =>  {return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})
+                    }
                 </div>
                 {!deviceLoading && <motion.div className="w-full h-full landscape:h-[82%] flex items-center justify-center " variants={mainVidAnim} initial ={"initial"} animate={"scaleUp"} onClick={()=>{streamAnimControl.start("click"); }}    >
                                         <div className="w-full h-full relative landscape:flex justify-center items-center landscape:pb-2 "   >
@@ -196,16 +199,14 @@ function StreamControls({micFun,camFun,micState,camState,toggleFullScreen,animCo
 
 
 
-
-
 export function ChatNParticipant({channel,uid}){
         const [displayChat, setDisplayChat] = useState(true);
         const [displayParticipant, setDisplayParticipant] = useState(false);
+        const [participants, setParticipants] = useState([]);
         const [text,setText] = useState('');
         const [messages, setMessages] = useState([]);
         const participantRef  = useRef(null);
-
-
+        const dummyData = ["Gregro Marcus","Penelope Cruz","Demarcus Cousins","Anthony Joushua","Smurf"]
     
         async function handleSendTextClick(){
             return new Promise(function(resolve){
@@ -244,13 +245,18 @@ export function ChatNParticipant({channel,uid}){
                 participantRef.current.classList.add("h-[88%]"); 
         }
         }
-
+        function handleNewUserJoined(username){
+            let names = username.map(function(singleUser){
+                return singleUser.name
+            })
+           
+            setParticipants(initial => names );
+        }
 
         useEffect(function(){
             Socket.on("connect",function(){
                 Socket.emit(Tants.JOIN_ROOM, channel, uid);
             });
-    
     
             Socket.on(Tants.RECEIVE_MESSAGE,function(text){
                 handleReceiveMessage(text)
@@ -258,18 +264,34 @@ export function ChatNParticipant({channel,uid}){
     
             // @todo handle presentation of new member event 
             Socket.on(Tants.NEW_MEMBER,function(text){
-               console.log(text);
+               console.log(`${text.newUser} is now online boyssssss`);
+               handleNewUserJoined(text.members);
+            })
+
+            Socket.on("member-left",function(text){
+               console.log(`${text.former} hasLeft`);
+               handleNewUserJoined(text.members);
             })
     
         },[]);
+
+        useEffect(()=>{
+           let members =  fetch(`${backendUrl}/members`)
+           .then(function(data){
+            return data.json()
+           }).then(function(info){
+            console.log(info);
+            handleNewUserJoined(info);
+           })
+        },[])
 
         
     return <>
             <div className="w-full h-full  z-[] flex flex-col  "  >
                 <div className={`w-full h-full flex flex-col items-center justify-around bg-teal-100 rounded-t-3xl landscape:rounded-none relative`} ref = {participantRef} >
                    <ChatNParticipantToggle displayChat = {displayChat} chatClick = {handleChatClick} participantClick = { handleParticipantClick}  />
-                    { displayChat &&     <ChatDisplayArea messages={messages}/>}
-                    { displayParticipant && <div className="h-[90%]"> <p>display participants</p> </div>}
+                    { displayChat && <ChatDisplayArea messages={messages}/>}
+                    { displayParticipant && <Partcipants participantsName={participants} />}
                 </div>
                 { displayChat && <ChatEntry setTextfunc={setText} handleSendTextClick={handleSendTextClick} text={text} />}
             </div>
@@ -330,3 +352,59 @@ console.log(text);
                 <Button onClick={handleSendTextClick} ><Send/></Button>
             </div>
 }
+
+function Partcipants({participantsName}){
+    const colors = ["rgba(128,0,128,0.6)","rgba(255,0,0,0.6)","rgba(255,165,0,0.6)","rgba(255,215,0,0.6)","rgba(65,105,225,0.6)","rgba(55,20,147,0.6)","rgba(176,196,222,0.6)","rgba(255,191,0,0.6)","rgba(255,255,0,0.6)","rgba(204,255,0,0.6)","rgba(0,255,255,0.6)","rgba(31,78,47,0.6)","rgba(128,0,128,0.6)","rgba(255,0,0,0.6)","rgba(255,165,0,0.6)","rgba(255,215,0,0.6)","rgba(65,105,225,0.6)","rgba(55,20,147,0.6)","rgba(176,196,222,0.6)","rgba(255,191,0,0.6)","rgba(255,255,0,0.6)","rgba(204,255,0,0.6)","rgba(0,255,255,0.6)","rgba(31,78,47,0.6)"];
+    function backgroundColorSelector(){
+        const lengthOColors = colors.length;
+        console.log(colors[Math.floor(Math.random() * lengthOColors)]);
+        return colors[Math.floor(Math.random() * lengthOColors)]
+    }
+    return <motion.div className="w-full flex flex-col h-full p-4 pt-8 gap-4 overflow-scroll">
+                    {participantsName.map(function(user){
+                        return <Participant name={user} bgColor={backgroundColorSelector()} />
+                    })}
+            </motion.div>
+}
+
+function Participant({name,bgColor}){
+    return <motion.div className="flex gap-6 items-center bg-teal-200 rounded-lg ">
+                <Initials nameString={name} bgColor={bgColor}/>
+                <ParticipantName name={name} />
+            </motion.div>
+}
+
+function Initials({nameString,bgColor}){
+    function abbreviator(string){
+        const stepOne = string.split(" ");
+        let initials 
+        if (stepOne.length > 1) {
+             initials = stepOne[0][0] + stepOne[1][0];
+             return initials;
+        }
+        if (stepOne.length == 1) {
+            initials = string[0];
+            return initials;
+        }
+        return "?"
+    }
+
+    
+    return <motion.div className={`w-12 text-center px-4 py-2 rounded-lg font-bebas text-lg`} style={{backgroundColor:`${bgColor}`}} >
+                        {abbreviator(nameString)}
+            </motion.div>
+}
+
+function ParticipantName({name}){
+    return <motion.div className="block w-[90%] pr-[5%] overflow-hidden whitespace-nowrap text-ellipsis  font-montserrat font-semibold" >
+                {name}
+             </motion.div>
+}
+
+function ParticipantMetadata({videoData,audioData}){
+    return <motion.div>
+                {videoData ? <Mic/> : <MicOff/>}
+                {audioData ? <VideocamRounded/> : <VideocamOffRounded/>}
+             </motion.div>
+}
+

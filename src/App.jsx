@@ -18,10 +18,6 @@ const Router = createBrowserRouter([
             element:<Home/>
           },
           {
-            path:"/call/:channel/:uid",
-            element:<Call/>
-          },
-          {
             path:"/host",
             element:<Host/>
           },
@@ -35,7 +31,10 @@ const Router = createBrowserRouter([
           }
     ]
   },
-  
+  {
+    path:"/call/:channel/:uid",
+    element:<Call/>
+    }
 ])
 
 function App() {

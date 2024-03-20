@@ -12,7 +12,6 @@ export default function Call(){
     const chatNParticipantControls = useAnimationControls();
     const isLandscape = useMediaQuery({query:'(orientation: landscape)'});
    const mainRef = useRef(null);
-   const [participantsData, setParticipantsData] = useState([]);
 
    const animation1 = {
     initial:{
@@ -37,10 +36,10 @@ export default function Call(){
 
 
     return <motion.div className="w-screen h-screen block bg-teal-100 overflow-hidden relative justify-between "  ref={mainRef} variants={animation1} initial = {"initial"} animate = {openChatControls} >
-        <StreamMain setParticipantsData={setParticipantsData} channel={params.channel} uid={params.uid} animController = {openChatControls} animController2 = {chatNParticipantControls} upRef = {mainRef} />
+        <StreamMain  channel={params.channel} uid={params.uid} animController = {openChatControls} animController2 = {chatNParticipantControls} upRef = {mainRef} />
 
         <motion.div variants={!isLandscape?animation2:null} initial = {"initial"} animate={chatNParticipantControls}  className="w-full h-full absolute top-0 -z-[0] landscape:relative landscape:z-0 landscape:w-[30%] landscape:h-full  landscape:flex landscape:flex-col landscape:items-center landscape:gap-[2%] pt-8 landscape:pt-0 " style={{boxShadow:"-12px 1px 18px 0px rgba(0,0,0,0.75)"}} >
-            <ChatNParticipant  channel={params.channel} uid={params.uid} participantData={participantsData} />
+            <ChatNParticipant  channel={params.channel} uid={params.uid}  />
         </motion.div>
 
     </motion.div>

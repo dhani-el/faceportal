@@ -5,6 +5,7 @@ const {RtcTokenBuilder, RtcRole } = require("agora-token")
 const app = express();
 const socket = require('socket.io');
 const server = http.createServer(app);
+const cors = require("cors");
 
 const tants = {
   JOIN_ROOM:"join-room",
@@ -13,6 +14,8 @@ const tants = {
   NEW_MEMBER:"new-member",
 
 }
+
+let members  = [];
 
 const remote  = "http://localhost:5173"
 const io = socket(server,{cors:{origin:[remote]}})
@@ -62,12 +65,17 @@ const generateRTCToken = (req, res)=>{
 
 }
 
+app.use(cors({origin:[remote],methods:["GET"]}))
+
 
 app.get("/",function(req,res){
     res.send("upcoming token generator")
 });
 app.get('/rtc/:channel/:role/:tokentype/:uid', nocache , generateRTCToken)
 
+app.get("/members",function(req,res){
+  res.send(members)
+})
 io.on("connection", function(packet){
 
         packet.on("join-room",function(room,user){
@@ -75,8 +83,9 @@ io.on("connection", function(packet){
                 console.log("room value should not be empty ");
                 return
               }
-              packet.join(room);
-              packet.to(room).emit("new-member",`${user} Has Joined This Call`);
+              members.push({name:user,id:packet.id});
+              packet.join(room)
+              packet.to(room).emit("new-member",{members : members,newUser:user});
         });
 
         packet.on("send-message",function(text,room){
@@ -88,6 +97,25 @@ io.on("connection", function(packet){
             }
             packet.to(room).emit("receive-message",text)
         });
+        packet.on("disconnecting", function(){
+          const rooms = packet.rooms
+          let membersLeft  = members.filter(function(aMember){
+            return aMember.id !== packet.id
+          });
+          const formerMember = members.find(function(single){
+            console.log(single.id == packet.id);
+            return single.id == packet.id
+          })
+          members = membersLeft;
+          for(const room of rooms){
+
+            packet.to(room).emit("member-left",{members : members, former:formerMember?.name});
+          }
+        })
+
+        packet.on("getMembers",function(room) {
+          packet.to(room).emit("new-member",{members : members});
+        })
 
         packet.on("offer", function(offer,room){
 

@@ -16,6 +16,7 @@ import { useMediaQuery } from "react-responsive";
 import { Button, TextField } from "@mui/material";
 import { motion, useAnimationControls } from "framer-motion";
 import {  ChatRounded, LocalPhone, Mic, MicOff, ScreenShare, Send, VideocamOffRounded, VideocamRounded, VolumeOff, VolumeUp } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 import Tants from "../../constants";
 import song from "/src/Mp3/join.mp3"
 
@@ -124,11 +125,11 @@ function Streams({appId, channel, token, uid, animController, animController2 ,}
                     remoteUsers.map((remoteUser) =>  {return <RemoteStream id={remoteUser.uid} user={remoteUser} playVideo={true} playAudio={true} />})
                     }
                 </div>
-                {!deviceLoading && <motion.div className="w-full h-full landscape:h-[82%] flex items-center justify-center " variants={mainVidAnim} initial ={"initial"} animate={"scaleUp"} onClick={()=>{streamAnimControl.start("click"); }}    >
+                {!deviceLoading && <motion.div className="w-full h-full landscape:w-[80%] landscape:h-[75%] flex items-center justify-center " variants={mainVidAnim} initial ={"initial"} animate={"scaleUp"} onClick={()=>{streamAnimControl.start("click"); }}    >
                                         <div className="w-full h-full relative landscape:flex justify-center items-center landscape:pb-2 "   >
 
-                                            <div className="text-yellow-400 hidden landscape:block bg-teal-700 bg-opacity-50 capitalize rounded-md text-xs absolute z-20 p-2 left-4 top-4">you</div>
-                                            <LocalUser className=" landscape:rounded-3xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
+                                            <div className="text-yellow-400 hidden landscape:block bg-teal-700 bg-opacity-50 capitalize rounded-md text-xs absolute z-20 p-2 left-4 top-4">You</div>
+                                            <LocalUser className=" landscape:rounded-xl" videoTrack={VideoTrack.localCameraTrack} audioTrack={AudioTrack.localMicrophoneTrack} playAudio playVideo cameraOn  = {playVideo} micOn = {audioState} />
                                         </div>
                                     </motion.div>
                 }
@@ -147,10 +148,11 @@ function RemoteStream({id, user, playVideo, playAudio}){
 }
 
 function Loading(){
-    return <div>loading component</div>
+    return <div className="font-bebas  text-xl">YOUR MEETING IS STARTING </div>
 }
 
 function StreamControls({micFun,camFun,micState,camState,toggleFullScreen,animController}){
+    const navigate  = useNavigate();
     const isLandscape = useMediaQuery({query:'(orientation: landscape)'});
 
     function ToggleMic(){
@@ -190,7 +192,7 @@ function StreamControls({micFun,camFun,micState,camState,toggleFullScreen,animCo
     return <motion.div variants={animation} initial = {"initial"} whileFocus={"hover"} whileHover={"hover"} animate = {animController}  className="w-10/12 z-[2] absolute bottom-4  landscape:bottom-4  flex justify-center items-center gap-8 " style={{height:"10%"}} >
         <Button   onClick={ToggleMic} variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} >{micState ? <Mic sx={{height:"1rem"}} /> : <MicOff sx={{height:"1rem"}}/> }</Button>
         <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} onClick={ToggleCam}>{camState ? <VideocamRounded sx={{height:"1rem"}} /> : <VideocamOffRounded  sx={{height:"1rem"}}/>}</Button>
-        <Button   variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2.9rem", height:"2.9rem", borderRadius:"1.9rem",padding:"0", minWidth:"0"}}><LocalPhone  sx={{height:"1.8rem",color:"#c30010"}}/></Button>
+        <Button onClick={()=> navigate("/")}  variant="contained" sx={{ boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2.9rem", height:"2.9rem", borderRadius:"1.9rem",padding:"0", minWidth:"0"}}><LocalPhone  sx={{height:"1.8rem",color:"#c30010"}}/></Button>
         <Button   variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"#FACC14", color:"teal", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} onClick={toggleFullScreen} ><ChatRounded  sx={{height:"1rem"}}/></Button>
         <Button   variant="contained" sx={{boxShadow: "24px 12px 24px -6px rgba(0,0,0,0.75)", backgroundColor:"teal", color:"#FACC14", width:"2rem", height:"2rem", borderRadius:"1rem",padding:"0", minWidth:"0"}} ><ScreenShare  sx={{height:"1rem"}}/></Button>
     </motion.div>
